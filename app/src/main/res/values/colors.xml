@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#CDDC39</color>
-    <color name="colorPrimaryDark">#AFB42B</color>
-    <color name="colorAccent">#009688</color>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#2196F3</color>
 
-    <color name="colorCenterNavBar">#009688</color>
-    <color name="colorStartNavBar">#4DB6AC</color>
-    <color name="colorEndNavBar">#00695C</color>
+    <color name="colorCenterNavBar">#2196F3</color>
+    <color name="colorStartNavBar">#64B5F6</color>
+    <color name="colorEndNavBar">#1565C0</color>
+
+    <color name="tabsScrollColor">#FFF</color>
+    <color name="notSelectedTabItem">#2E7D32</color>
 </resources>
