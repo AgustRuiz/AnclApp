@@ -10,4 +10,7 @@
 
     <color name="tabsScrollColor">#FFF</color>
     <color name="notSelectedTabItem">#2E7D32</color>
+
+    <color name="white">#fff</color>
+    <color name="grey700">#616161</color>
 </resources>

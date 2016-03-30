@@ -12,7 +12,7 @@ import es.agustruiz.anclapp.R;
 public class Tab2Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.tab_2_fragment, container, false);
+        View v = inflater.inflate(R.layout.anchor_list_fragment, container, false);
         return v;
     }
 }

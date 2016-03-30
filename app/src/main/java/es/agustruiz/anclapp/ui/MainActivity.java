@@ -22,13 +22,16 @@ import es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.fab)
-    FloatingActionButton mFab;
+    @Bind(R.id.fab_add_anchor)
+    FloatingActionButton mFabAddAnchor;
+
+    @Bind(R.id.fab_center_view)
+    FloatingActionButton mFabCenterView;
 
     @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -50,20 +53,29 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
+
+        //region [Layout views]
 
         setSupportActionBar(mToolbar);
 
-        mFab.setOnClickListener(new View.OnClickListener() {
+        mFabAddAnchor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                showMessage(view, "Add anchor here");
             }
         });
 
-        //------ Sidedrawer ------//
+        mFabCenterView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMessage(v, "Center map here");
+            }
+        });
+
+        //endregion
+
+        //region [Sidedrawer]
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -72,9 +84,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //------ End sidedrawer ------//
+        //endregion
 
-        //------ Tab navigator ------//
+        //region [Tab navigator]
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), tabTitles, tabNumbOfTabs);
+        mViewPager.setAdapter(mViewPagerAdapter);
         mSlidingTabLayout.setDistributeEvenly(true);
         mSlidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
@@ -82,14 +96,51 @@ public class MainActivity extends AppCompatActivity
                 return getResources().getColor(R.color.tabsScrollColor);
             }
         });
-
-        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), tabTitles, tabNumbOfTabs);
-        mViewPager.setAdapter(mViewPagerAdapter);
         mSlidingTabLayout.setViewPager(mViewPager);
+        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
-        //------ End tab navigator ------//
+            @Override
+            public void onPageSelected(int position) {
+                if(position==0){
+                    showFabCenterView();
+                }else{
+                    hideFabCenterView();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        //enregion
 
     }
+
+    //region [Public methods]
+
+    // TODO consider change the duration by message length
+    public void showMessage(View view, String message) {
+        view = (view != null ? view : mFabCenterView);
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show();
+    }
+
+    public void showFabCenterView(){
+        mFabCenterView.show();
+    }
+
+    public void hideFabCenterView(){
+        mFabCenterView.hide();
+    }
+
+    //endregion
+
+    //region [Activity methods]
 
     @Override
     public void onBackPressed() {
@@ -122,7 +173,10 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    /**/
+    //endregion
+
+    //region [NavigationView.OnNavigationItemSelectedListener]
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -146,5 +200,7 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }/**/
+    }
+
+    //endregion
 }
