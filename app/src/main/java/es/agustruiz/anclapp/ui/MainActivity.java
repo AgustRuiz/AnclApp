@@ -1,10 +1,12 @@
 package es.agustruiz.anclapp.ui;
 
-import android.os.Build;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +17,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
@@ -22,7 +27,9 @@ import es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, LocationListener {
+
+    public static final String LOG_TAG = MainActivity.class.getName() + "[A]";
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -34,20 +41,21 @@ public class MainActivity extends AppCompatActivity
     FloatingActionButton mFabCenterView;
 
     @Bind(R.id.drawer_layout)
-    DrawerLayout drawer;
+    DrawerLayout mDrawer;
 
     @Bind(R.id.tabs)
     SlidingTabLayout mSlidingTabLayout;
+
+    @Bind(R.id.pager)
+    ViewPager mViewPager;
 
     ViewPagerAdapter mViewPagerAdapter;
     CharSequence tabTitles[] = {"Map", "Anchors"};
     int tabNumbOfTabs = tabTitles.length;
 
-
-    @Bind(R.id.pager)
-    ViewPager mViewPager;
-
     ActionBarDrawerToggle mDrawerToggle;
+
+    GoogleMap mGoogleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +85,10 @@ public class MainActivity extends AppCompatActivity
 
         //region [Sidedrawer]
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -104,9 +112,9 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onPageSelected(int position) {
-                if(position==0){
+                if (position == 0) {
                     showFabCenterView();
-                }else{
+                } else {
                     hideFabCenterView();
                 }
             }
@@ -130,11 +138,11 @@ public class MainActivity extends AppCompatActivity
                 .show();
     }
 
-    public void showFabCenterView(){
+    public void showFabCenterView() {
         mFabCenterView.show();
     }
 
-    public void hideFabCenterView(){
+    public void hideFabCenterView() {
         mFabCenterView.hide();
     }
 
@@ -144,8 +152,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -200,6 +208,44 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //endregion
+
+    //region [OnMapReadyCallback]
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        mGoogleMap.setMyLocationEnabled(true);
+    }
+
+    //endregion
+
+    //region [LocationListener]
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.i(LOG_TAG, "LocationListener.onLocationChanged");
+        /*mCurrentLocation = location;
+        if (mIsViewCentered) {
+            centerMapInCurrentLocation();
+        }/**/
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.i(LOG_TAG, "LocationListener.onStatusChanged");
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Log.i(LOG_TAG, "LocationListener.onProviderEnabled");
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Log.i(LOG_TAG, "LocationListener.onProviderDisabled");
     }
 
     //endregion
