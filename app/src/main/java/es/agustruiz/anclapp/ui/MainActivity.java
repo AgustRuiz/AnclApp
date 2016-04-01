@@ -27,7 +27,7 @@ import es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, LocationListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String LOG_TAG = MainActivity.class.getName() + "[A]";
 
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity
         //endregion
 
         //region [Tab navigator]
+
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), tabTitles, tabNumbOfTabs);
         mViewPager.setAdapter(mViewPagerAdapter);
         mSlidingTabLayout.setDistributeEvenly(true);
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity
             public void onPageScrollStateChanged(int state) {
             }
         });
+        
 
         //enregion
 
@@ -212,41 +214,4 @@ public class MainActivity extends AppCompatActivity
 
     //endregion
 
-    //region [OnMapReadyCallback]
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
-        mGoogleMap.setMyLocationEnabled(true);
-    }
-
-    //endregion
-
-    //region [LocationListener]
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.i(LOG_TAG, "LocationListener.onLocationChanged");
-        /*mCurrentLocation = location;
-        if (mIsViewCentered) {
-            centerMapInCurrentLocation();
-        }/**/
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.i(LOG_TAG, "LocationListener.onStatusChanged");
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Log.i(LOG_TAG, "LocationListener.onProviderEnabled");
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Log.i(LOG_TAG, "LocationListener.onProviderDisabled");
-    }
-
-    //endregion
 }
