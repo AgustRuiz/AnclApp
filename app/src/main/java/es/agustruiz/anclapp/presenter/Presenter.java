@@ -1,7 +1,7 @@
 package es.agustruiz.anclapp.presenter;
 
-/**
- * Created by agust on 01/04/2016.
- */
+import android.view.View;
+
 public interface Presenter {
+    void showMessage(View vies, String message);
 }

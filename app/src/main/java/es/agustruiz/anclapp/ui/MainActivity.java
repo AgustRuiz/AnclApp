@@ -1,12 +1,10 @@
 package es.agustruiz.anclapp.ui;
 
 import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,12 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.presenter.MainActivityPresenter;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.ViewPagerAdapter;
 
@@ -49,19 +45,23 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.pager)
     ViewPager mViewPager;
 
+    @Bind(R.id.nav_view)
+    NavigationView mNavigationView;
+
     ViewPagerAdapter mViewPagerAdapter;
     CharSequence tabTitles[] = {"Map", "Anchors"};
     int tabNumbOfTabs = tabTitles.length;
 
     ActionBarDrawerToggle mDrawerToggle;
 
-    GoogleMap mGoogleMap;
+    MainActivityPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mPresenter = new MainActivityPresenter(this);
 
         //region [Layout views]
 
@@ -70,14 +70,13 @@ public class MainActivity extends AppCompatActivity
         mFabAddAnchor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMessage(view, "Add anchor here");
+                mPresenter.addAnchor();
             }
         });
 
         mFabCenterView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                showMessage(v, "Center map here");
+            public void onClick(View view) { mPresenter.centerViewOnLocation();
             }
         });
 
@@ -89,8 +88,7 @@ public class MainActivity extends AppCompatActivity
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         //endregion
 
@@ -125,15 +123,14 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
-        //enregion
+        //endregion
 
     }
 
     //region [Public methods]
 
     // TODO consider change the duration by message length
-    public void showMessage(View view, String message) {
+    public void showMessageView(View view, String message) {
         view = (view != null ? view : mFabCenterView);
         Snackbar.make(view, message, Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
@@ -146,6 +143,12 @@ public class MainActivity extends AppCompatActivity
 
     public void hideFabCenterView() {
         mFabCenterView.hide();
+    }
+
+    public void centerMapView(Location location){
+        if(location!=null){
+
+        }
     }
 
     //endregion
@@ -163,19 +166,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -193,22 +191,22 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id){
+            case R.id.nav_camera:
+                break;
+            case R.id.nav_gallery:
+                break;
+            case R.id.nav_slideshow:
+                break;
+            case R.id.nav_manage:
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
