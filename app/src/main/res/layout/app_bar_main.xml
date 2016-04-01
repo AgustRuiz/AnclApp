@@ -7,54 +7,60 @@
     android:fitsSystemWindows="true"
     tools:context="es.agustruiz.anclapp.ui.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-        <es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout
-            android:id="@+id/tabs"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+            <es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+    </android.support.v7.widget.LinearLayoutCompat>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_anchor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabSize="normal"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:src="@drawable/ic_add_24dp"
         android:tint="@color/white"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="@dimen/fab_margin" />
+        app:fabSize="normal" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_center_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabSize="normal"
-        android:src="@drawable/ic_gps_fixed_24dp"
-        app:backgroundTint="@color/white"
-        android:tint="@color/grey700"
-        app:layout_anchor="@id/fab_add_anchor"
-        app:layout_anchorGravity="top"
         android:layout_gravity="top|end"
         android:layout_marginBottom="@dimen/fab2_vertical_margin"
-        android:layout_marginEnd="@dimen/fab_margin" />
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:src="@drawable/ic_gps_fixed_24dp"
+        android:tint="@color/grey700"
+        app:backgroundTint="@color/white"
+        app:fabSize="normal"
+        app:layout_anchor="@id/fab_add_anchor"
+        app:layout_anchorGravity="top" />
 
 </android.support.design.widget.CoordinatorLayout>
