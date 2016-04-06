@@ -4,9 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.google.android.gms.maps.SupportMapFragment;
-
-import es.agustruiz.anclapp.ui.fragment.MapFragment;
+import es.agustruiz.anclapp.ui.fragment.GoogleMapFragment;
 import es.agustruiz.anclapp.ui.fragment.AnchorListFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -30,7 +28,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         if(position == 0) // if the position is 0 we are returning the First tab
         {
-            return new MapFragment();
+            return new GoogleMapFragment();
         }
         else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {

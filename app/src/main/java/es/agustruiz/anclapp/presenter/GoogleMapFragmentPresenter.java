@@ -1,14 +1,9 @@
-package es.agustruiz.anclapp.ui.fragment;
+package es.agustruiz.anclapp.presenter;
 
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,47 +14,40 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 
-import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.ui.fragment.GoogleMapFragment;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class GoogleMapFragmentPresenter implements OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
-    public static final String LOG_TAG = MapFragment.class.getName() + "[A]";
+    public static final String LOG_TAG = GoogleMapFragmentPresenter.class.getName() + "[A]";
 
-    protected GoogleMap mGoogleMap = null;
+    GoogleMapFragment mFragment;
+
+    protected Context mContext = null;
     protected GoogleApiClient mGoogleApiClient = null;
+    protected GoogleMap mGoogleMap = null;
     protected LocationRequest mLocationRequest = null;
 
     protected static final long INTERVAL = 1000 * 10; // 10 milliseconds
     protected static final long FATEST_INTERVAL = 1000 * 5; // 5 milliseconds
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.map_fragment, container, false);
-        Toast.makeText(getContext(), "onCreateView", Toast.LENGTH_LONG).show();
+    public GoogleMapFragmentPresenter(GoogleMapFragment fragment){
+        mFragment = fragment;
+        mContext = mFragment.getContext();
 
-
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        createLocationRequest();
         mGoogleApiClient = new GoogleApiClient
-                .Builder(getContext())
+                .Builder(mContext)
                 .addApi(LocationServices.API) //.addApi(AppIndex.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
 
-
-
-
-        return v;
+        createLocationRequest();
     }
 
     //region [Private methods]
-
 
     private void createLocationRequest() {
         Log.i(LOG_TAG, "createLocationRequest");
@@ -71,11 +59,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     public void startLocationUpdates() {
         Log.e(LOG_TAG, "Location update started");
-        //if (mGoogleApiClient.isConnected()) {
         PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this); // TODO Permission check
-        //}
-    }/**/
+    }
 
     //endregion
 
@@ -85,11 +71,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         mGoogleMap.setMyLocationEnabled(true);
-        Toast.makeText(getContext(), "Map Ready", Toast.LENGTH_LONG).show();
     }
 
     //endregion
-
 
     //region [GoogleApiClient.ConnectionCallbacks]
 
