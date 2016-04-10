@@ -3,6 +3,7 @@ package es.agustruiz.anclapp.presenter;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -12,103 +13,125 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
+import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.event.Event;
+import es.agustruiz.anclapp.event.EventsUtil;
+import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.ui.fragment.GoogleMapFragment;
 
-public class GoogleMapFragmentPresenter implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+public class GoogleMapFragmentPresenter {
 
     public static final String LOG_TAG = GoogleMapFragmentPresenter.class.getName() + "[A]";
 
-    GoogleMapFragment mFragment;
+    protected static final long LOCATION_REQUEST_INTERVAL = 1000 * 10; // 10 milliseconds
+    protected static final long LOCATION_REQUEST_FATEST_INTERVAL = 1000 * 5; // 5 milliseconds
 
+    protected GoogleMapFragment mFragment;
+    protected SupportMapFragment mMapFragment;
     protected Context mContext = null;
+    protected GoogleMap mGoogleMap;
     protected GoogleApiClient mGoogleApiClient = null;
-    protected GoogleMap mGoogleMap = null;
+    protected Location mCurrentLocation = null;
     protected LocationRequest mLocationRequest = null;
+    protected EventsUtil eventsUtil = EventsUtil.getInstance();
 
-    protected static final long INTERVAL = 1000 * 10; // 10 milliseconds
-    protected static final long FATEST_INTERVAL = 1000 * 5; // 5 milliseconds
+    //region [Public methods]
 
-    public GoogleMapFragmentPresenter(GoogleMapFragment fragment){
+    public GoogleMapFragmentPresenter(GoogleMapFragment fragment) {
         mFragment = fragment;
         mContext = mFragment.getContext();
 
+        mMapFragment = (SupportMapFragment) mFragment.getChildFragmentManager().findFragmentById(R.id.map);
+        mMapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                Log.i(LOG_TAG, "Map ready");
+                mGoogleMap = googleMap;
+                mGoogleMap.setMyLocationEnabled(true); // TODO Permission check
+            }
+        });
+        createLocationRequest();
         mGoogleApiClient = new GoogleApiClient
                 .Builder(mContext)
                 .addApi(LocationServices.API) //.addApi(AppIndex.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(@Nullable Bundle bundle) {
+                        Log.i(LOG_TAG, "GoogleApiClient.ConnectionCallbacks.onConnected");
+                        startLocationUpdates();
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int i) {
+                        Log.i(LOG_TAG, "GoogleApiClient.ConnectionCallbacks.onConnectionSuspender");
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult connectionResult) {
+                        Log.i(LOG_TAG, "GoogleApiClient.OnConnectionFailedListener.onConnectionFailed");
+                    }
+                })
                 .build();
 
-        createLocationRequest();
+        eventsUtil.addEventListener(EventsUtil.FAB_CENTER_MAP, new IEventHandler() {
+            @Override
+            public void callback(Event event) {
+                centerMapOnLocation(mCurrentLocation);
+                Log.d(LOG_TAG, "fabCenterMap listener callback zoom!");
+            }
+        });
     }
+
+    public void GoogleApiClientConnect() {
+        mGoogleApiClient.connect();
+    }
+
+    public void GoogleApiClientDisconnect() {
+        mGoogleApiClient.disconnect();
+    }
+
+    public void centerMapOnLocation(Location location) {
+        if (location != null) {
+            CameraUpdate camera = CameraUpdateFactory
+                    .newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+            mGoogleMap.animateCamera(camera);
+        }
+    }
+
+    //endregion
 
     //region [Private methods]
 
     private void createLocationRequest() {
-        Log.i(LOG_TAG, "createLocationRequest");
+        Log.d(LOG_TAG, "createLocationRequest");
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(INTERVAL);
-        mLocationRequest.setFastestInterval(FATEST_INTERVAL);
+        mLocationRequest.setInterval(LOCATION_REQUEST_INTERVAL);
+        mLocationRequest.setFastestInterval(LOCATION_REQUEST_FATEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
-    public void startLocationUpdates() {
-        Log.e(LOG_TAG, "Location update started");
+    private void startLocationUpdates() {
+        Log.d(LOG_TAG, "Location update started");
+        //if (mGoogleApiClient.isConnected()) {
         PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this); // TODO Permission check
+                mGoogleApiClient, mLocationRequest, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        Log.d(LOG_TAG, "Location changed");
+                        mCurrentLocation = location;
+                    }
+                }); // TODO Permission check
+        //}
     }
 
     //endregion
 
-    //region [OnMapReadyCallback]
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
-        mGoogleMap.setMyLocationEnabled(true);
-    }
-
-    //endregion
-
-    //region [GoogleApiClient.ConnectionCallbacks]
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        Log.i(LOG_TAG, "GoogleApiClient.ConnectionCallbacks.onConnected");
-        startLocationUpdates();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.i(LOG_TAG, "GoogleApiClient.ConnectionCallbacks.onConnectionSuspender");
-    }
-
-    //endregion
-
-    //region [GoogleApiClient.OnConnectionFailedListener]
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.i(LOG_TAG, "GoogleApiClient.OnConnectionFailedListener.onConnectionFailed");
-    }
-
-    //endregion
-
-    //region [LocationListener]
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.i(LOG_TAG, "LocationListener.onLocationChanged");
-        /*mCurrentLocation = location;
-        if (mIsViewCentered) {
-            centerMapInCurrentLocation();
-        }/**/
-    }
-
-    //endregion
 }

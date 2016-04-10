@@ -3,9 +3,10 @@ package es.agustruiz.anclapp.presenter;
 import android.content.Context;
 import android.view.View;
 
+import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.ui.MainActivity;
 
-public class MainActivityPresenter implements Presenter {
+public class MainActivityPresenter implements Presenter{
 
     MainActivity mActivity;
     Context mContext;
@@ -17,8 +18,8 @@ public class MainActivityPresenter implements Presenter {
         mContext = mActivity.getApplicationContext();
     }
 
-    public void centerViewOnLocation(){
-        showMessage(null, "Center map here");
+    public void centerMapOnCurrentLocation() {
+        EventsUtil.getInstance().centerMapOnLocationEvent();
     }
 
     public void addAnchor(){
