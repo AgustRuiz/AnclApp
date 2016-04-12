@@ -33,6 +33,8 @@ public class GoogleMapFragmentPresenter {
     protected static final long LOCATION_REQUEST_INTERVAL = 1000 * 10; // 10 milliseconds
     protected static final long LOCATION_REQUEST_FATEST_INTERVAL = 1000 * 5; // 5 milliseconds
 
+    protected static final float MAP_MIN_ZOOM = 15;
+
     protected GoogleMapFragment mFragment;
     protected SupportMapFragment mMapFragment;
     protected Context mContext = null;
@@ -55,6 +57,7 @@ public class GoogleMapFragmentPresenter {
                 Log.i(LOG_TAG, "Map ready");
                 mGoogleMap = googleMap;
                 mGoogleMap.setMyLocationEnabled(true); // TODO Permission check
+                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
             }
         });
         createLocationRequest();
@@ -84,8 +87,8 @@ public class GoogleMapFragmentPresenter {
         eventsUtil.addEventListener(EventsUtil.FAB_CENTER_MAP, new IEventHandler() {
             @Override
             public void callback(Event event) {
-                centerMapOnLocation(mCurrentLocation);
                 Log.d(LOG_TAG, "fabCenterMap listener callback zoom!");
+                centerMapOnLocation(mCurrentLocation);
             }
         });
     }
@@ -100,8 +103,10 @@ public class GoogleMapFragmentPresenter {
 
     public void centerMapOnLocation(Location location) {
         if (location != null) {
+            float currentZoom = mGoogleMap.getCameraPosition().zoom;
             CameraUpdate camera = CameraUpdateFactory
-                    .newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+                    .newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),
+                            (currentZoom < MAP_MIN_ZOOM ? MAP_MIN_ZOOM : currentZoom));
             mGoogleMap.animateCamera(camera);
         }
     }
@@ -125,7 +130,7 @@ public class GoogleMapFragmentPresenter {
                 mGoogleApiClient, mLocationRequest, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        Log.d(LOG_TAG, "Location changed");
+                        Log.d(LOG_TAG, "Location changed (accuracy: " + location.getAccuracy() + ")");
                         mCurrentLocation = location;
                     }
                 }); // TODO Permission check
