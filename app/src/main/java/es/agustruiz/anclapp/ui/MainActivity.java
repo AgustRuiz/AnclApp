@@ -51,8 +51,9 @@ public class MainActivity extends AppCompatActivity
     ViewPagerAdapter mViewPagerAdapter;
     CharSequence tabTitles[] = {"Map", "Anchors"};
     int tabNumbOfTabs = tabTitles.length;
-
     ActionBarDrawerToggle mDrawerToggle;
+
+    boolean isAutoCenterMap = false; // TODO Consider change it to a shared prefference
 
     MainActivityPresenter mPresenter;
 
@@ -77,7 +78,9 @@ public class MainActivity extends AppCompatActivity
 
         mFabCenterView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { mPresenter.centerMapOnCurrentLocation();
+            public void onClick(View view) {
+                setAutoCenterMap(!isAutoCenterMap);
+                mPresenter.centerMapOnCurrentLocation();
             }
         });
 
@@ -146,9 +149,14 @@ public class MainActivity extends AppCompatActivity
         mFabCenterView.hide();
     }
 
-    public void centerMapView(Location location){
-        if(location!=null){
-
+    public void setAutoCenterMap(boolean value){
+        isAutoCenterMap = value;
+        if(isAutoCenterMap){
+            mFabCenterView.getDrawable()
+                    .setTint(getResources().getColor(R.color.blue500, getTheme()));
+        }else{
+            mFabCenterView.getDrawable()
+                    .setTint(getResources().getColor(R.color.grey700, getTheme()));
         }
     }
 

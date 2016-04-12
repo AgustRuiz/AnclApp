@@ -5,6 +5,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -39,6 +40,7 @@ public class GoogleMapFragmentPresenter {
     protected SupportMapFragment mMapFragment;
     protected Context mContext = null;
     protected GoogleMap mGoogleMap;
+    protected boolean isAutoCenterMapOnLocation = false; // TODO Consider change it to a shared prefference
     protected GoogleApiClient mGoogleApiClient = null;
     protected Location mCurrentLocation = null;
     protected LocationRequest mLocationRequest = null;
@@ -58,6 +60,13 @@ public class GoogleMapFragmentPresenter {
                 mGoogleMap = googleMap;
                 mGoogleMap.setMyLocationEnabled(true); // TODO Permission check
                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+                mGoogleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                    @Override
+                    public void onMapLongClick(LatLng latLng) {
+                        Toast.makeText(mContext, "Long press", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         createLocationRequest();
@@ -67,19 +76,19 @@ public class GoogleMapFragmentPresenter {
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     public void onConnected(@Nullable Bundle bundle) {
-                        Log.i(LOG_TAG, "GoogleApiClient.ConnectionCallbacks.onConnected");
+                        //Log.i(LOG_TAG, "GoogleApiClient.ConnectionCallbacks.onConnected");
                         startLocationUpdates();
                     }
 
                     @Override
                     public void onConnectionSuspended(int i) {
-                        Log.i(LOG_TAG, "GoogleApiClient.ConnectionCallbacks.onConnectionSuspender");
+                        //Log.i(LOG_TAG, "GoogleApiClient.ConnectionCallbacks.onConnectionSuspender");
                     }
                 })
                 .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(ConnectionResult connectionResult) {
-                        Log.i(LOG_TAG, "GoogleApiClient.OnConnectionFailedListener.onConnectionFailed");
+                        //Log.i(LOG_TAG, "GoogleApiClient.OnConnectionFailedListener.onConnectionFailed");
                     }
                 })
                 .build();
@@ -87,7 +96,8 @@ public class GoogleMapFragmentPresenter {
         eventsUtil.addEventListener(EventsUtil.FAB_CENTER_MAP, new IEventHandler() {
             @Override
             public void callback(Event event) {
-                Log.d(LOG_TAG, "fabCenterMap listener callback zoom!");
+                //Log.d(LOG_TAG, "fabCenterMap listener callback zoom!");
+                isAutoCenterMapOnLocation = !isAutoCenterMapOnLocation;
                 centerMapOnLocation(mCurrentLocation);
             }
         });
@@ -116,7 +126,7 @@ public class GoogleMapFragmentPresenter {
     //region [Private methods]
 
     private void createLocationRequest() {
-        Log.d(LOG_TAG, "createLocationRequest");
+        //Log.d(LOG_TAG, "createLocationRequest");
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(LOCATION_REQUEST_INTERVAL);
         mLocationRequest.setFastestInterval(LOCATION_REQUEST_FATEST_INTERVAL);
@@ -124,14 +134,16 @@ public class GoogleMapFragmentPresenter {
     }
 
     private void startLocationUpdates() {
-        Log.d(LOG_TAG, "Location update started");
+        //Log.d(LOG_TAG, "Location update started");
         //if (mGoogleApiClient.isConnected()) {
         PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        Log.d(LOG_TAG, "Location changed (accuracy: " + location.getAccuracy() + ")");
+                        //Log.d(LOG_TAG, "Location changed (accuracy: " + location.getAccuracy() + ")");
                         mCurrentLocation = location;
+                        if(isAutoCenterMapOnLocation)
+                            centerMapOnLocation(location);
                     }
                 }); // TODO Permission check
         //}
