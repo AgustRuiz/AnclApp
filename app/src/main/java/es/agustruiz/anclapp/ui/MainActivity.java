@@ -54,16 +54,27 @@ public class MainActivity extends AppCompatActivity
     ActionBarDrawerToggle mDrawerToggle;
 
     boolean isAutoCenterMap = false; // TODO Consider change it to a shared prefference
+    final String IS_AUTO_CENTER_MAP_TAG = "isAutoCenterMap";
 
     MainActivityPresenter mPresenter;
+
+    //region [Activity methods]
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         mPresenter = new MainActivityPresenter(this);
+
+        //region [Saved state]
+
+        if(savedInstanceState!=null) {
+            isAutoCenterMap = savedInstanceState.getBoolean(IS_AUTO_CENTER_MAP_TAG);
+            setAutoCenterMap(isAutoCenterMap);
+        }
+
+        //endregion
 
         //region [Layout views]
 
@@ -130,6 +141,14 @@ public class MainActivity extends AppCompatActivity
         //endregion
 
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(IS_AUTO_CENTER_MAP_TAG, isAutoCenterMap);
+    }
+
+    //endregion
 
     //region [Public methods]
 

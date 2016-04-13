@@ -40,7 +40,6 @@ public class GoogleMapFragmentPresenter {
     protected SupportMapFragment mMapFragment;
     protected Context mContext = null;
     protected GoogleMap mGoogleMap;
-    protected boolean isAutoCenterMapOnLocation = false; // TODO Consider change it to a shared prefference
     protected GoogleApiClient mGoogleApiClient = null;
     protected Location mCurrentLocation = null;
     protected LocationRequest mLocationRequest = null;
@@ -97,7 +96,7 @@ public class GoogleMapFragmentPresenter {
             @Override
             public void callback(Event event) {
                 //Log.d(LOG_TAG, "fabCenterMap listener callback zoom!");
-                isAutoCenterMapOnLocation = !isAutoCenterMapOnLocation;
+                mFragment.switchAutoCenterMapOnLocation();
                 centerMapOnLocation(mCurrentLocation);
             }
         });
@@ -142,7 +141,7 @@ public class GoogleMapFragmentPresenter {
                     public void onLocationChanged(Location location) {
                         //Log.d(LOG_TAG, "Location changed (accuracy: " + location.getAccuracy() + ")");
                         mCurrentLocation = location;
-                        if(isAutoCenterMapOnLocation)
+                        if(mFragment.isAutoCenterMapOnLocation())
                             centerMapOnLocation(location);
                     }
                 }); // TODO Permission check
