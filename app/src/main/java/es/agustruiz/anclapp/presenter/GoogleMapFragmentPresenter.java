@@ -63,7 +63,9 @@ public class GoogleMapFragmentPresenter {
                 mGoogleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {
-                        Toast.makeText(mContext, "Long press", Toast.LENGTH_SHORT).show();
+                        /*Toast.makeText(mContext, "Long press at " + latLng.latitude + ","
+                                + latLng.longitude, Toast.LENGTH_SHORT).show();/**/
+                        EventsUtil.getInstance().mapLongPress(latLng);
                     }
                 });
             }
@@ -141,7 +143,7 @@ public class GoogleMapFragmentPresenter {
                     public void onLocationChanged(Location location) {
                         //Log.d(LOG_TAG, "Location changed (accuracy: " + location.getAccuracy() + ")");
                         mCurrentLocation = location;
-                        if(mFragment.isAutoCenterMapOnLocation())
+                        if (mFragment.isAutoCenterMapOnLocation())
                             centerMapOnLocation(location);
                     }
                 }); // TODO Permission check

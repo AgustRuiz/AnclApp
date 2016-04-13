@@ -3,5 +3,6 @@ package es.agustruiz.anclapp.presenter;
 import android.view.View;
 
 public interface Presenter {
-    void showMessage(View vies, String message);
+    void showMessage(View view, String message);
+    void showMessage(String message);
 }

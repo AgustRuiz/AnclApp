@@ -1,9 +1,12 @@
 package es.agustruiz.anclapp.event;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class EventsUtil extends EventDispatcher {
 
     public static final String LOG_TAG = EventsUtil.class.getName()+"[A]";
     public static final String FAB_CENTER_MAP = "fabCenterMapEvent";
+    public static final String MAP_LONG_PRESS = "mapLongPress";
     private static EventsUtil ourInstance = new EventsUtil();
 
     //region [Singleton constructor]
@@ -20,6 +23,10 @@ public class EventsUtil extends EventDispatcher {
 
     public void centerMapOnLocationEvent(){
         dispatchEvent(new Event(FAB_CENTER_MAP));
+    }
+
+    public void mapLongPress(LatLng latLng){
+        dispatchEvent(new Event(MAP_LONG_PRESS, latLng));
     }
 
     //endregion
