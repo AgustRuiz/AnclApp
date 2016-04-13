@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.card_view)
     CardView cardView;
     boolean isCardViewShown = false;
+    final String IS_CARD_VIEW_SHOWN = "isCardViewShown";
 
     ViewPagerAdapter mViewPagerAdapter;
     CharSequence tabTitles[] = {"Map", "Anchors"};
@@ -84,6 +85,11 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState != null) {
             isAutoCenterMap = savedInstanceState.getBoolean(IS_AUTO_CENTER_MAP_TAG);
             setAutoCenterMap(isAutoCenterMap);
+            isCardViewShown = savedInstanceState.getBoolean(IS_CARD_VIEW_SHOWN);
+            if(isCardViewShown){
+                showLocationCardView();
+                hideFabCenterView();
+            }
         }
 
         //endregion
@@ -159,6 +165,7 @@ public class MainActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(IS_AUTO_CENTER_MAP_TAG, isAutoCenterMap);
+        outState.putBoolean(IS_CARD_VIEW_SHOWN, isCardViewShown);
     }
 
     //endregion
