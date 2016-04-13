@@ -25,7 +25,18 @@ public class MainActivityPresenter implements Presenter{
             @Override
             public void callback(Event event) {
                 LatLng latLng = (LatLng) event.getParameter();
-                showMessage("Long press at " + latLng.latitude + "," + latLng.longitude);
+                //showMessage("Long press at " + latLng.latitude + "," + latLng.longitude);
+
+
+                if(mActivity.isLocationCardViewShown()){
+                    mActivity.hideLocationCardView();
+                    if(mActivity.getTabSelected()==mActivity.TAB_MAP){
+                        mActivity.showFabCenterView();
+                    }
+                }else{
+                    mActivity.showLocationCardView();
+                    mActivity.hideFabCenterView();
+                }
             }
         });
 

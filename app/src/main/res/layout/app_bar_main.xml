@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -38,16 +39,35 @@
 
     </android.support.v7.widget.LinearLayoutCompat>
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:animateLayoutChanges="true"
+        android:minHeight="72dp"
+        app:layout_behavior="es.agustruiz.anclapp.ui.customView.SnackbarBehaviour"
+        card_view:cardUseCompatPadding="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Place details here!" />
+
+    </android.support.v7.widget.CardView>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_anchor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_marginEnd="@dimen/fab_margin"
         android:src="@drawable/ic_add_24dp"
         android:tint="@color/white"
-        app:fabSize="normal" />
+        app:fabSize="normal"
+        app:layout_anchor="@id/card_view"
+        app:layout_anchorGravity="top|end" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_center_view"
@@ -61,6 +81,6 @@
         app:backgroundTint="@color/white"
         app:fabSize="normal"
         app:layout_anchor="@id/fab_add_anchor"
-        app:layout_anchorGravity="top" />
+        app:layout_anchorGravity="top|end" />
 
 </android.support.design.widget.CoordinatorLayout>
