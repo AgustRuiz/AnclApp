@@ -7,4 +7,10 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab2_vertical_margin">88dp</dimen>
+
+    <!-- Buttons -->
+    <dimen name="btn_text_size">14sp</dimen>
+    <dimen name="btn_margin">6dp</dimen>
+    <dimen name="btn_height">36dp</dimen>
+    <dimen name="btn_padding">16dp</dimen>
 </resources>

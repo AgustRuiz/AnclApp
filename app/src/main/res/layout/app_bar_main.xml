@@ -49,12 +49,35 @@
         app:layout_behavior="es.agustruiz.anclapp.ui.customView.SnackbarBehaviour"
         card_view:cardUseCompatPadding="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Place details here!" />
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Place details here!" />
+            
+            <android.support.v7.widget.ButtonBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end">
+                <Button
+                    android:id="@+id/btn_cancel_marker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:textSize="@dimen/btn_text_size"
+                    android:layout_margin="@dimen/btn_margin"
+                    android:padding="@dimen/btn_padding"
+                    android:textColor="@color/colorAccent"
+                    android:text="@string/cancel"/>
+            </android.support.v7.widget.ButtonBarLayout>
+            
+        </android.support.v7.widget.LinearLayoutCompat>
+        
     </android.support.v7.widget.CardView>
 
     <android.support.design.widget.FloatingActionButton
