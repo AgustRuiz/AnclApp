@@ -24,13 +24,8 @@ public class MainActivityPresenter implements Presenter{
         eventsUtil.addEventListener(EventsUtil.MAP_LONG_PRESS, new IEventHandler() {
             @Override
             public void callback(Event event) {
-                LatLng latLng = (LatLng) event.getParameter();
-                if(mActivity.isLocationCardViewShown()){
-                    mActivity.hideLocationCardView();
-                    if(mActivity.getTabSelected()==mActivity.TAB_MAP){
-                        mActivity.showFabCenterView();
-                    }
-                }else{
+                if(!mActivity.isLocationCardViewShown()){
+                    LatLng latLng = (LatLng) event.getParameter();
                     mActivity.showLocationCardView();
                     mActivity.hideFabCenterView();
                 }
@@ -45,6 +40,12 @@ public class MainActivityPresenter implements Presenter{
 
     public void addAnchor(){
         showMessage("Add anchor here");
+    }
+
+    public void cancelMarker() {
+        mActivity.hideLocationCardView();
+        mActivity.showFabCenterView();
+        EventsUtil.getInstance().cancelNewMarker();
     }
 
     //endregion

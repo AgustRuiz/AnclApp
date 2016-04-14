@@ -7,6 +7,7 @@ public class EventsUtil extends EventDispatcher {
     public static final String LOG_TAG = EventsUtil.class.getName()+"[A]";
     public static final String FAB_CENTER_MAP = "fabCenterMapEvent";
     public static final String MAP_LONG_PRESS = "mapLongPress";
+    public static final String CANCEL_NEW_MARKER = "cancelNewMarker";
     private static EventsUtil ourInstance = new EventsUtil();
 
     //region [Singleton constructor]
@@ -27,6 +28,10 @@ public class EventsUtil extends EventDispatcher {
 
     public void mapLongPress(LatLng latLng){
         dispatchEvent(new Event(MAP_LONG_PRESS, latLng));
+    }
+
+    public void cancelNewMarker(){
+        dispatchEvent(new Event(CANCEL_NEW_MARKER));
     }
 
     //endregion

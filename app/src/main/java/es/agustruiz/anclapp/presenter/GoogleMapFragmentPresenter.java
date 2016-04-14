@@ -116,6 +116,13 @@ public class GoogleMapFragmentPresenter {
                 }
             }
         });
+
+        mEventsUtil.addEventListener(EventsUtil.CANCEL_NEW_MARKER, new IEventHandler() {
+            @Override
+            public void callback(Event event) {
+                removeMarker();
+            }
+        });
     }
 
     public void GoogleApiClientConnect() {

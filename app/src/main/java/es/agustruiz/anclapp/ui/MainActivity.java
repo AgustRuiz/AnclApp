@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.Button;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,6 +56,9 @@ public class MainActivity extends AppCompatActivity
     CardView cardView;
     boolean isCardViewShown = false;
     final String IS_CARD_VIEW_SHOWN = "isCardViewShown";
+
+    @Bind(R.id.btn_cancel_marker)
+    Button mCancelMarker;
 
     ViewPagerAdapter mViewPagerAdapter;
     CharSequence tabTitles[] = {"Map", "Anchors"};
@@ -110,6 +114,13 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 setAutoCenterMap(!isAutoCenterMap);
                 mPresenter.centerMapOnCurrentLocation();
+            }
+        });
+
+        mCancelMarker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.cancelMarker();
             }
         });
 
@@ -181,7 +192,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showFabCenterView() {
-        mFabCenterView.show();
+        if(tabSelected==TAB_MAP) {
+            mFabCenterView.show();
+        }
     }
 
     public void hideFabCenterView() {
