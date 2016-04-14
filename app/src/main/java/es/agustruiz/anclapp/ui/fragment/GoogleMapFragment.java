@@ -17,8 +17,12 @@ public class GoogleMapFragment extends Fragment {
 
     protected GoogleMapFragmentPresenter mGoogleMapFragmentPresenter;
     protected Context mContext;
-    protected boolean isAutoCenterMapOnLocation = false; // TODO Consider change it to a shared prefference
-    protected final String IS_AUTO_CENTER_MAP_ON_LOCATION_TAG = "isAutoCenterMapOnLocation";
+
+    public final char CENTER_MAP_OFF = 0;
+    public final char CENTER_MAP_CURRENT_LOCATION = 1;
+    public final char CENTER_MAP_MARKER = 2;
+    protected char autoCenterMapMode = CENTER_MAP_OFF;
+    protected final String AUTO_CENTER_MAP_MODE_TAG = "autoCenterMapMode";
 
     //region [Overriden methods]
 
@@ -29,9 +33,8 @@ public class GoogleMapFragment extends Fragment {
         mContext = getContext();
         mGoogleMapFragmentPresenter = new GoogleMapFragmentPresenter(this);
 
-        if(savedInstanceState!=null){
-            isAutoCenterMapOnLocation =
-                    savedInstanceState.getBoolean(IS_AUTO_CENTER_MAP_ON_LOCATION_TAG);
+        if (savedInstanceState != null) {
+            autoCenterMapMode = savedInstanceState.getChar(AUTO_CENTER_MAP_MODE_TAG);
         }
 
         return v;
@@ -40,7 +43,7 @@ public class GoogleMapFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(IS_AUTO_CENTER_MAP_ON_LOCATION_TAG, isAutoCenterMapOnLocation);
+        outState.putChar(AUTO_CENTER_MAP_MODE_TAG, autoCenterMapMode);
     }
 
     @Override
@@ -59,12 +62,32 @@ public class GoogleMapFragment extends Fragment {
 
     //region [Public methods]
 
-    public boolean isAutoCenterMapOnLocation(){
-        return isAutoCenterMapOnLocation;
+    public boolean isAutoCenterMapCurrentOnLocation() {
+        return autoCenterMapMode == CENTER_MAP_CURRENT_LOCATION;
     }
 
-    public boolean switchAutoCenterMapOnLocation(){
-        return isAutoCenterMapOnLocation = !isAutoCenterMapOnLocation;
+    public boolean isAutoCenterMapModeOnMarker() {
+        return autoCenterMapMode == CENTER_MAP_MARKER;
+    }
+
+    public boolean isAutoCenterMapModeOff() {
+        return autoCenterMapMode == CENTER_MAP_OFF;
+    }
+
+    public boolean setAutoCenterMapMode(char mode) {
+        if (mode != CENTER_MAP_CURRENT_LOCATION && mode != CENTER_MAP_MARKER && mode != CENTER_MAP_OFF)
+            return false;
+        else {
+            autoCenterMapMode = mode;
+            return true;
+        }
+    }
+
+    public char switchAutoCenterMapOnLocation() {
+        if (autoCenterMapMode != CENTER_MAP_MARKER) {
+            autoCenterMapMode = (autoCenterMapMode == CENTER_MAP_CURRENT_LOCATION ? CENTER_MAP_OFF : CENTER_MAP_CURRENT_LOCATION);
+        }
+        return autoCenterMapMode;
     }
 
     //endregion

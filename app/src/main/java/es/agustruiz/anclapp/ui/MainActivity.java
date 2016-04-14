@@ -199,6 +199,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public boolean isAutoCenterMap(){
+        return isAutoCenterMap;
+    }
+
     public void showLocationCardView() {
         cardView.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         final int endHeight = cardView.getMeasuredHeight();

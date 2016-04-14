@@ -21,8 +21,8 @@ public class EventsUtil extends EventDispatcher {
 
     //region [Public events]
 
-    public void centerMapOnLocationEvent(){
-        dispatchEvent(new Event(FAB_CENTER_MAP));
+    public void centerMapOnLocationEvent(boolean state){
+        dispatchEvent(new Event(FAB_CENTER_MAP, state));
     }
 
     public void mapLongPress(LatLng latLng){

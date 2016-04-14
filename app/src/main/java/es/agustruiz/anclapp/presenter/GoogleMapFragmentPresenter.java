@@ -5,7 +5,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -20,6 +19,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.event.Event;
@@ -43,7 +44,8 @@ public class GoogleMapFragmentPresenter {
     protected GoogleApiClient mGoogleApiClient = null;
     protected Location mCurrentLocation = null;
     protected LocationRequest mLocationRequest = null;
-    protected EventsUtil eventsUtil = EventsUtil.getInstance();
+    protected Marker mMarker = null;
+    protected EventsUtil mEventsUtil = EventsUtil.getInstance();
 
     //region [Public methods]
 
@@ -65,7 +67,15 @@ public class GoogleMapFragmentPresenter {
                     public void onMapLongClick(LatLng latLng) {
                         /*Toast.makeText(mContext, "Long press at " + latLng.latitude + ","
                                 + latLng.longitude, Toast.LENGTH_SHORT).show();/**/
+                        if(mMarker!=null){
+                            removeMarker();
+                        }
+                        mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_MARKER);
+                        centerMapOnLocation(latLng);
                         EventsUtil.getInstance().mapLongPress(latLng);
+                        mMarker = mGoogleMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title("Apetecán"));
                     }
                 });
             }
@@ -94,12 +104,15 @@ public class GoogleMapFragmentPresenter {
                 })
                 .build();
 
-        eventsUtil.addEventListener(EventsUtil.FAB_CENTER_MAP, new IEventHandler() {
+        mEventsUtil.addEventListener(EventsUtil.FAB_CENTER_MAP, new IEventHandler() {
             @Override
             public void callback(Event event) {
-                //Log.d(LOG_TAG, "fabCenterMap listener callback zoom!");
-                mFragment.switchAutoCenterMapOnLocation();
-                centerMapOnLocation(mCurrentLocation);
+                if (event.getParameter().equals(true)) {
+                    mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_CURRENT_LOCATION);
+                    centerMapOnLocation(mCurrentLocation);
+                } else {
+                    mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_OFF);
+                }
             }
         });
     }
@@ -114,9 +127,22 @@ public class GoogleMapFragmentPresenter {
 
     public void centerMapOnLocation(Location location) {
         if (location != null) {
+            centerMapOnLocation(new LatLng(location.getLatitude(), location.getLongitude()));
+        }
+    }
+
+    public void removeMarker(){
+        if(mMarker!=null){
+            mMarker.remove();
+            mMarker = null;
+        }
+    }
+
+    public void centerMapOnLocation(LatLng latLng) {
+        if (latLng != null) {
             float currentZoom = mGoogleMap.getCameraPosition().zoom;
             CameraUpdate camera = CameraUpdateFactory
-                    .newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),
+                    .newLatLngZoom(latLng,
                             (currentZoom < MAP_MIN_ZOOM ? MAP_MIN_ZOOM : currentZoom));
             mGoogleMap.animateCamera(camera);
         }
@@ -143,7 +169,7 @@ public class GoogleMapFragmentPresenter {
                     public void onLocationChanged(Location location) {
                         //Log.d(LOG_TAG, "Location changed (accuracy: " + location.getAccuracy() + ")");
                         mCurrentLocation = location;
-                        if (mFragment.isAutoCenterMapOnLocation())
+                        if (mFragment.isAutoCenterMapCurrentOnLocation())
                             centerMapOnLocation(location);
                     }
                 }); // TODO Permission check
