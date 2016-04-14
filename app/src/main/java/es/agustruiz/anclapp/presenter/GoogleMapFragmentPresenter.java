@@ -60,6 +60,7 @@ public class GoogleMapFragmentPresenter {
                 Log.i(LOG_TAG, "Map ready");
                 mGoogleMap = googleMap;
                 mGoogleMap.setMyLocationEnabled(true); // TODO Permission check
+                mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
                 mGoogleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
