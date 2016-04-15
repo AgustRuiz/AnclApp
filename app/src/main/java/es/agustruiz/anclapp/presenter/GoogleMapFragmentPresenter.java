@@ -35,17 +35,14 @@ public class GoogleMapFragmentPresenter {
     protected static final long LOCATION_REQUEST_INTERVAL = 1000 * 10; // 10 milliseconds
     protected static final long LOCATION_REQUEST_FATEST_INTERVAL = 1000 * 5; // 5 milliseconds
 
-    protected static final float MAP_MIN_ZOOM = 15;
-
     protected GoogleMapFragment mFragment;
-    protected SupportMapFragment mMapFragment;
     protected Context mContext = null;
-    protected GoogleMap mGoogleMap;
     protected GoogleApiClient mGoogleApiClient = null;
     protected Location mCurrentLocation = null;
     protected LocationRequest mLocationRequest = null;
-    protected Marker mMarker = null;
     protected EventsUtil mEventsUtil = EventsUtil.getInstance();
+
+
 
     //region [Public methods]
 
@@ -53,49 +50,8 @@ public class GoogleMapFragmentPresenter {
         mFragment = fragment;
         mContext = mFragment.getContext();
 
-        mMapFragment = (SupportMapFragment) mFragment.getChildFragmentManager().findFragmentById(R.id.map);
-        mMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                Log.i(LOG_TAG, "Map ready");
-                mGoogleMap = googleMap;
-                mGoogleMap.setMyLocationEnabled(true); // TODO Permission check
-                mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
-                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-                mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        /*Toast.makeText(mContext, "Long press at " + latLng.latitude + ","
-                                + latLng.longitude, Toast.LENGTH_SHORT).show();/**/
-                        if (mMarker != null) {
-                            removeMarker();
-                        }
-                        mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_MARKER);
-                        centerMapOnLocation(latLng);
-                        mMarker = mGoogleMap.addMarker(new MarkerOptions()
-                                .position(latLng)
-                                .draggable(true)
-                        );
-                        mEventsUtil.mapClick(latLng);
-                    }
-                });
-                mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-                    @Override
-                    public void onMarkerDragStart(Marker marker) {
-                    }
 
-                    @Override
-                    public void onMarkerDrag(Marker marker) {
-                    }
-
-                    @Override
-                    public void onMarkerDragEnd(Marker marker) {
-                        mEventsUtil.mapClick(marker.getPosition());
-                    }
-                });
-            }
-        });
         createLocationRequest();
         mGoogleApiClient = new GoogleApiClient
                 .Builder(mContext)
@@ -125,7 +81,7 @@ public class GoogleMapFragmentPresenter {
             public void callback(Event event) {
                 if (event.getParameter().equals(true)) {
                     mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_CURRENT_LOCATION);
-                    centerMapOnLocation(mCurrentLocation);
+                    mFragment.centerMapOnLocation(mCurrentLocation);
                 } else {
                     mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_OFF);
                 }
@@ -135,7 +91,7 @@ public class GoogleMapFragmentPresenter {
         mEventsUtil.addEventListener(EventsUtil.CANCEL_NEW_MARKER, new IEventHandler() {
             @Override
             public void callback(Event event) {
-                removeMarker();
+                mFragment.removeMarker();
             }
         });
     }
@@ -146,29 +102,6 @@ public class GoogleMapFragmentPresenter {
 
     public void GoogleApiClientDisconnect() {
         mGoogleApiClient.disconnect();
-    }
-
-    public void centerMapOnLocation(Location location) {
-        if (location != null) {
-            centerMapOnLocation(new LatLng(location.getLatitude(), location.getLongitude()));
-        }
-    }
-
-    public void removeMarker() {
-        if (mMarker != null) {
-            mMarker.remove();
-            mMarker = null;
-        }
-    }
-
-    public void centerMapOnLocation(LatLng latLng) {
-        if (latLng != null) {
-            float currentZoom = mGoogleMap.getCameraPosition().zoom;
-            CameraUpdate camera = CameraUpdateFactory
-                    .newLatLngZoom(latLng,
-                            (currentZoom < MAP_MIN_ZOOM ? MAP_MIN_ZOOM : currentZoom));
-            mGoogleMap.animateCamera(camera);
-        }
     }
 
     //endregion
@@ -194,7 +127,7 @@ public class GoogleMapFragmentPresenter {
                         mCurrentLocation = location;
                         mEventsUtil.currentLocationChange(mCurrentLocation);
                         if (mFragment.isAutoCenterMapCurrentOnLocation())
-                            centerMapOnLocation(location);
+                            mFragment.centerMapOnLocation(location);
                     }
                 }); // TODO Permission check
         //}
