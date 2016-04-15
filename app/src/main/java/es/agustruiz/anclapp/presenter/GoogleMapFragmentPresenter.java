@@ -68,14 +68,30 @@ public class GoogleMapFragmentPresenter {
                     public void onMapClick(LatLng latLng) {
                         /*Toast.makeText(mContext, "Long press at " + latLng.latitude + ","
                                 + latLng.longitude, Toast.LENGTH_SHORT).show();/**/
-                        if(mMarker!=null){
+                        if (mMarker != null) {
                             removeMarker();
                         }
                         mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_MARKER);
                         centerMapOnLocation(latLng);
-                        mEventsUtil.mapClick(latLng);
                         mMarker = mGoogleMap.addMarker(new MarkerOptions()
-                                .position(latLng));
+                                .position(latLng)
+                                .draggable(true)
+                        );
+                        mEventsUtil.mapClick(latLng);
+                    }
+                });
+                mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                    @Override
+                    public void onMarkerDragStart(Marker marker) {
+                    }
+
+                    @Override
+                    public void onMarkerDrag(Marker marker) {
+                    }
+
+                    @Override
+                    public void onMarkerDragEnd(Marker marker) {
+                        mEventsUtil.mapClick(marker.getPosition());
                     }
                 });
             }
@@ -138,8 +154,8 @@ public class GoogleMapFragmentPresenter {
         }
     }
 
-    public void removeMarker(){
-        if(mMarker!=null){
+    public void removeMarker() {
+        if (mMarker != null) {
             mMarker.remove();
             mMarker = null;
         }
