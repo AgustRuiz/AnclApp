@@ -29,6 +29,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.presenter.MainActivityPresenter;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.ViewPagerAdapter;
@@ -233,25 +234,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showLocationCardView() {
-
-        // Measure cardView before make animation
-        WindowManager wm =
-                (WindowManager) cardView.getContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        int deviceWidth;
-        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2){
-            Point size = new Point();
-            display.getSize(size);
-            deviceWidth = size.x;
-        } else {
-            deviceWidth = display.getWidth();
-        }
-        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(deviceWidth, View.MeasureSpec.AT_MOST);
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(
+                SystemUtils.getDevideWidth(cardView.getContext()), View.MeasureSpec.AT_MOST);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         cardView.measure(widthMeasureSpec, heightMeasureSpec);
         final int endHeight = cardView.getMeasuredHeight();
-        // End measure cardView before animation
-
         final ViewGroup.LayoutParams params = cardView.getLayoutParams();
         Animation animation = new Animation() {
             @Override
