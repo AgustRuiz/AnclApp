@@ -46,8 +46,7 @@
         android:layout_gravity="bottom"
         android:animateLayoutChanges="true"
         android:minHeight="72dp"
-        app:layout_behavior="es.agustruiz.anclapp.ui.customView.SnackbarBehaviour"
-        card_view:cardUseCompatPadding="true">
+        app:layout_behavior="es.agustruiz.anclapp.ui.customView.SnackbarBehaviour">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -68,11 +67,11 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/card_view_description"
+                        android:id="@+id/card_view_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/card_view_text_vertical_margin"
-                        android:text="Description"
+                        android:text="Address"
                         android:textSize="@dimen/card_view_description_text_size" />
 
                     <LinearLayout
@@ -82,12 +81,12 @@
                         android:layout_marginTop="@dimen/card_view_text_vertical_margin">
 
                         <TextView
-                            android:id="@+id/card_view_address"
+                            android:id="@+id/card_view_locality"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".75"
                             android:gravity="start|bottom"
-                            android:text="Address"
+                            android:text="Locality"
                             android:textSize="@dimen/card_view_address_text_size" />
 
                         <TextView

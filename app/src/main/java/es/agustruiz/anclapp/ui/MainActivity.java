@@ -14,6 +14,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -110,10 +112,6 @@ public class MainActivity extends AppCompatActivity
             isAutoCenterMap = savedInstanceState.getBoolean(IS_AUTO_CENTER_MAP_TAG);
             setAutoCenterMap(isAutoCenterMap);
             isCardViewShown = savedInstanceState.getBoolean(IS_CARD_VIEW_SHOWN);
-            if (isCardViewShown) {
-                showLocationCardView();
-                hideFabCenterView();
-            }
             cardViewAddress.setText(savedInstanceState.getCharSequence(CARD_VIEW_ADDRESS));
             cardViewLocality.setText(savedInstanceState.getCharSequence(CARD_VIEW_LOCALITY));
             cardViewDistance.setText(savedInstanceState.getCharSequence(CARD_VIEW_DISTANCE));
@@ -205,6 +203,16 @@ public class MainActivity extends AppCompatActivity
         outState.putCharSequence(CARD_VIEW_DISTANCE, cardViewDistance.getText());
     }
 
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+        View outView = super.onCreateView(parent, name, context, attrs);
+        if (isCardViewShown) {
+            showLocationCardView();
+            hideFabCenterView();
+        }
+        return outView;
+    }
+
     //endregion
 
     //region [Public methods]
@@ -243,6 +251,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showLocationCardView() {
+        Log.d(LOG_TAG, "showLocationCardView");
         final int startHeight = cardView.getHeight();
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(
                 SystemUtils.getDevideWidth(cardView.getContext()), View.MeasureSpec.AT_MOST);
