@@ -1,5 +1,8 @@
 package es.agustruiz.anclapp.ui;
 
+import android.content.Context;
+import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -11,13 +14,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,6 +67,15 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.btn_cancel_marker)
     Button mCancelMarker;
 
+    @Bind(R.id.card_view_description)
+    TextView cardViewDescription;
+
+    @Bind(R.id.card_view_address)
+    TextView cardViewAddress;
+
+    @Bind(R.id.card_view_distance)
+    TextView cardViewDistance;
+
     ViewPagerAdapter mViewPagerAdapter;
     CharSequence tabTitles[] = {"Map", "Anchors"};
     int tabNumbOfTabs = tabTitles.length;
@@ -90,7 +106,7 @@ public class MainActivity extends AppCompatActivity
             isAutoCenterMap = savedInstanceState.getBoolean(IS_AUTO_CENTER_MAP_TAG);
             setAutoCenterMap(isAutoCenterMap);
             isCardViewShown = savedInstanceState.getBoolean(IS_CARD_VIEW_SHOWN);
-            if(isCardViewShown){
+            if (isCardViewShown) {
                 showLocationCardView();
                 hideFabCenterView();
             }
@@ -192,7 +208,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showFabCenterView() {
-        if(tabSelected==TAB_MAP) {
+        if (tabSelected == TAB_MAP) {
             mFabCenterView.show();
         }
     }
@@ -212,13 +228,30 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public boolean isAutoCenterMap(){
+    public boolean isAutoCenterMap() {
         return isAutoCenterMap;
     }
 
     public void showLocationCardView() {
-        cardView.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Measure cardView before make animation
+        WindowManager wm =
+                (WindowManager) cardView.getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        int deviceWidth;
+        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2){
+            Point size = new Point();
+            display.getSize(size);
+            deviceWidth = size.x;
+        } else {
+            deviceWidth = display.getWidth();
+        }
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(deviceWidth, View.MeasureSpec.AT_MOST);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        cardView.measure(widthMeasureSpec, heightMeasureSpec);
         final int endHeight = cardView.getMeasuredHeight();
+        // End measure cardView before animation
+
         final ViewGroup.LayoutParams params = cardView.getLayoutParams();
         Animation animation = new Animation() {
             @Override
@@ -255,6 +288,12 @@ public class MainActivity extends AppCompatActivity
 
     public int getTabSelected() {
         return tabSelected;
+    }
+
+    public void fillLocationCardView(String description, String address, String distance) {
+        cardViewDescription.setText(description);
+        cardViewAddress.setText(address);
+        cardViewDistance.setText(distance);
     }
 
     //endregion

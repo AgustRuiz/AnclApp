@@ -8,4 +8,5 @@
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
     <string name="cancel">Cancel</string>
+    <string name="km_unit">km</string>
 </resources>

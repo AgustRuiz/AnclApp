@@ -1,5 +1,7 @@
 package es.agustruiz.anclapp.event;
 
+import android.location.Location;
+
 import com.google.android.gms.maps.model.LatLng;
 
 public class EventsUtil extends EventDispatcher {
@@ -8,6 +10,7 @@ public class EventsUtil extends EventDispatcher {
     public static final String FAB_CENTER_MAP = "fabCenterMapEvent";
     public static final String MAP_LONG_PRESS = "mapLongPress";
     public static final String CANCEL_NEW_MARKER = "cancelNewMarker";
+    public static final String CURRENT_LOCATION_CHANGE = "currentLocationChange";
     private static EventsUtil ourInstance = new EventsUtil();
 
     //region [Singleton constructor]
@@ -32,6 +35,10 @@ public class EventsUtil extends EventDispatcher {
 
     public void cancelNewMarker(){
         dispatchEvent(new Event(CANCEL_NEW_MARKER));
+    }
+
+    public void currentLocationChange(Location location){
+        dispatchEvent(new Event(CURRENT_LOCATION_CHANGE, location));
     }
 
     //endregion

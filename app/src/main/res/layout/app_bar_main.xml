@@ -49,69 +49,81 @@
         app:layout_behavior="es.agustruiz.anclapp.ui.customView.SnackbarBehaviour"
         card_view:cardUseCompatPadding="true">
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_margin="@dimen/card_view_content_padding">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/card_view_description"
+                <android.support.v7.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/card_view_text_vertical_margin"
-                    android:text="Description"
-                    android:textSize="@dimen/card_view_description_text_size" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/card_view_text_vertical_margin">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/card_view_content_margin_top"
+                    android:layout_marginBottom="@dimen/card_view_content_margin"
+                    android:layout_marginStart="@dimen/card_view_content_margin"
+                    android:layout_marginEnd="@dimen/card_view_content_margin"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/card_view_address"
+                        android:id="@+id/card_view_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/card_view_text_vertical_margin"
+                        android:text="Description"
+                        android:textSize="@dimen/card_view_description_text_size" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/card_view_text_vertical_margin">
+
+                        <TextView
+                            android:id="@+id/card_view_address"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".75"
+                            android:gravity="start|bottom"
+                            android:text="Address"
+                            android:textSize="@dimen/card_view_address_text_size" />
+
+                        <TextView
+                            android:id="@+id/card_view_distance"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".25"
+                            android:gravity="end|bottom"
+                            android:text="0km"
+                            android:textSize="@dimen/card_view_distance_text_size" />
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <android.support.v7.widget.ButtonBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="end">
+
+                    <Button
+                        android:id="@+id/btn_cancel_marker"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:text="Address"
-                        android:textSize="@dimen/card_view_address_text_size" />
+                        android:layout_margin="@dimen/btn_margin"
+                        android:padding="@dimen/btn_padding"
+                        android:text="@string/cancel"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/btn_text_size" />
 
-                    <TextView
-                        android:id="@+id/card_view_distance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|bottom"
-                        android:text="(0.3km)"
-                        android:textSize="@dimen/card_view_distance_text_size" />
-
-                </FrameLayout>
+                </android.support.v7.widget.ButtonBarLayout>
 
             </android.support.v7.widget.LinearLayoutCompat>
 
-            <android.support.v7.widget.ButtonBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="end">
-
-                <Button
-                    android:id="@+id/btn_cancel_marker"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/btn_margin"
-                    android:padding="@dimen/btn_padding"
-                    android:text="@string/cancel"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/btn_text_size" />
-
-            </android.support.v7.widget.ButtonBarLayout>
-
-        </android.support.v7.widget.LinearLayoutCompat>
+        </android.support.v4.widget.NestedScrollView>
 
     </android.support.v7.widget.CardView>
 

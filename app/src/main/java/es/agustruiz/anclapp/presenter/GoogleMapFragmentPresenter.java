@@ -73,7 +73,7 @@ public class GoogleMapFragmentPresenter {
                         }
                         mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_MARKER);
                         centerMapOnLocation(latLng);
-                        EventsUtil.getInstance().mapLongPress(latLng);
+                        mEventsUtil.mapLongPress(latLng);
                         mMarker = mGoogleMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .title("Apetecán"));
@@ -177,6 +177,7 @@ public class GoogleMapFragmentPresenter {
                     public void onLocationChanged(Location location) {
                         //Log.d(LOG_TAG, "Location changed (accuracy: " + location.getAccuracy() + ")");
                         mCurrentLocation = location;
+                        mEventsUtil.currentLocationChange(mCurrentLocation);
                         if (mFragment.isAutoCenterMapCurrentOnLocation())
                             centerMapOnLocation(location);
                     }

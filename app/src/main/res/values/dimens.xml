@@ -15,7 +15,8 @@
     <dimen name="btn_padding">16dp</dimen>
 
     <!-- Location card view -->
-    <dimen name="card_view_content_padding">12dp</dimen>
+    <dimen name="card_view_content_margin">12dp</dimen>
+    <dimen name="card_view_content_margin_top">24dp</dimen>
     <dimen name="card_view_text_vertical_margin">6dp</dimen>
     <dimen name="card_view_text_horizontal_margin">12dp</dimen>
     <dimen name="card_view_description_text_size">20sp</dimen>
