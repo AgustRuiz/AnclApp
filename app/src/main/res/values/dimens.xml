@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
@@ -11,6 +12,13 @@
     <!-- Buttons -->
     <dimen name="btn_text_size">14sp</dimen>
     <dimen name="btn_margin">6dp</dimen>
-    <dimen name="btn_height">36dp</dimen>
     <dimen name="btn_padding">16dp</dimen>
+
+    <!-- Location card view -->
+    <dimen name="card_view_content_padding">12dp</dimen>
+    <dimen name="card_view_text_vertical_margin">6dp</dimen>
+    <dimen name="card_view_text_horizontal_margin">12dp</dimen>
+    <dimen name="card_view_description_text_size">20sp</dimen>
+    <dimen name="card_view_address_text_size">16sp</dimen>
+    <dimen name="card_view_distance_text_size">13sp</dimen>
 </resources>

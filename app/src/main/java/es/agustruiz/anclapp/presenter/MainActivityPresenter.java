@@ -44,6 +44,7 @@ public class MainActivityPresenter implements Presenter{
 
     public void cancelMarker() {
         mActivity.hideLocationCardView();
+        mActivity.setAutoCenterMap(false);
         mActivity.showFabCenterView();
         EventsUtil.getInstance().cancelNewMarker();
     }
