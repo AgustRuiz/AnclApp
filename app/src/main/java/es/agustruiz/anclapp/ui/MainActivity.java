@@ -68,14 +68,17 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.btn_cancel_marker)
     Button mCancelMarker;
 
-    @Bind(R.id.card_view_description)
-    TextView cardViewDescription;
-
     @Bind(R.id.card_view_address)
     TextView cardViewAddress;
+    final String CARD_VIEW_ADDRESS = "cardViewAddress";
+
+    @Bind(R.id.card_view_locality)
+    TextView cardViewLocality;
+    final String CARD_VIEW_LOCALITY = "cardViewLocality";
 
     @Bind(R.id.card_view_distance)
     TextView cardViewDistance;
+    final String CARD_VIEW_DISTANCE = "cardViewDistance";
 
     ViewPagerAdapter mViewPagerAdapter;
     CharSequence tabTitles[] = {"Map", "Anchors"};
@@ -111,6 +114,9 @@ public class MainActivity extends AppCompatActivity
                 showLocationCardView();
                 hideFabCenterView();
             }
+            cardViewAddress.setText(savedInstanceState.getCharSequence(CARD_VIEW_ADDRESS));
+            cardViewLocality.setText(savedInstanceState.getCharSequence(CARD_VIEW_LOCALITY));
+            cardViewDistance.setText(savedInstanceState.getCharSequence(CARD_VIEW_DISTANCE));
         }
 
         //endregion
@@ -194,6 +200,9 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
         outState.putBoolean(IS_AUTO_CENTER_MAP_TAG, isAutoCenterMap);
         outState.putBoolean(IS_CARD_VIEW_SHOWN, isCardViewShown);
+        outState.putCharSequence(CARD_VIEW_ADDRESS, cardViewAddress.getText());
+        outState.putCharSequence(CARD_VIEW_LOCALITY, cardViewLocality.getText());
+        outState.putCharSequence(CARD_VIEW_DISTANCE, cardViewDistance.getText());
     }
 
     //endregion
@@ -279,9 +288,9 @@ public class MainActivity extends AppCompatActivity
         return tabSelected;
     }
 
-    public void fillLocationCardView(String description, String address, String distance) {
-        cardViewDescription.setText(description);
+    public void fillLocationCardView(String address, String locality, String distance) {
         cardViewAddress.setText(address);
+        cardViewLocality.setText(locality);
         cardViewDistance.setText(distance);
     }
 
