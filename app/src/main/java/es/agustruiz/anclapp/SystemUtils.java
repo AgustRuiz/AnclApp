@@ -15,7 +15,7 @@ public class SystemUtils {
         return ourInstance;
     }
 
-    public static float getDevideWidth(Context context){
+    public static int getDevideWidth(Context context){
         Display display =
                 ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int deviceWidth;

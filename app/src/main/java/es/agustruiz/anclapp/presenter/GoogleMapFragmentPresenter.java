@@ -63,9 +63,9 @@ public class GoogleMapFragmentPresenter {
                 mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-                mGoogleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
-                    public void onMapLongClick(LatLng latLng) {
+                    public void onMapClick(LatLng latLng) {
                         /*Toast.makeText(mContext, "Long press at " + latLng.latitude + ","
                                 + latLng.longitude, Toast.LENGTH_SHORT).show();/**/
                         if(mMarker!=null){
@@ -73,10 +73,9 @@ public class GoogleMapFragmentPresenter {
                         }
                         mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_MARKER);
                         centerMapOnLocation(latLng);
-                        mEventsUtil.mapLongPress(latLng);
+                        mEventsUtil.mapClick(latLng);
                         mMarker = mGoogleMap.addMarker(new MarkerOptions()
-                                .position(latLng)
-                                .title("Apetecán"));
+                                .position(latLng));
                     }
                 });
             }

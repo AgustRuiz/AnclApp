@@ -234,16 +234,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showLocationCardView() {
+        final int startHeight = cardView.getHeight();
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(
                 SystemUtils.getDevideWidth(cardView.getContext()), View.MeasureSpec.AT_MOST);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         cardView.measure(widthMeasureSpec, heightMeasureSpec);
         final int endHeight = cardView.getMeasuredHeight();
+        final int diffHeight = endHeight - startHeight;
         final ViewGroup.LayoutParams params = cardView.getLayoutParams();
         Animation animation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                params.height = (int) (endHeight * interpolatedTime);
+                params.height = (int) (startHeight + (diffHeight * interpolatedTime));
                 cardView.setLayoutParams(params);
             }
         };

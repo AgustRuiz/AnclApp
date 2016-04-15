@@ -7,11 +7,11 @@ import com.google.android.gms.maps.model.LatLng;
 public class EventsUtil extends EventDispatcher {
 
     public static final String LOG_TAG = EventsUtil.class.getName()+"[A]";
+    private static EventsUtil ourInstance = new EventsUtil();
     public static final String FAB_CENTER_MAP = "fabCenterMapEvent";
-    public static final String MAP_LONG_PRESS = "mapLongPress";
+    public static final String MAP_CLICK = "mapClick";
     public static final String CANCEL_NEW_MARKER = "cancelNewMarker";
     public static final String CURRENT_LOCATION_CHANGE = "currentLocationChange";
-    private static EventsUtil ourInstance = new EventsUtil();
 
     //region [Singleton constructor]
 
@@ -29,8 +29,8 @@ public class EventsUtil extends EventDispatcher {
         dispatchEvent(new Event(FAB_CENTER_MAP, state));
     }
 
-    public void mapLongPress(LatLng latLng){
-        dispatchEvent(new Event(MAP_LONG_PRESS, latLng));
+    public void mapClick(LatLng latLng){
+        dispatchEvent(new Event(MAP_CLICK, latLng));
     }
 
     public void cancelNewMarker(){

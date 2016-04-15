@@ -18,7 +18,7 @@ import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.ui.MainActivity;
 
-public class MainActivityPresenter implements Presenter{
+public class MainActivityPresenter implements Presenter {
 
     MainActivity mActivity;
     Context mContext;
@@ -27,18 +27,16 @@ public class MainActivityPresenter implements Presenter{
 
     //region [Public methods]
 
-    public MainActivityPresenter(MainActivity activity){
+    public MainActivityPresenter(MainActivity activity) {
         mActivity = activity;
         mContext = mActivity.getApplicationContext();
-        eventsUtil.addEventListener(EventsUtil.MAP_LONG_PRESS, new IEventHandler() {
+        eventsUtil.addEventListener(EventsUtil.MAP_CLICK, new IEventHandler() {
             @Override
             public void callback(Event event) {
-                if(!mActivity.isLocationCardViewShown()){
-                    LatLng latLng = (LatLng) event.getParameter();
-                    fillLocationCardView(latLng);
-                    mActivity.hideFabCenterView();
-                    mActivity.showLocationCardView();
-                }
+                LatLng latLng = (LatLng) event.getParameter();
+                fillLocationCardView(latLng);
+                mActivity.hideFabCenterView();
+                mActivity.showLocationCardView();
             }
         });
         eventsUtil.addEventListener(EventsUtil.CURRENT_LOCATION_CHANGE, new IEventHandler() {
@@ -53,7 +51,7 @@ public class MainActivityPresenter implements Presenter{
         eventsUtil.centerMapOnLocationEvent(mActivity.isAutoCenterMap());
     }
 
-    public void addAnchor(){
+    public void addAnchor() {
         showMessage("Add anchor here");
     }
 
@@ -64,7 +62,7 @@ public class MainActivityPresenter implements Presenter{
         eventsUtil.cancelNewMarker();
     }
 
-    public void fillLocationCardView(LatLng latLng){
+    public void fillLocationCardView(LatLng latLng) {
         Geocoder geocoder = new Geocoder(mContext);
         try {
             List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -77,11 +75,11 @@ public class MainActivityPresenter implements Presenter{
                 markerLocation.setLatitude(latLng.latitude);
                 markerLocation.setLongitude(latLng.longitude);
                 String distance = (mCurrentLocation != null)
-                                ? (Math.round(mCurrentLocation.distanceTo(markerLocation)/10)/100f) + mContext.getString(R.string.km_unit)
-                                : ""; // TODO check this
+                        ? (Math.round(mCurrentLocation.distanceTo(markerLocation) / 10) / 100f) + mContext.getString(R.string.km_unit)
+                        : ""; // TODO check this
                 mActivity.fillLocationCardView(
                         address.getAddressLine(0),
-                        address.getAddressLine(0),
+                        address.getLocality(),
                         distance);
             }
         } catch (IOException e) {
