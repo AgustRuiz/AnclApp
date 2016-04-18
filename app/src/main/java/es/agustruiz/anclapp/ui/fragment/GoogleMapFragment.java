@@ -33,9 +33,9 @@ public class GoogleMapFragment extends Fragment {
 
     protected SupportMapFragment mMapFragment;
     protected GoogleMap mGoogleMap;
-    protected Marker mMarker = null;
-    protected MarkerOptions mMarkerOptions = null;
-    protected final String MMARKER_OPTIONS_TAG = "mMarkerOptions";
+    protected Marker mNewMarker = null;
+    protected MarkerOptions mNewMarkerOptions = null;
+    protected final String NEW_MARKER_OPTIONS_TAG = "mNewMarkerOptions";
 
 
     public final char CENTER_MAP_OFF = 0;
@@ -71,15 +71,15 @@ public class GoogleMapFragment extends Fragment {
                     public void onMapClick(LatLng latLng) {
                         /*Toast.makeText(mContext, "Long press at " + latLng.latitude + ","
                                 + latLng.longitude, Toast.LENGTH_SHORT).show();/**/
-                        if (mMarker != null) {
+                        if (mNewMarker != null) {
                             removeMarker();
                         }
                         setAutoCenterMapMode(CENTER_MAP_MARKER);
                         centerMapOnLocation(latLng);
-                        mMarkerOptions = new MarkerOptions()
+                        mNewMarkerOptions = new MarkerOptions()
                                 .position(latLng)
                                 .draggable(true);
-                        mMarker = mGoogleMap.addMarker(mMarkerOptions);
+                        mNewMarker = mGoogleMap.addMarker(mNewMarkerOptions);
                         mEventsUtil.mapClick(latLng);
                     }
                 });
@@ -98,15 +98,15 @@ public class GoogleMapFragment extends Fragment {
                     }
                 });
 
-                if(mMarkerOptions!=null){
-                    mMarker = mGoogleMap.addMarker(mMarkerOptions);
+                if(mNewMarkerOptions !=null){
+                    mNewMarker = mGoogleMap.addMarker(mNewMarkerOptions);
                 }
             }
         });
 
         if (savedInstanceState != null) {
             autoCenterMapMode = savedInstanceState.getChar(AUTO_CENTER_MAP_MODE_TAG);
-            mMarkerOptions = savedInstanceState.getParcelable(MMARKER_OPTIONS_TAG);
+            mNewMarkerOptions = savedInstanceState.getParcelable(NEW_MARKER_OPTIONS_TAG);
         }
 
         return v;
@@ -116,8 +116,8 @@ public class GoogleMapFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putChar(AUTO_CENTER_MAP_MODE_TAG, autoCenterMapMode);
-        if (mMarkerOptions != null)
-            outState.putParcelable(MMARKER_OPTIONS_TAG, mMarkerOptions);
+        if (mNewMarkerOptions != null)
+            outState.putParcelable(NEW_MARKER_OPTIONS_TAG, mNewMarkerOptions);
     }
 
     @Override
@@ -165,10 +165,10 @@ public class GoogleMapFragment extends Fragment {
     }
 
     public void removeMarker() {
-        if (mMarker != null) {
-            mMarker.remove();
-            mMarker = null;
-            mMarkerOptions = null;
+        if (mNewMarker != null) {
+            mNewMarker.remove();
+            mNewMarker = null;
+            mNewMarkerOptions = null;
         }
     }
 
