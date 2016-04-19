@@ -29,7 +29,7 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_purge_anchors" />
 
-    <ListPreference
+    <es.agustruiz.anclapp.ui.customView.ColorsListPreference
         android:defaultValue="@string/pref_anchors_color_default_value"
         android:entries="@array/pref_anchors_color_titles"
         android:entryValues="@array/pref_anchors_color_values"
@@ -37,6 +37,5 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_anchors_color" />
-
 
 </PreferenceScreen>
