@@ -52,7 +52,7 @@ public class GoogleMapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.map_fragment, container, false);
+        View v = inflater.inflate(R.layout.fragment_map, container, false);
         mContext = getContext();
         mGoogleMapFragmentPresenter = new GoogleMapFragmentPresenter(this);
 

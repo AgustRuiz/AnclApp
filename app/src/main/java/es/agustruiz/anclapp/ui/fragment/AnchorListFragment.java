@@ -12,7 +12,7 @@ import es.agustruiz.anclapp.R;
 public class AnchorListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.anchor_list_fragment, container, false);
+        View v = inflater.inflate(R.layout.fragment_anchor_list, container, false);
         return v;
     }
 }
