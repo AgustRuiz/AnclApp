@@ -98,6 +98,7 @@ public class ColorsListPreference extends ListPreference {
                     public void onClick(View v) {
                         editor.putString(keyPref, holder.color);
                         editor.commit();
+                        setSummary(holder.text.getText());
                         getDialog().dismiss();
                     }
                 });
