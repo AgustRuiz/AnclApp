@@ -1,6 +1,7 @@
 package es.agustruiz.anclapp.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -225,6 +226,10 @@ public class MainActivity extends AppCompatActivity
                 .show();
     }
 
+    public void showMessageView(String s) {
+        showMessageView(null, s);
+    }
+
     public void showFabCenterView() {
         if (tabSelected == TAB_MAP) {
             mFabCenterView.show();
@@ -344,9 +349,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.menu_filter:
-                break;
+            case R.id.menu_about:
+                startActivity(new Intent(this, AboutActivity.class));
             default:
+                showMessageView("Not implemented");
         }
 
         mDrawer.closeDrawer(GravityCompat.START);
