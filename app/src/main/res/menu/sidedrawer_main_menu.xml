@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
+    <item
+        android:id="@+id/menu_filter"
+        android:icon="@drawable/ic_filter_list_black_24dp"
+        android:title="@string/filter" />
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+    <item
+        android:id="@+id/menu_filter_switch"
+        app:actionLayout="@layout/switch_layout"
+        android:title="@string/activate_filter"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_account"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="@string/account" />
+
+    <item
+        android:id="@+id/menu_bin"
+        android:icon="@drawable/ic_delete_black_24dp"
+        android:title="@string/bin" />
+
+    <item
+        android:id="@+id/menu_settings"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="@string/settings" />
+
+    <item
+        android:id="@+id/menu_about"
+        android:icon="@drawable/ic_info_black_24dp"
+        android:title="@string/about" />
+
 
 </menu>
