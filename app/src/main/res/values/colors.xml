@@ -14,4 +14,17 @@
     <color name="white">#fff</color>
     <color name="grey700">#616161</color>
     <color name="blue500">#2196F3</color>
+
+    <color name="tomato">#d50000</color>
+    <color name="tangerine">#f4511e</color>
+    <color name="banana">#f6bf26</color>
+    <color name="basil">#0b8043</color>
+    <color name="sage">#33b679</color>
+    <color name="peacock">#039be5</color>
+    <color name="blueberry">#3f51b5</color>
+    <color name="lavender">#8e24aa</color>
+    <color name="grape">#8e24aa</color>
+    <color name="flamingo">#e67c73</color>
+    <color name="graphite">#616161</color>
+
 </resources>
