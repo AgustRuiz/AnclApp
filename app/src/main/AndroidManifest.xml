@@ -18,14 +18,19 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.AboutActivity"
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+
+        <activity
+            android:name=".ui.AboutActivity"
             android:label="@string/about"
-            android:parentActivityName=".ui.MainActivity">
-        </activity>
+            android:parentActivityName=".ui.MainActivity" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -33,7 +38,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
     </application>
 
 </manifest>
