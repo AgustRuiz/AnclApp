@@ -4,9 +4,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -82,9 +88,15 @@ public class GoogleMapFragment extends Fragment {
                         setAutoCenterMapMode(CENTER_MAP_MARKER);
                         centerMapOnLocation(latLng);
 
+                        String markerColor = PreferenceManager.getDefaultSharedPreferences(mContext)
+                                .getString(
+                                        getString(R.string.key_pref_anchors_color),
+                                        getString(R.string.pref_anchors_color_default_value)
+                                );
+
                         mNewMarkerOptions = new MarkerOptions()
                                 .position(latLng)
-                                .icon(getBitmapDescriptor(R.drawable.ic_place_black_24dp, MARKER_DP_SIZE, MARKER_DP_SIZE))
+                                .icon(getMarkerIcon(markerColor))
                                 .draggable(true);
                         mNewMarker = mGoogleMap.addMarker(mNewMarkerOptions);
 
@@ -106,7 +118,7 @@ public class GoogleMapFragment extends Fragment {
                     }
                 });
 
-                if(mNewMarkerOptions !=null){
+                if (mNewMarkerOptions != null) {
                     mNewMarker = mGoogleMap.addMarker(mNewMarkerOptions);
                 }
             }
@@ -200,15 +212,10 @@ public class GoogleMapFragment extends Fragment {
 
     //region [Private methods]
 
-    private BitmapDescriptor getBitmapDescriptor(int id, int dpWidht, int dpHeight) {
-        Drawable vectorDrawable = mContext.getDrawable(id);
-        int pxWidth = SystemUtils.convertDpToPixel(mContext, dpWidht);
-        int pxHeight = SystemUtils.convertDpToPixel(mContext, dpHeight);
-        vectorDrawable.setBounds(0, 0, pxWidth , pxHeight );
-        Bitmap bm = Bitmap.createBitmap(pxWidth, pxHeight, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bm);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bm);
+    private BitmapDescriptor getMarkerIcon(String color) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(Color.parseColor(color), hsv);
+        return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
 
     //endregion
