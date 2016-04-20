@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 import es.agustruiz.anclapp.R;
 
-import static android.content.SharedPreferences.*;
+import static android.content.SharedPreferences.Editor;
 
 /**
  * Custom Colors ListPreference.
@@ -33,40 +34,59 @@ public class ColorsListPreference extends ListPreference {
 
     ColorsListPreferenceAdapter colorsListPreferenceAdapter = null;
     Context mContext;
-    private LayoutInflater mInflater;
     CharSequence[] entries;
     CharSequence[] entryValues;
-    ArrayList<RadioButton> rButtonList;
     SharedPreferences prefs;
     Editor editor;
     String keyPref;
+    ArrayList<RadioButton> rButtonList;
+
+    View mLayout;
+    LayoutInflater mLayoutInflater;
+    TextView mTitle;
+    TextView mSummary;
+    ImageView mImageColor;
 
     public ColorsListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        mInflater = LayoutInflater.from(context);
         rButtonList = new ArrayList<>();
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
-        keyPref = this.getKey();
     }
 
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         entries = getEntries();
         entryValues = getEntryValues();
-
         if (entries == null || entryValues == null || entries.length != entryValues.length) {
             throw new IllegalStateException(
                     "ListPreference requires an entries array and an entryValues array which are both the same length");
         }
-
         colorsListPreferenceAdapter = new ColorsListPreferenceAdapter(mContext);
-
         builder.setAdapter(colorsListPreferenceAdapter, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             }
         });
+    }
+
+    @Override
+    protected View onCreateView(ViewGroup parent) {
+        super.onCreateView(parent);
+        mLayoutInflater =
+                (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mLayout = mLayoutInflater.inflate(R.layout.colors_list_preference, parent, false);
+
+        mTitle = (TextView) mLayout.findViewById(R.id.custom_list_preference_title);
+        mTitle.setText(this.getTitle());
+
+        mSummary = (TextView) mLayout.findViewById(R.id.custom_list_preference_summary);
+        mSummary.setText(this.getSummary());
+
+        mImageColor = (ImageView) mLayout.findViewById(R.id.custom_list_preference_imageColor);
+        mImageColor.setImageTintList(ColorStateList.valueOf(Color.parseColor(getValue())));
+
+        return mLayout;
     }
 
     private class ColorsListPreferenceAdapter extends BaseAdapter {
@@ -85,21 +105,22 @@ public class ColorsListPreference extends ListPreference {
             return position;
         }
 
-        public View getView(final int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, final View convertView, ViewGroup parent) {
             View row = convertView;
             final CustomHolder holder;
             final String value = entryValues[position].toString();
             if (row == null) {
-                row = mInflater.inflate(R.layout.custom_list_preference_row, parent, false);
+                row = mLayoutInflater.inflate(R.layout.colors_list_preference_row, parent, false);
                 holder = new CustomHolder(row, position);
                 checkRadioButton(value, holder);
                 row.setClickable(true);
                 row.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        editor.putString(keyPref, holder.color);
-                        editor.commit();
                         setSummary(holder.text.getText());
+                        setValue(holder.color);
+                        editor.putString(keyPref, getValue()).commit();
                         getDialog().dismiss();
+
                     }
                 });
                 row.setTag(holder);
@@ -112,11 +133,10 @@ public class ColorsListPreference extends ListPreference {
         }
 
         private void checkRadioButton(String value, CustomHolder holder) {
-            if (value.equals(prefs.getString(keyPref, getValue()))) {
+            if (value.equals(prefs.getString(keyPref, getValue())))
                 holder.rButton.setChecked(true);
-            } else {
+            else
                 holder.rButton.setChecked(false);
-            }
         }
 
         class CustomHolder {
@@ -127,8 +147,8 @@ public class ColorsListPreference extends ListPreference {
             CustomHolder(View row, int position) {
                 text = (TextView) row.findViewById(R.id.custom_list_view_row_text_view);
                 rButton = (RadioButton) row.findViewById(R.id.custom_list_view_row_radio_button);
-                updateRow(position);
                 rButtonList.add(rButton);
+                updateRow(position);
             }
 
             public void updateRow(int position) {

@@ -2,8 +2,12 @@ package es.agustruiz.anclapp.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
@@ -15,7 +19,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     Context mContext = null;
     PreferenceFragment mPreferenceFragment = null;
     android.support.v7.app.ActionBar mActionBar = null;
-    SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,19 +37,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         if (mActionBar != null) {
             mActionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        // TODO keep this if have to handle some preference change
-        if(mOnSharedPreferenceChangeListener == null){
-            mOnSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                }
-            };
-        }
     }
 
-
-    protected static class MyPreferenceFragment extends PreferenceFragment {
+    protected static class MyPreferenceFragment extends PreferenceFragment{
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);

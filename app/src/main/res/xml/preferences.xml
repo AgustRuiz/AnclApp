@@ -39,6 +39,8 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_anchors_color"
-        android:summary="%s" />
+        android:summary="%s"
+        android:layout="@layout/colors_list_preference"
+        />
 
 </PreferenceScreen>

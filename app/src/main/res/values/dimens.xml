@@ -22,4 +22,11 @@
     <dimen name="card_view_description_text_size">20sp</dimen>
     <dimen name="card_view_address_text_size">16sp</dimen>
     <dimen name="card_view_distance_text_size">13sp</dimen>
+
+    <!-- ColorsListView -->
+    <dimen name="colors_list_preference_padding">16dp</dimen>
+    <dimen name="colors_list_preference_title_size">16sp</dimen>
+    <dimen name="colors_list_preference_imageView_size">28dp</dimen>
+    <dimen name="colors_list_preference_imageView_margin_vertical">24dp</dimen>
+    <dimen name="colors_list_preference_imageView_margin_horizontal">6dp</dimen>
 </resources>

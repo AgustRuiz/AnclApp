@@ -72,6 +72,7 @@
     <string name="key_pref_anchors_color">pref_anchors_color</string>
     <string name="pref_anchors_color">Default anchor color</string>
     <string name="pref_anchors_color_default_value">#d50000</string>
+    <string name="color_preview">Color preview</string>
     <string-array name="pref_anchors_color_titles">
         <item>Tomato</item>
         <item>Tangerine</item>
