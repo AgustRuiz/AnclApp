@@ -1,6 +1,10 @@
 package es.agustruiz.anclapp.ui.fragment;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,17 +13,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.presenter.GoogleMapFragmentPresenter;
 
@@ -33,17 +41,17 @@ public class GoogleMapFragment extends Fragment {
 
     protected SupportMapFragment mMapFragment;
     protected GoogleMap mGoogleMap;
+
     protected Marker mNewMarker = null;
     protected MarkerOptions mNewMarkerOptions = null;
     protected final String NEW_MARKER_OPTIONS_TAG = "mNewMarkerOptions";
-
+    public final int MARKER_DP_SIZE = 36;
 
     public final char CENTER_MAP_OFF = 0;
     public final char CENTER_MAP_CURRENT_LOCATION = 1;
     public final char CENTER_MAP_MARKER = 2;
     protected char autoCenterMapMode = CENTER_MAP_OFF;
     protected final String AUTO_CENTER_MAP_MODE_TAG = "autoCenterMapMode";
-
 
     protected static final float MAP_MIN_ZOOM = 15;
 
@@ -68,17 +76,18 @@ public class GoogleMapFragment extends Fragment {
                 mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
-                        /*Toast.makeText(mContext, "Long press at " + latLng.latitude + ","
-                                + latLng.longitude, Toast.LENGTH_SHORT).show();/**/
                         if (mNewMarker != null) {
                             removeMarker();
                         }
                         setAutoCenterMapMode(CENTER_MAP_MARKER);
                         centerMapOnLocation(latLng);
+
                         mNewMarkerOptions = new MarkerOptions()
                                 .position(latLng)
+                                .icon(getBitmapDescriptor(R.drawable.ic_place_black_24dp, MARKER_DP_SIZE, MARKER_DP_SIZE))
                                 .draggable(true);
                         mNewMarker = mGoogleMap.addMarker(mNewMarkerOptions);
+
                         mEventsUtil.mapClick(latLng);
                     }
                 });
@@ -185,6 +194,21 @@ public class GoogleMapFragment extends Fragment {
                             (currentZoom < MAP_MIN_ZOOM ? MAP_MIN_ZOOM : currentZoom));
             mGoogleMap.animateCamera(camera);
         }
+    }
+
+    //endregion
+
+    //region [Private methods]
+
+    private BitmapDescriptor getBitmapDescriptor(int id, int dpWidht, int dpHeight) {
+        Drawable vectorDrawable = mContext.getDrawable(id);
+        int pxWidth = SystemUtils.convertDpToPixel(mContext, dpWidht);
+        int pxHeight = SystemUtils.convertDpToPixel(mContext, dpHeight);
+        vectorDrawable.setBounds(0, 0, pxWidth , pxHeight );
+        Bitmap bm = Bitmap.createBitmap(pxWidth, pxHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bm);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bm);
     }
 
     //endregion

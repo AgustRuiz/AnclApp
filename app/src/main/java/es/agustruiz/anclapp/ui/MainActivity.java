@@ -152,9 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
-                        int id = item.getItemId();
-
-                        switch (id) {
+                        switch (item.getItemId()) {
                             case R.id.menu_settings:
                                 startActivity(new Intent(mContext, SettingsActivity.class));
                                 break;
@@ -164,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
                             default:
                                 showMessageView("Not implemented");
                         }
-
                         mDrawer.closeDrawer(GravityCompat.START);
                         return true;
                     }
