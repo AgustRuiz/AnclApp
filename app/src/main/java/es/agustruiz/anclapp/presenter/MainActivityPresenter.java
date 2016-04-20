@@ -36,6 +36,7 @@ public class MainActivityPresenter implements Presenter {
                 LatLng latLng = (LatLng) event.getParameter();
                 fillLocationCardView(latLng);
                 mActivity.hideFabCenterView();
+                mActivity.showFabDismissCardView();
                 mActivity.showLocationCardView();
             }
         });
@@ -59,6 +60,7 @@ public class MainActivityPresenter implements Presenter {
         mActivity.hideLocationCardView();
         mActivity.setAutoCenterMap(false);
         mActivity.showFabCenterView();
+        mActivity.hideFabDismissCardView();
         eventsUtil.cancelNewMarker();
     }
 

@@ -54,23 +54,14 @@
                 android:minHeight="72dp"
                 app:layout_behavior="es.agustruiz.anclapp.ui.customView.SnackbarBehaviour">
 
-                <android.support.v4.widget.NestedScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
                     <android.support.v7.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/card_view_content_margin"
+                        android:layout_marginEnd="@dimen/card_view_content_margin"
+                        android:layout_marginStart="@dimen/card_view_content_margin"
+                        android:layout_marginTop="@dimen/card_view_content_margin_top"
                         android:orientation="vertical">
-
-                        <android.support.v7.widget.LinearLayoutCompat
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="@dimen/card_view_content_margin"
-                            android:layout_marginEnd="@dimen/card_view_content_margin"
-                            android:layout_marginStart="@dimen/card_view_content_margin"
-                            android:layout_marginTop="@dimen/card_view_content_margin_top"
-                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/card_view_address"
@@ -106,32 +97,9 @@
 
                             </LinearLayout>
 
-                        </android.support.v7.widget.LinearLayoutCompat>
-
-                        <android.support.v7.widget.ButtonBarLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="end">
-
-                            <Button
-                                android:id="@+id/btn_cancel_marker"
-                                style="?android:attr/borderlessButtonStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/btn_margin"
-                                android:padding="@dimen/btn_padding"
-                                android:text="@string/cancel"
-                                android:textColor="@color/colorAccent"
-                                android:textSize="@dimen/btn_text_size" />
-
-                        </android.support.v7.widget.ButtonBarLayout>
-
                     </android.support.v7.widget.LinearLayoutCompat>
 
-                </android.support.v4.widget.NestedScrollView>
-
             </android.support.v7.widget.CardView>
-
 
         </RelativeLayout>
 
@@ -162,5 +130,18 @@
         app:fabSize="normal"
         app:layout_anchor="@id/fab_add_anchor"
         app:layout_anchorGravity="top|end" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_card_view_dismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/fab2_vertical_margin"
+        android:src="@drawable/ic_close_black_24dp"
+        android:tint="@color/grey700"
+        app:backgroundTint="@color/white"
+        android:visibility="gone"
+        app:fabSize="mini"
+        app:layout_anchor="@id/fab_add_anchor"
+        app:layout_anchorGravity="start|center_vertical" />
 
 </android.support.design.widget.CoordinatorLayout>

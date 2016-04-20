@@ -2,8 +2,6 @@ package es.agustruiz.anclapp.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,18 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,8 +30,7 @@ import es.agustruiz.anclapp.presenter.MainActivityPresenter;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.ViewPagerAdapter;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = MainActivity.class.getName() + "[A]";
 
@@ -64,12 +56,12 @@ public class MainActivity extends AppCompatActivity
     NavigationView mNavigationView;
 
     @Bind(R.id.card_view)
-    CardView cardView;
+    CardView mCardView;
     boolean isCardViewShown = false;
     final String IS_CARD_VIEW_SHOWN = "isCardViewShown";
 
-    @Bind(R.id.btn_cancel_marker)
-    Button mCancelMarker;
+    @Bind(R.id.fab_card_view_dismiss)
+    FloatingActionButton mFabDismissCardView;
 
     @Bind(R.id.card_view_address)
     TextView cardViewAddress;
@@ -97,6 +89,7 @@ public class MainActivity extends AppCompatActivity
     final int ANIMATION_DURATION = 200;
 
     MainActivityPresenter mPresenter;
+    Context mContext;
 
     //region [Activity methods]
 
@@ -105,6 +98,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mContext = getApplicationContext();
         mPresenter = new MainActivityPresenter(this);
 
         //region [Saved state]
@@ -139,7 +133,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        mCancelMarker.setOnClickListener(new View.OnClickListener() {
+        mFabDismissCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.cancelMarker();
@@ -154,7 +148,28 @@ public class MainActivity extends AppCompatActivity
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-        mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        int id = item.getItemId();
+
+                        switch (id) {
+                            case R.id.menu_settings:
+                                startActivity(new Intent(mContext, SettingsActivity.class));
+                                break;
+                            case R.id.menu_about:
+                                startActivity(new Intent(mContext, AboutActivity.class));
+                                break;
+                            default:
+                                showMessageView("Not implemented");
+                        }
+
+                        mDrawer.closeDrawer(GravityCompat.START);
+                        return true;
+                    }
+                }
+        );
 
         //endregion
 
@@ -209,6 +224,7 @@ public class MainActivity extends AppCompatActivity
         View outView = super.onCreateView(parent, name, context, attrs);
         if (isCardViewShown) {
             showLocationCardView();
+            showFabDismissCardView();
             hideFabCenterView();
         }
         return outView;
@@ -240,6 +256,14 @@ public class MainActivity extends AppCompatActivity
         mFabCenterView.hide();
     }
 
+    public void showFabDismissCardView(){
+        mFabDismissCardView.show();
+    }
+
+    public void hideFabDismissCardView(){
+        mFabDismissCardView.hide();
+    }
+
     public void setAutoCenterMap(boolean value) {
         isAutoCenterMap = value;
         if (isAutoCenterMap) {
@@ -256,41 +280,40 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showLocationCardView() {
-        Log.d(LOG_TAG, "showLocationCardView");
-        final int startHeight = cardView.getHeight();
+        final int startHeight = mCardView.getHeight();
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(
-                SystemUtils.getDevideWidth(cardView.getContext()), View.MeasureSpec.AT_MOST);
+                SystemUtils.getDevideWidth(mCardView.getContext()), View.MeasureSpec.AT_MOST);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        cardView.measure(widthMeasureSpec, heightMeasureSpec);
-        final int endHeight = cardView.getMeasuredHeight();
+        mCardView.measure(widthMeasureSpec, heightMeasureSpec);
+        final int endHeight = mCardView.getMeasuredHeight();
         final int diffHeight = endHeight - startHeight;
-        final ViewGroup.LayoutParams params = cardView.getLayoutParams();
+        final ViewGroup.LayoutParams params = mCardView.getLayoutParams();
         Animation animation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 params.height = (int) (startHeight + (diffHeight * interpolatedTime));
-                cardView.setLayoutParams(params);
+                mCardView.setLayoutParams(params);
             }
         };
         animation.setDuration(ANIMATION_DURATION);
-        cardView.startAnimation(animation);
+        mCardView.startAnimation(animation);
         isCardViewShown = true;
     }
 
     public void hideLocationCardView() {
-        final ViewGroup.LayoutParams params = cardView.getLayoutParams();
+        final ViewGroup.LayoutParams params = mCardView.getLayoutParams();
         final int maxHeight = params.height;
         Animation animation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 super.applyTransformation(interpolatedTime, t);
-                ViewGroup.LayoutParams params = cardView.getLayoutParams();
+                ViewGroup.LayoutParams params = mCardView.getLayoutParams();
                 params.height = (int) (maxHeight - (maxHeight * interpolatedTime));
-                cardView.setLayoutParams(params);/**/
+                mCardView.setLayoutParams(params);/**/
             }
         };
         animation.setDuration(ANIMATION_DURATION);
-        cardView.startAnimation(animation);
+        mCardView.startAnimation(animation);
         isCardViewShown = false;
     }
 
@@ -306,6 +329,10 @@ public class MainActivity extends AppCompatActivity
         cardViewAddress.setText(address);
         cardViewLocality.setText(locality);
         cardViewDistance.setText(distance);
+    }
+
+    public Context getContext(){
+        return mContext;
     }
 
     //endregion
@@ -336,31 +363,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    //endregion
-
-    //region [NavigationView.OnNavigationItemSelectedListener]
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.menu_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            case R.id.menu_about:
-                startActivity(new Intent(this, AboutActivity.class));
-                break;
-            default:
-                showMessageView("Not implemented");
-        }
-
-        mDrawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     //endregion

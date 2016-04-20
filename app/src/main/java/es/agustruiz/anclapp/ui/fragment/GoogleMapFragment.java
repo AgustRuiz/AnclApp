@@ -60,7 +60,6 @@ public class GoogleMapFragment extends Fragment {
         mMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                Log.i(LOG_TAG, "Map ready");
                 mGoogleMap = googleMap;
                 mGoogleMap.setMyLocationEnabled(true); // TODO Permission check
                 mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
