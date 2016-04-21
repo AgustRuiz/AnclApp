@@ -3,6 +3,7 @@ package es.agustruiz.anclapp.ui.settings;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.view.MenuItem;
 
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.ui.settings.AppCompatPreferenceActivity;
@@ -41,4 +42,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(preferences);
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }
