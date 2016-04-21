@@ -1,146 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="0dp"
-    android:padding="0dp"
-    tools:context="es.agustruiz.anclapp.ui.newAnchor.NewAnchorActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.newAnchor.NewAnchorActivity">
 
-    <ScrollView
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="0dp"
-        android:padding="0dp">
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="@color/blue500"
+            android:fitsSystemWindows="true"
+            >
 
-            <RelativeLayout
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:gravity="bottom"
-                android:background="@color/colorAccent" >
+                android:layout_height="?attr/actionBarSize"
+                >
 
-                <EditText
-                    android:id="@+id/new_anchor_title"
+                <LinearLayout
+                    android:id="@+id/toolbar_buttons_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/new_anchor_title_margin"
-                    android:background="@android:color/transparent"
-                    android:textSize="@dimen/new_anchor_title_size"
-                    android:text="Anchor name" />
+                    android:orientation="horizontal"
+                    android:gravity="end">
 
-            </RelativeLayout>
+                    <Button
+                        android:id="@+id/toolbar_save_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:textColor="@android:color/white"
+                        android:text="@string/save" />
 
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/new_anchor_line_height">
+                </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/new_anchor_icon_margin"
-                    android:contentDescription="@string/description_icon"
-                    android:src="@drawable/ic_short_text_black_24dp" />
+            </android.support.v7.widget.Toolbar>
 
-                <EditText
-                    android:id="@+id/new_anchor_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_vertical"
-                    android:text="Description"
-                    android:textSize="@dimen/new_anchor_text_size" />
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
-            <include layout="@layout/vertical_separator" />
-
-            <android.support.v7.widget.LinearLayoutCompat
+            <EditText
+                android:id="@+id/toolbar_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/new_anchor_line_height">
+                android:layout_gravity="bottom"
+                android:background="@android:color/transparent"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="14dp"
+                android:layout_marginStart="48dp"
+                android:layout_marginEnd="80dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:inputType="text"
+                android:hint="@string/hint_anchor_title"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/new_anchor_icon_margin"
-                    android:contentDescription="@string/tag_icon"
-                    android:src="@drawable/ic_tag_black_24dp" />
+        </android.support.design.widget.CollapsingToolbarLayout>
 
-                <EditText
-                    android:id="@+id/new_anchor_tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_vertical"
-                    android:text="Tag"
-                    android:textSize="@dimen/new_anchor_text_size" />
+    </android.support.design.widget.AppBarLayout>
 
-            </android.support.v7.widget.LinearLayoutCompat>
+    <include layout="@layout/content_new_anchor" />
 
-            <include layout="@layout/vertical_separator" />
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/new_anchor_line_height">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/new_anchor_icon_margin"
-                    android:contentDescription="@string/notification_icon"
-                    android:src="@drawable/ic_notifications_black_24dp" />
-
-                <EditText
-                    android:id="@+id/new_anchor_reminder"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_vertical"
-                    android:text="Reminder"
-                    android:textSize="@dimen/new_anchor_text_size" />
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
-            <include layout="@layout/vertical_separator" />
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/new_anchor_line_height">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/new_anchor_icon_margin"
-                    android:contentDescription="@string/color_preview"
-                    android:src="@drawable/ic_color_item_solid_24dp" />
-
-                <EditText
-                    android:id="@+id/new_anchor_color"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_vertical"
-                    android:text="Color"
-                    android:textSize="@dimen/new_anchor_text_size" />
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
-            <include layout="@layout/vertical_separator" />
-
-        </android.support.v7.widget.LinearLayoutCompat>
-
-    </ScrollView>
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

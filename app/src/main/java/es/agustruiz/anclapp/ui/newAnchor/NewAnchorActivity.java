@@ -1,9 +1,9 @@
 package es.agustruiz.anclapp.ui.newAnchor;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
+import android.support.v7.widget.Toolbar;
+import android.widget.Button;
 import android.widget.EditText;
 
 import butterknife.Bind;
@@ -12,31 +12,30 @@ import es.agustruiz.anclapp.R;
 
 public class NewAnchorActivity extends AppCompatActivity {
 
-    Context mContext = null;
-    android.support.v7.app.ActionBar mActionBar = null;
 
-    @Bind(R.id.new_anchor_title)
+    public final String LOG_TAG = NewAnchorActivity.class.getName() + "[A]";
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
+    @Bind(R.id.toolbar_save_button)
+    Button mSave;
+
+    @Bind(R.id.toolbar_title)
     EditText mTitle;
 
     @Bind(R.id.new_anchor_description)
     EditText mDescription;
+
+    @Bind(R.id.new_anchor_tag)
+    EditText mTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_anchor);
         ButterKnife.bind(this);
-
-        mContext = getApplicationContext();
-
-        mActionBar = getSupportActionBar();
-        if (mActionBar != null) {
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        mTitle.clearFocus();
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
-
-
 }

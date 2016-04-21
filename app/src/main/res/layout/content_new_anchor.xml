@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.newAnchor.NewAnchorActivity"
+    tools:showIn="@layout/activity_new_anchor">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/new_anchor_line_height">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/new_anchor_icon_margin"
+                android:contentDescription="@string/description_icon"
+                android:src="@drawable/ic_short_text_black_24dp" />
+
+            <EditText
+                android:id="@+id/new_anchor_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/hint_anchor_description"
+                android:textSize="@dimen/new_anchor_text_size" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <include layout="@layout/vertical_separator" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/new_anchor_line_height">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/new_anchor_icon_margin"
+                android:contentDescription="@string/tag_icon"
+                android:src="@drawable/ic_tag_black_24dp" />
+
+            <EditText
+                android:id="@+id/new_anchor_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/hint_anchor_tag"
+                android:textSize="@dimen/new_anchor_text_size" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <include layout="@layout/vertical_separator" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/new_anchor_line_height">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/new_anchor_icon_margin"
+                android:contentDescription="@string/notification_icon"
+                android:src="@drawable/ic_notifications_black_24dp" />
+
+            <TextView
+                android:id="@+id/new_anchor_reminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_vertical"
+                android:text="@string/reminder"
+                android:textSize="@dimen/new_anchor_text_size" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <include layout="@layout/vertical_separator" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/new_anchor_line_height">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/new_anchor_icon_margin"
+                android:contentDescription="@string/color_preview"
+                android:src="@drawable/ic_color_item_solid_24dp" />
+
+            <TextView
+                android:id="@+id/new_anchor_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_vertical"
+                android:text="@string/color"
+                android:textSize="@dimen/new_anchor_text_size" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <include layout="@layout/vertical_separator" />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+</android.support.v4.widget.NestedScrollView>
