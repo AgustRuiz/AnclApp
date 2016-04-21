@@ -73,6 +73,9 @@
     <string name="pref_anchors_color">Default anchor color</string>
     <string name="pref_anchors_color_default_value">#d50000</string>
     <string name="color_preview">Color preview</string>
+    <string name="notification_icon">Notification icon</string>
+    <string name="tag_icon">Tag icon</string>
+    <string name="description_icon">Description icon</string>
     <string-array name="pref_anchors_color_titles">
         <item>Tomato</item>
         <item>Tangerine</item>

@@ -3,10 +3,144 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_margin="0dp"
+    android:padding="0dp"
     tools:context="es.agustruiz.anclapp.ui.newAnchor.NewAnchorActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
+        android:padding="0dp">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:gravity="bottom"
+                android:background="@color/colorAccent" >
+
+                <EditText
+                    android:id="@+id/new_anchor_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/new_anchor_title_margin"
+                    android:background="@android:color/transparent"
+                    android:textSize="@dimen/new_anchor_title_size"
+                    android:text="Anchor name" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/new_anchor_line_height">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/new_anchor_icon_margin"
+                    android:contentDescription="@string/description_icon"
+                    android:src="@drawable/ic_short_text_black_24dp" />
+
+                <EditText
+                    android:id="@+id/new_anchor_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:text="Description"
+                    android:textSize="@dimen/new_anchor_text_size" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <include layout="@layout/vertical_separator" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/new_anchor_line_height">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/new_anchor_icon_margin"
+                    android:contentDescription="@string/tag_icon"
+                    android:src="@drawable/ic_tag_black_24dp" />
+
+                <EditText
+                    android:id="@+id/new_anchor_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:text="Tag"
+                    android:textSize="@dimen/new_anchor_text_size" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <include layout="@layout/vertical_separator" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/new_anchor_line_height">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/new_anchor_icon_margin"
+                    android:contentDescription="@string/notification_icon"
+                    android:src="@drawable/ic_notifications_black_24dp" />
+
+                <EditText
+                    android:id="@+id/new_anchor_reminder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:text="Reminder"
+                    android:textSize="@dimen/new_anchor_text_size" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <include layout="@layout/vertical_separator" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/new_anchor_line_height">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/new_anchor_icon_margin"
+                    android:contentDescription="@string/color_preview"
+                    android:src="@drawable/ic_color_item_solid_24dp" />
+
+                <EditText
+                    android:id="@+id/new_anchor_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:text="Color"
+                    android:textSize="@dimen/new_anchor_text_size" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <include layout="@layout/vertical_separator" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </ScrollView>
 
 </RelativeLayout>

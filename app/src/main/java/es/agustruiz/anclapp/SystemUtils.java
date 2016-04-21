@@ -6,7 +6,9 @@ import android.graphics.Point;
 import android.os.Build;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 public class SystemUtils {
 
@@ -34,5 +36,4 @@ public class SystemUtils {
     public static int convertDpToPixel(Context context, int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
-
 }

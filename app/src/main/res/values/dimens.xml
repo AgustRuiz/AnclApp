@@ -29,4 +29,12 @@
     <dimen name="colors_list_preference_imageView_size">28dp</dimen>
     <dimen name="colors_list_preference_imageView_margin_vertical">24dp</dimen>
     <dimen name="colors_list_preference_imageView_margin_horizontal">6dp</dimen>
+
+    <!-- New anchor -->
+    <dimen name="new_anchor_line_height">56dp</dimen>
+    <dimen name="new_anchor_icon_margin">16dp</dimen>
+    <dimen name="new_anchor_text_size">18sp</dimen>
+    <dimen name="new_anchor_title_size">20sp</dimen>
+    <dimen name="new_anchor_title_margin">8dp</dimen>
+
 </resources>
