@@ -213,9 +213,13 @@ public class GoogleMapFragment extends Fragment {
     //region [Private methods]
 
     private BitmapDescriptor getMarkerIcon(String color) {
-        float[] hsv = new float[3];
-        Color.colorToHSV(Color.parseColor(color), hsv);
-        return BitmapDescriptorFactory.defaultMarker(hsv[0]);
+        Bitmap ob = BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_place_white_36dp);
+        Bitmap obm = Bitmap.createBitmap(ob.getWidth(), ob.getHeight(), ob.getConfig());
+        Canvas canvas = new Canvas(obm);
+        Paint paint = new Paint();
+        paint.setColorFilter(new  PorterDuffColorFilter(Color.parseColor(color),PorterDuff.Mode.SRC_ATOP));
+        canvas.drawBitmap(ob, 0f, 0f, paint);
+        return BitmapDescriptorFactory.fromBitmap(obm);
     }
 
     //endregion
