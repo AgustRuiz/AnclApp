@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.presenter.MainActivityPresenter;
+import es.agustruiz.anclapp.ui.settings.SettingsActivity;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.ViewPagerAdapter;
 

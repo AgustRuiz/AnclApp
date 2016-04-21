@@ -50,6 +50,7 @@ public class GoogleMapFragment extends Fragment {
 
     protected Marker mNewMarker = null;
     protected MarkerOptions mNewMarkerOptions = null;
+    protected String mNewMarkerColor = null;
     protected final String NEW_MARKER_OPTIONS_TAG = "mNewMarkerOptions";
     public final int MARKER_DP_SIZE = 36;
 
@@ -69,7 +70,6 @@ public class GoogleMapFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         mContext = getContext();
         mGoogleMapFragmentPresenter = new GoogleMapFragmentPresenter(this);
-
         mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -78,7 +78,6 @@ public class GoogleMapFragment extends Fragment {
                 mGoogleMap.setMyLocationEnabled(true); // TODO Permission check
                 mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-
                 mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
@@ -87,19 +86,16 @@ public class GoogleMapFragment extends Fragment {
                         }
                         setAutoCenterMapMode(CENTER_MAP_MARKER);
                         centerMapOnLocation(latLng);
-
-                        String markerColor = PreferenceManager.getDefaultSharedPreferences(mContext)
+                        mNewMarkerColor = PreferenceManager.getDefaultSharedPreferences(mContext)
                                 .getString(
                                         getString(R.string.key_pref_anchors_color),
                                         getString(R.string.pref_anchors_color_default_value)
                                 );
-
                         mNewMarkerOptions = new MarkerOptions()
                                 .position(latLng)
-                                .icon(getMarkerIcon(markerColor))
+                                .icon(getMarkerIcon(mNewMarkerColor))
                                 .draggable(true);
                         mNewMarker = mGoogleMap.addMarker(mNewMarkerOptions);
-
                         mEventsUtil.mapClick(latLng);
                     }
                 });
@@ -123,12 +119,10 @@ public class GoogleMapFragment extends Fragment {
                 }
             }
         });
-
         if (savedInstanceState != null) {
             autoCenterMapMode = savedInstanceState.getChar(AUTO_CENTER_MAP_MODE_TAG);
             mNewMarkerOptions = savedInstanceState.getParcelable(NEW_MARKER_OPTIONS_TAG);
         }
-
         return v;
     }
 
@@ -213,11 +207,11 @@ public class GoogleMapFragment extends Fragment {
     //region [Private methods]
 
     private BitmapDescriptor getMarkerIcon(String color) {
-        Bitmap ob = BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_place_white_36dp);
+        Bitmap ob = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_place_white_36dp);
         Bitmap obm = Bitmap.createBitmap(ob.getWidth(), ob.getHeight(), ob.getConfig());
         Canvas canvas = new Canvas(obm);
         Paint paint = new Paint();
-        paint.setColorFilter(new  PorterDuffColorFilter(Color.parseColor(color),PorterDuff.Mode.SRC_ATOP));
+        paint.setColorFilter(new PorterDuffColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_ATOP));
         canvas.drawBitmap(ob, 0f, 0f, paint);
         return BitmapDescriptorFactory.fromBitmap(obm);
     }

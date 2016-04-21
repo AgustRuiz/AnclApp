@@ -1,6 +1,7 @@
 package es.agustruiz.anclapp.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -17,6 +18,7 @@ import es.agustruiz.anclapp.event.Event;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.ui.MainActivity;
+import es.agustruiz.anclapp.ui.newAnchor.NewAnchorActivity;
 
 public class MainActivityPresenter implements Presenter {
 
@@ -53,7 +55,8 @@ public class MainActivityPresenter implements Presenter {
     }
 
     public void addAnchor() {
-        showMessage("Add anchor here");
+        Intent intent = new Intent(mContext, NewAnchorActivity.class);
+        mActivity.startActivity(intent);
     }
 
     public void cancelMarker() {

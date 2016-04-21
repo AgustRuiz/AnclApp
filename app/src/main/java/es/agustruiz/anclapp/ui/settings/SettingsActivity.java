@@ -1,16 +1,11 @@
-package es.agustruiz.anclapp.ui;
+package es.agustruiz.anclapp.ui.settings;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import butterknife.ButterKnife;
-import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.ui.settings.AppCompatPreferenceActivity;
 
 import static es.agustruiz.anclapp.R.xml.preferences;
 

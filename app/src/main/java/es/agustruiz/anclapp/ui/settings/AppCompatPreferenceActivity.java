@@ -1,4 +1,4 @@
-package es.agustruiz.anclapp.ui;
+package es.agustruiz.anclapp.ui.settings;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
