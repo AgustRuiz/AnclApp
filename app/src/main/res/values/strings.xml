@@ -198,5 +198,6 @@
     <string name="reminder">Reminder</string>
     <string name="color">Color</string>
     <string name="save">Save</string>
+    <string name="default_color">Default color</string>
 
 </resources>

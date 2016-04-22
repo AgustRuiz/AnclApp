@@ -145,8 +145,8 @@ public class ColorsListPreference extends ListPreference {
             private String color = null;
 
             CustomHolder(View row, int position) {
-                text = (TextView) row.findViewById(R.id.custom_list_view_row_text_view);
-                rButton = (RadioButton) row.findViewById(R.id.custom_list_view_row_radio_button);
+                text = (TextView) row.findViewById(R.id.color_list_view_row_text_view);
+                rButton = (RadioButton) row.findViewById(R.id.color_list_view_row_radio_button);
                 rButtonList.add(rButton);
                 updateRow(position);
             }
