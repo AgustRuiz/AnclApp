@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -13,16 +12,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.event.Event;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
@@ -42,15 +32,11 @@ public class GoogleMapFragmentPresenter {
     protected LocationRequest mLocationRequest = null;
     protected EventsUtil mEventsUtil = EventsUtil.getInstance();
 
-
-
     //region [Public methods]
 
     public GoogleMapFragmentPresenter(GoogleMapFragment fragment) {
         mFragment = fragment;
         mContext = mFragment.getContext();
-
-
 
         createLocationRequest();
         mGoogleApiClient = new GoogleApiClient
@@ -92,6 +78,7 @@ public class GoogleMapFragmentPresenter {
             @Override
             public void callback(Event event) {
                 mFragment.removeMarker();
+                mEventsUtil.getMarkerDetails(mCurrentLocation);
             }
         });
     }
@@ -123,11 +110,13 @@ public class GoogleMapFragmentPresenter {
                 mGoogleApiClient, mLocationRequest, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        //Log.d(LOG_TAG, "Location changed (accuracy: " + location.getAccuracy() + ")");
                         mCurrentLocation = location;
                         mEventsUtil.currentLocationChange(mCurrentLocation);
-                        if (mFragment.isAutoCenterMapCurrentOnLocation())
+                        if (mFragment.isAutoCenterMapCurrentOnLocation()){
                             mFragment.centerMapOnLocation(location);
+                        }else if(!mFragment.isAutoCenterMapModeOnMarker()){
+                            mEventsUtil.getMarkerDetails(location);
+                        }
                     }
                 }); // TODO Permission check
         //}

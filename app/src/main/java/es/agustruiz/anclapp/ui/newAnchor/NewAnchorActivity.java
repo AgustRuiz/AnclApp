@@ -1,6 +1,7 @@
 package es.agustruiz.anclapp.ui.newAnchor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +27,10 @@ import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 public class NewAnchorActivity extends AppCompatActivity {
 
     public final String LOG_TAG = NewAnchorActivity.class.getName() + "[A]";
+
+    public static final String LATITUDE_INTENT_TAG = "latitudeIntentTag";
+    public static final String LONGITUDE_INTENT_TAG = "longitudeIntentTag";
+    public static final String DESCRIPTION_INTENT_TAG = "descriptionIntentTag";
 
     private final String COLOR_DIALOG_TAG = "dialog";
 
@@ -67,6 +73,8 @@ public class NewAnchorActivity extends AppCompatActivity {
 
         mContext = getApplicationContext();
 
+        getIntentExtras(getIntent());
+
         mSelectedColorValue = PreferenceManager.getDefaultSharedPreferences(mContext).getString(
                 getString(R.string.key_pref_anchors_color),
                 getString(R.string.pref_anchors_color_default_value)
@@ -82,6 +90,22 @@ public class NewAnchorActivity extends AppCompatActivity {
         });
     }
 
+    //region [Public methods]
+
+    public void setAnchorColorValues(String title, String entryValue) {
+        mSelectedColorTitle = title;
+        mSelectedColorValue = entryValue;
+        mAnchorColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
+        mAnchorColorText.setText(mSelectedColorTitle);
+    }
+
+    //endregion
+
+    //region [Private methods]
+
+    private void getIntentExtras(Intent intent) {
+        mTextViewDescription.setText(intent.getStringExtra(DESCRIPTION_INTENT_TAG));
+    }
 
     private void showDialog() {
         // dialog, so make our own transaction and take care of that here.
@@ -97,10 +121,5 @@ public class NewAnchorActivity extends AppCompatActivity {
         newFragment.show(fragmentTransaction, COLOR_DIALOG_TAG);
     }
 
-    public void setAnchorColorValues(String title, String entryValue) {
-        mSelectedColorTitle = title;
-        mSelectedColorValue = entryValue;
-        mAnchorColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
-        mAnchorColorText.setText(mSelectedColorTitle);
-    }
+    //endregion
 }

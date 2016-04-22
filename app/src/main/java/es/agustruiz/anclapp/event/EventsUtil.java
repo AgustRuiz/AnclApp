@@ -12,6 +12,7 @@ public class EventsUtil extends EventDispatcher {
     public static final String MAP_CLICK = "mapClick";
     public static final String CANCEL_NEW_MARKER = "cancelNewMarker";
     public static final String CURRENT_LOCATION_CHANGE = "currentLocationChange";
+    public static final String GET_MARKER_DETAILS = "getMarkerDetails";
 
     //region [Singleton constructor]
 
@@ -39,6 +40,10 @@ public class EventsUtil extends EventDispatcher {
 
     public void currentLocationChange(Location location){
         dispatchEvent(new Event(CURRENT_LOCATION_CHANGE, location));
+    }
+
+    public void getMarkerDetails(Location location){
+        dispatchEvent(new Event(GET_MARKER_DETAILS, location));
     }
 
     //endregion

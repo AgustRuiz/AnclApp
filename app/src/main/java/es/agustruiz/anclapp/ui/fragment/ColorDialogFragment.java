@@ -41,7 +41,7 @@ public class ColorDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, 0);
+        //setStyle(DialogFragment.STYLE_NORMAL, 0);
         mCurrentColor = getArguments().getString(CURRENT_COLOR_TAG);
         mAnchorColorList = getAnchorColorList(mCurrentColor);
     }
@@ -59,8 +59,6 @@ public class ColorDialogFragment extends DialogFragment {
         mColorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
                 NewAnchorActivity callingActivity = (NewAnchorActivity) getActivity();
                 callingActivity.setAnchorColorValues(
                         mAnchorColorList.get(position).getEntry(),
@@ -85,8 +83,6 @@ public class ColorDialogFragment extends DialogFragment {
             }else{
                 anchorColorList.add(new AnchorColor(colorTitles[i], colorValues[i],false));
             }
-
-
         }
         anchorColorList.add(new AnchorColor(
                 getResources().getString(R.string.default_color),
