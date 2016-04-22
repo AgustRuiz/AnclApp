@@ -1,7 +1,10 @@
 package es.agustruiz.anclapp.ui.newAnchor;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,8 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,8 +24,9 @@ import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class NewAnchorActivity extends AppCompatActivity {
 
-
     public final String LOG_TAG = NewAnchorActivity.class.getName() + "[A]";
+
+    private final String COLOR_DIALOG_TAG = "dialog";
 
     Context mContext;
 
@@ -33,16 +37,25 @@ public class NewAnchorActivity extends AppCompatActivity {
     Button mSave;
 
     @Bind(R.id.toolbar_title)
-    EditText mTitle;
+    EditText mTextViewTitle;
 
     @Bind(R.id.new_anchor_description)
-    EditText mDescription;
+    EditText mTextViewDescription;
 
     @Bind(R.id.new_anchor_tag)
-    EditText mTag;
+    EditText mTextViewTag;
 
     @Bind(R.id.new_anchor_color_button)
-    LinearLayoutCompat mColorSelection;
+    LinearLayoutCompat mBtnColorSelection;
+
+    @Bind(R.id.new_anchor_color_icon)
+    ImageView mAnchorColorIcon;
+
+    @Bind(R.id.new_anchor_color_text)
+    TextView mAnchorColorText;
+
+    String mSelectedColorValue = null;
+    String mSelectedColorTitle = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,32 +67,40 @@ public class NewAnchorActivity extends AppCompatActivity {
 
         mContext = getApplicationContext();
 
-        mColorSelection.setOnClickListener(new View.OnClickListener() {
+        mSelectedColorValue = PreferenceManager.getDefaultSharedPreferences(mContext).getString(
+                getString(R.string.key_pref_anchors_color),
+                getString(R.string.pref_anchors_color_default_value)
+        );
+        mSelectedColorTitle = getString(R.string.default_color);
+        setAnchorColorValues(mSelectedColorTitle, mSelectedColorValue);
+
+        mBtnColorSelection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(mContext, "Select color!", Toast.LENGTH_SHORT).show();
                 showDialog();
             }
         });
     }
 
 
-    int mStackLevel = -1;
-    private void showDialog(){
-        mStackLevel++;
-
-        // DialogFragment.show() will take care of adding the fragment
-        // in a transaction.  We also want to remove any currently showing
+    private void showDialog() {
         // dialog, so make our own transaction and take care of that here.
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(COLOR_DIALOG_TAG);
         if (prev != null) {
-            ft.remove(prev);
+            fragmentTransaction.remove(prev);
         }
-        ft.addToBackStack(null);
+        fragmentTransaction.addToBackStack(null);
 
         // Create and show the dialog.
-        DialogFragment newFragment = ColorDialogFragment.newInstance(mStackLevel);
-        newFragment.show(ft, "dialog");
+        DialogFragment newFragment = ColorDialogFragment.newInstance(mSelectedColorValue);
+        newFragment.show(fragmentTransaction, COLOR_DIALOG_TAG);
+    }
+
+    public void setAnchorColorValues(String title, String entryValue) {
+        mSelectedColorTitle = title;
+        mSelectedColorValue = entryValue;
+        mAnchorColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
+        mAnchorColorText.setText(mSelectedColorTitle);
     }
 }

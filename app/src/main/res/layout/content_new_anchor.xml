@@ -100,6 +100,7 @@
             style="@style/Widget.AppCompat.Button.Borderless">
 
             <ImageView
+                android:id="@+id/new_anchor_color_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -108,7 +109,7 @@
                 android:src="@drawable/ic_color_item_solid_24dp" />
 
             <TextView
-                android:id="@+id/new_anchor_color"
+                android:id="@+id/new_anchor_color_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
