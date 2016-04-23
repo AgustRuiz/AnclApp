@@ -26,7 +26,6 @@ public class ColorListAdapter extends ArrayAdapter<AnchorColor> {
     int mLayoutResourceId;
     AnchorColor mData[] = null;
 
-
     public ColorListAdapter(Context context, int layoutResourceId, AnchorColor[] data) {
         super(context, layoutResourceId, data);
         mContext = context;

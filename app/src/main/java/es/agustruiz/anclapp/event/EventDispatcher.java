@@ -18,6 +18,7 @@ public class EventDispatcher implements IEventDispatcher {
 
     @Override
     public void removeEventListener(String type) {
+        // TODO handle concurrent modification exception. See this: http://stackoverflow.com/questions/6621991/how-to-handle-concurrentmodificationexception-in-android
         for (Listener listener : listenerList) {
             if (listener.getType().equals(type)) {
                 listenerList.remove(listener);

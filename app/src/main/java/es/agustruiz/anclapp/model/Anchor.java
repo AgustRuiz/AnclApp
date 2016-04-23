@@ -9,7 +9,7 @@ public class Anchor {
     Double longitude;
     String title;
     String description;
-    Color color;
+    String color;
     Boolean reminder;
 
     //region [Public Methods]
@@ -24,7 +24,7 @@ public class Anchor {
     /**
      * Full constructor
      */
-    public Anchor(Double latitude, Double longitude, String title, String description, Color color, Boolean reminder) {
+    public Anchor(Double latitude, Double longitude, String title, String description, String color, Boolean reminder) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
@@ -110,7 +110,7 @@ public class Anchor {
      *
      * @return Anchor color
      */
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
@@ -119,7 +119,7 @@ public class Anchor {
      *
      * @param color Anchor color
      */
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 

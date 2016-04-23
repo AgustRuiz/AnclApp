@@ -111,8 +111,8 @@ public class NewAnchorActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        isHeaderLoaded=false;
-        EventsUtil.getInstance().removeEventListener(EventsUtil.SET_TOOLBAR_LAYOUT_BITMAP);
+        //isHeaderLoaded=false;
+        //EventsUtil.getInstance().removeEventListener(EventsUtil.SET_TOOLBAR_LAYOUT_BITMAP);
     }
 
     @Override
