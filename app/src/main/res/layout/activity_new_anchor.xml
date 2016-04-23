@@ -20,9 +20,22 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/blue500"
-            android:fitsSystemWindows="true"
-            >
+            android:background="@drawable/side_nav_bar"
+            android:fitsSystemWindows="true">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/sheet_text_scrim_height_top"
+                android:background="@drawable/scrim_top"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="pin"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/sheet_text_scrim_height_bottom"
+                android:layout_gravity="bottom"
+                android:layout_alignBottom="@+id/image"
+                android:background="@drawable/scrim_bottom"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -64,6 +77,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:inputType="text"
+                android:text="@string/new_anchor"
                 android:hint="@string/hint_anchor_title"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>

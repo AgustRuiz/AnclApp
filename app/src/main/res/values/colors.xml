@@ -16,6 +16,7 @@
     <color name="grey500">#9e9e9e</color>
     <color name="blue500">#2196F3</color>
 
+    <!-- Anchor colors -->
     <color name="tomato">#d50000</color>
     <color name="tangerine">#f4511e</color>
     <color name="banana">#f6bf26</color>
@@ -27,5 +28,12 @@
     <color name="grape">#8e24aa</color>
     <color name="flamingo">#e67c73</color>
     <color name="graphite">#616161</color>
+
+
+    <!-- Scrim colors -->
+    <color name="translucent_scrim_top">#99000000</color>
+    <color name="translucent_scrim_top_center">#44000000</color>
+    <color name="translucent_scrim_bottom">#66000000</color>
+    <color name="translucent_scrim_bottom_center">#22000000</color>
 
 </resources>

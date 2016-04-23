@@ -37,7 +37,11 @@
     <dimen name="new_anchor_text_size">18sp</dimen>
     <dimen name="new_anchor_title_size">20sp</dimen>
     <dimen name="new_anchor_title_margin">8dp</dimen>
-    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="app_bar_height">240dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
+    <!-- Scrim -->
+    <dimen name="sheet_text_scrim_height_top">88dp</dimen>
+    <dimen name="sheet_text_scrim_height_bottom">72dp</dimen>
 
 </resources>
