@@ -201,5 +201,8 @@
     <string name="default_color">Default color</string>
     <string name="no_location_found">No location found</string>
     <string name="new_anchor">New anchor</string>
+    <string name="anchor_icon">Anchor icon</string>
+    <string name="title">Title</string>
+    <string name="distance">Distance</string>
 
 </resources>

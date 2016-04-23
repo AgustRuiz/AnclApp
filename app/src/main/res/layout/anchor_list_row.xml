@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="56dp"
+    android:orientation="horizontal"
+    android:layout_margin="0dp"
+    android:padding="0dp"
+    android:clickable="true">
+
+    <ImageView
+        android:id="@+id/anchor_list_icon"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:padding="12dp"
+        android:contentDescription="@string/anchor_icon"
+        android:src="@drawable/ic_place_white_36dp"
+        android:tint="@color/colorAccent"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginEnd="6dp"
+        >
+
+        <TextView
+            android:id="@+id/anchor_list_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="start"
+            android:text="@string/title"
+            />
+
+        <TextView
+            android:id="@+id/anchor_list_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:gravity="end"
+            android:text="@string/distance"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>
