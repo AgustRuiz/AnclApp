@@ -78,7 +78,7 @@ public class GoogleMapFragmentPresenter {
             @Override
             public void callback(Event event) {
                 mFragment.removeMarker();
-                mEventsUtil.getMarkerDetails(mCurrentLocation);
+                mEventsUtil.setMarkerDetails(mCurrentLocation);
             }
         });
     }
@@ -113,9 +113,10 @@ public class GoogleMapFragmentPresenter {
                         mCurrentLocation = location;
                         mEventsUtil.currentLocationChange(mCurrentLocation);
                         if (mFragment.isAutoCenterMapCurrentOnLocation()){
-                            mFragment.centerMapOnLocation(location);
+                            mFragment.centerMapOnLocation(mCurrentLocation);
+                            mEventsUtil.setMarkerDetails(mCurrentLocation);
                         }else if(!mFragment.isAutoCenterMapModeOnMarker()){
-                            mEventsUtil.getMarkerDetails(location);
+                            mEventsUtil.setMarkerDetails(location);
                         }
                     }
                 }); // TODO Permission check
