@@ -28,9 +28,6 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
-import es.agustruiz.anclapp.event.Event;
-import es.agustruiz.anclapp.event.EventsUtil;
-import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class NewAnchorActivity extends AppCompatActivity {
@@ -109,19 +106,8 @@ public class NewAnchorActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //isHeaderLoaded=false;
-        //EventsUtil.getInstance().removeEventListener(EventsUtil.SET_TOOLBAR_LAYOUT_BITMAP);
-    }
-
-    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (!isHeaderLoaded) {
-            isHeaderLoaded = true;
-            getMapHeaderImage(mIntentLatitude, mIntentLongitude);
-        }
+        getMapHeaderImage(mIntentLatitude, mIntentLongitude);
     }
 
     //region [Public methods]
@@ -141,7 +127,6 @@ public class NewAnchorActivity extends AppCompatActivity {
         mIntentLatitude = intent.getDoubleExtra(LATITUDE_INTENT_TAG, 0);
         mIntentLongitude = intent.getDoubleExtra(LONGITUDE_INTENT_TAG, 0);
         mIntentDescription = intent.getStringExtra(DESCRIPTION_INTENT_TAG);
-
         mTextViewDescription.setText(mIntentDescription);
     }
 
@@ -162,7 +147,6 @@ public class NewAnchorActivity extends AppCompatActivity {
     private void getMapHeaderImage(Double latitude, Double longitude) {
 
         // Note: Added a margin on top and bottom to trim Google logo and keep map in center
-
         mToolbarLayout.measure(View.MeasureSpec.EXACTLY, View.MeasureSpec.EXACTLY);
         final int width = mToolbarLayout.getWidth();
         final int height = mToolbarLayout.getHeight() + TRIM_MAP_MARGIN * 2;
@@ -171,12 +155,9 @@ public class NewAnchorActivity extends AppCompatActivity {
         String urlString = "http://maps.google.com/maps/api/staticmap?center=" + latitude.toString() + ","
                 + longitude.toString() + "&zoom=" + zoom + "&size=" + width + "x" + height + "&sensor=false";
         GetBitmapFromUrlTask getHeaderTask = new GetBitmapFromUrlTask();
-        getHeaderTask.execute(urlString);
-
-        EventsUtil.getInstance().addEventListener(EventsUtil.SET_TOOLBAR_LAYOUT_BITMAP, new IEventHandler() {
+        getHeaderTask.setBitmapFromUrlListener(new GetBitmapFromUrlTask.OnBitmapFromUrlListener() {
             @Override
-            public void callback(Event event) {
-                Bitmap bitmap = (Bitmap) event.getParameter();
+            public void onBitmapReady(Bitmap bitmap) {
                 if (bitmap != null) {
                     Bitmap bitmapCropped = Bitmap.createBitmap(width, height - TRIM_MAP_MARGIN * 2, Bitmap.Config.ARGB_8888);
                     Paint p = new Paint();
@@ -184,12 +165,12 @@ public class NewAnchorActivity extends AppCompatActivity {
                     Canvas c = new Canvas(bitmapCropped);
                     c.drawBitmap(bitmap, 0, 0, null);
                     c.drawRect(0, TRIM_MAP_MARGIN, 0, TRIM_MAP_MARGIN, p);
-
                     mToolbarLayout.setBackground(new BitmapDrawable(getResources(), bitmapCropped));
                 }
+
             }
         });
-
+        getHeaderTask.execute(urlString);
     }
 
     //endregion

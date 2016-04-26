@@ -14,7 +14,6 @@ public class EventsUtil extends EventDispatcher {
     public static final String CANCEL_NEW_MARKER = "cancelNewMarker";
     public static final String CURRENT_LOCATION_CHANGE = "currentLocationChange";
     public static final String GET_MARKER_DETAILS = "getMarkerDetails";
-    public static final String SET_TOOLBAR_LAYOUT_BITMAP = "setToolbarLayoutBitmap";
 
     //region [Singleton constructor]
 
@@ -46,10 +45,6 @@ public class EventsUtil extends EventDispatcher {
 
     public void getMarkerDetails(Location location){
         dispatchEvent(new Event(GET_MARKER_DETAILS, location));
-    }
-
-    public void setToolbarLayoutBitmap(Bitmap bitmap){
-        dispatchEvent(new Event(SET_TOOLBAR_LAYOUT_BITMAP, bitmap));
     }
 
     //endregion
