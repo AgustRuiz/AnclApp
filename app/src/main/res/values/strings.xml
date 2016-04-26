@@ -204,5 +204,7 @@
     <string name="anchor_icon">Anchor icon</string>
     <string name="title">Title</string>
     <string name="distance">Distance</string>
+    <string name="deleted">Deleted</string>
+    <string name="undo">Undo</string>
 
 </resources>

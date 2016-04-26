@@ -1,51 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="56dp"
-    android:orientation="horizontal"
-    android:layout_margin="0dp"
-    android:padding="0dp"
-    android:clickable="true">
+    android:background="@color/graphite">
 
-    <ImageView
-        android:id="@+id/anchor_list_icon"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:padding="12dp"
-        android:contentDescription="@string/anchor_icon"
-        android:src="@drawable/ic_place_white_36dp"
-        android:tint="@color/colorAccent"
-        />
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"
-        android:layout_marginEnd="6dp"
-        >
+        android:layout_margin="0dp"
+        android:background="@android:color/background_light"
+        android:minHeight="56dp"
+        android:orientation="horizontal"
+        android:padding="0dp">
 
-        <TextView
-            android:id="@+id/anchor_list_title"
+        <ImageView
+            android:id="@+id/anchor_list_icon"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:contentDescription="@string/anchor_icon"
+            android:padding="12dp"
+            android:src="@drawable/ic_place_white_36dp"
+            android:tint="@color/colorAccent" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="start"
-            android:text="@string/title"
-            />
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginTop="6dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/anchor_list_distance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:gravity="end"
-            android:text="@string/distance"
-            />
+            <TextView
+                android:id="@+id/anchor_list_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/title"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/anchor_list_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/distance"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:visibility="gone"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/text_view_deleted"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:hapticFeedbackEnabled="true"
+            android:text="@string/deleted"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/text_view_undo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:gravity="center_vertical|end"
+            android:text="@string/undo"
+            android:textAllCaps="true"
+            android:textColor="@color/banana" />
+        
+    </LinearLayout>
+
+</FrameLayout>

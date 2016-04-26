@@ -5,6 +5,7 @@ import android.preference.PreferenceManager;
 
 public class Anchor {
 
+    Long id;
     Double latitude;
     Double longitude;
     String title;
@@ -24,13 +25,30 @@ public class Anchor {
     /**
      * Full constructor
      */
-    public Anchor(Double latitude, Double longitude, String title, String description, String color, Boolean reminder) {
+    public Anchor(Long id, Double latitude, Double longitude, String title, String description, String color, Boolean reminder) {
+        this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
         this.description = description;
         this.color = color;
         this.reminder = reminder;
+    }
+
+    /**
+     * Id getter
+     * @return Anchor id
+     */
+    public Long getId(){
+        return id;
+    }
+
+    /**
+     * Id setter
+     * @param id Anchor id
+     */
+    public void setId(Long id){
+        this.id = id;
     }
 
     /**
