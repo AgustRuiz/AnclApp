@@ -1,5 +1,6 @@
 package es.agustruiz.anclapp.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -37,6 +38,9 @@ public class AnchorListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_anchor_list, container, false);
         ButterKnife.bind(this, v);
+
+        View footerView = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer, null, false);
+        mAnchorListView.addFooterView(footerView);
 
         mAnchorList = new ArrayList<>();
 

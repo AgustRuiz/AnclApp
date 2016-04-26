@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/banner_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:padding="24dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/anchor_icon"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:alpha="0.1"
+        android:contentDescription="@string/anchor_icon"
+        android:src="@drawable/anclapp_logo"
+        android:tint="#000000" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.1"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="#000000" />
+
+</LinearLayout>
