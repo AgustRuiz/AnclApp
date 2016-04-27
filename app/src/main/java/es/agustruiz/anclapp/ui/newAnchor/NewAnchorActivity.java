@@ -131,7 +131,6 @@ public class NewAnchorActivity extends AppCompatActivity {
     }
 
     private void showDialog() {
-        // dialog, so make our own transaction and take care of that here.
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Fragment prev = getSupportFragmentManager().findFragmentByTag(COLOR_DIALOG_TAG);
         if (prev != null) {
@@ -139,8 +138,7 @@ public class NewAnchorActivity extends AppCompatActivity {
         }
         fragmentTransaction.addToBackStack(null);
 
-        // Create and show the dialog.
-        DialogFragment newFragment = ColorDialogFragment.newInstance(mSelectedColorValue);
+        DialogFragment newFragment = ColorDialogFragment.newInstance(mSelectedColorValue, mSelectedColorTitle);
         newFragment.show(fragmentTransaction, COLOR_DIALOG_TAG);
     }
 
@@ -167,7 +165,6 @@ public class NewAnchorActivity extends AppCompatActivity {
                     c.drawRect(0, TRIM_MAP_MARGIN, 0, TRIM_MAP_MARGIN, p);
                     mToolbarLayout.setBackground(new BitmapDrawable(getResources(), bitmapCropped));
                 }
-
             }
         });
         getHeaderTask.execute(urlString);

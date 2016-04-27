@@ -21,19 +21,22 @@ public class ColorDialogFragment extends DialogFragment {
 
     public static final String LOG_TAG = ColorDialogFragment.class.getName() + "[A]";
 
-    private static final String CURRENT_COLOR_TAG = "currentColor";
-
     ListView mColorListView;
 
     ColorListAdapter mColorListAdapter;
     List<AnchorColor> mAnchorColorList = null;
 
-    String mCurrentColor;
+    String mValueCurrentColor;
+    private static final String VALUE_CURRENT_COLOR_TAG = "valueCurrentColor";
 
-    public static ColorDialogFragment newInstance(String currentColor) {
+    String mTitleCurrentColor;
+    private static final String TITLE_CURRENT_COLOR_TAG = "titleCurrentColor";
+
+    public static ColorDialogFragment newInstance(String valueCurrentColor, String titleCurrentColor) {
         ColorDialogFragment colorDialogFragment = new ColorDialogFragment();
         Bundle args = new Bundle();
-        args.putString(CURRENT_COLOR_TAG, currentColor);
+        args.putString(VALUE_CURRENT_COLOR_TAG, valueCurrentColor);
+        args.putString(TITLE_CURRENT_COLOR_TAG, titleCurrentColor);
         colorDialogFragment.setArguments(args);
         return colorDialogFragment;
     }
@@ -42,8 +45,9 @@ public class ColorDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setStyle(DialogFragment.STYLE_NORMAL, 0);
-        mCurrentColor = getArguments().getString(CURRENT_COLOR_TAG);
-        mAnchorColorList = getAnchorColorList(mCurrentColor);
+        mValueCurrentColor = getArguments().getString(VALUE_CURRENT_COLOR_TAG);
+        mTitleCurrentColor = getArguments().getString(TITLE_CURRENT_COLOR_TAG);
+        mAnchorColorList = getAnchorColorList(mValueCurrentColor, mTitleCurrentColor);
     }
 
     @Override
@@ -70,14 +74,14 @@ public class ColorDialogFragment extends DialogFragment {
         return view;
     }
 
-    private List<AnchorColor> getAnchorColorList(String currentColor) {
+    private List<AnchorColor> getAnchorColorList(String valueCurrentColor, String titleCurrentColor) {
         // Prepare list items
         List<AnchorColor> anchorColorList = new ArrayList<>();
         String[] colorTitles = getContext().getResources().getStringArray(R.array.pref_anchors_color_titles);
         String[] colorValues = getContext().getResources().getStringArray(R.array.pref_anchors_color_values);
         boolean isCurrentColorChecked = false;
         for (int i = 0; i < colorTitles.length; ++i) {
-            if(colorValues[i].equals(currentColor) && !isCurrentColorChecked){
+            if(colorTitles[i].equals(titleCurrentColor) && !isCurrentColorChecked){
                 anchorColorList.add(new AnchorColor(colorTitles[i], colorValues[i],true));
                 isCurrentColorChecked = true;
             }else{
