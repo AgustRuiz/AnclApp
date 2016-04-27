@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ public class NewAnchorActivity extends AppCompatActivity {
     public final String LOG_TAG = NewAnchorActivity.class.getName() + "[A]";
 
     private final int TRIM_MAP_MARGIN = 10;
+    private final int MAX_GOOGLE_STATIC_MAP = 640;
     public static final String LATITUDE_INTENT_TAG = "latitudeIntentTag";
     public static final String LONGITUDE_INTENT_TAG = "longitudeIntentTag";
     public static final String DESCRIPTION_INTENT_TAG = "descriptionIntentTag";
@@ -148,23 +150,46 @@ public class NewAnchorActivity extends AppCompatActivity {
 
         // Note: Added a margin on top and bottom to trim Google logo and keep map in center
 
+        // Note2: Due a limitation in Google static maps aspect relation it's better to get a
+        // square map image and then, crop it to our custom size
+
         final int width = mToolbarLayout.getWidth();
-        final int height = mToolbarLayout.getHeight() + TRIM_MAP_MARGIN * 2;
-        int zoom = 17;
+        final int height = mToolbarLayout.getHeight();
+
+        int scaleWidthFactor = (int) Math.ceil((float) width / (float) MAX_GOOGLE_STATIC_MAP);
+        int scaleHeightFactor = (int) Math.ceil((float) height / (float) MAX_GOOGLE_STATIC_MAP);
+        final int scaleFactor = Math.max(scaleWidthFactor, scaleHeightFactor) > 0 ? Math.max(scaleWidthFactor, scaleHeightFactor) : 1;
+
+        int scaledWidth = (int) Math.ceil(width / scaleFactor);
+        int scaledHeight = (int) Math.ceil(height / scaleFactor) + TRIM_MAP_MARGIN * scaleFactor * 2;
+
+        int zoom = 16;
+
+        Log.e(LOG_TAG, "Width: " + width + " - Height: " + height);
+        Log.e(LOG_TAG, "scale: " + scaleFactor + " - Width: " + scaleWidthFactor + " - Height: " + height / MAX_GOOGLE_STATIC_MAP);
 
         String urlString = "http://maps.google.com/maps/api/staticmap?center=" + latitude.toString() + ","
-                + longitude.toString() + "&zoom=" + zoom + "&size=" + width + "x" + height + "&sensor=false";
+                + longitude.toString() + "&zoom=" + zoom + "&size=" + scaledWidth + "x"
+                + scaledHeight + "&scale=" + scaleFactor + "&sensor=false";
         GetBitmapFromUrlTask getHeaderTask = new GetBitmapFromUrlTask();
         getHeaderTask.setBitmapFromUrlListener(new GetBitmapFromUrlTask.OnBitmapFromUrlListener() {
             @Override
             public void onBitmapReady(Bitmap bitmap) {
                 if (bitmap != null) {
-                    Bitmap bitmapCropped = Bitmap.createBitmap(width, height - TRIM_MAP_MARGIN * 2, Bitmap.Config.ARGB_8888);
+
+                    Log.e(LOG_TAG, "Bitmap size: " + bitmap.getWidth() + "x" + bitmap.getHeight());
+
+                    Bitmap bitmapCropped = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                     Paint p = new Paint();
                     p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
                     Canvas c = new Canvas(bitmapCropped);
+                    c.drawRect(0, TRIM_MAP_MARGIN * scaleFactor, 0, TRIM_MAP_MARGIN * scaleFactor, p);
                     c.drawBitmap(bitmap, 0, 0, null);
-                    c.drawRect(0, TRIM_MAP_MARGIN, 0, TRIM_MAP_MARGIN, p);
+
+
+                    Log.e(LOG_TAG, "Bitmap cropped size: " + bitmapCropped.getWidth() + "x" + bitmapCropped.getHeight());
+
+
                     mToolbarLayout.setBackground(new BitmapDrawable(getResources(), bitmapCropped));
                 }
             }
