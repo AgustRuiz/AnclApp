@@ -28,6 +28,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class NewAnchorActivity extends AppCompatActivity {
@@ -107,6 +108,7 @@ public class NewAnchorActivity extends AppCompatActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
         getMapHeaderImage(mIntentLatitude, mIntentLongitude);
     }
 
@@ -145,7 +147,7 @@ public class NewAnchorActivity extends AppCompatActivity {
     private void getMapHeaderImage(Double latitude, Double longitude) {
 
         // Note: Added a margin on top and bottom to trim Google logo and keep map in center
-        mToolbarLayout.measure(View.MeasureSpec.EXACTLY, View.MeasureSpec.EXACTLY);
+
         final int width = mToolbarLayout.getWidth();
         final int height = mToolbarLayout.getHeight() + TRIM_MAP_MARGIN * 2;
         int zoom = 17;

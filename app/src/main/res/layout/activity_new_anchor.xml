@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:context=".ui.newAnchor.NewAnchorActivity">
 
@@ -16,49 +16,48 @@
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:adjustViewBounds="true"
             android:background="@drawable/side_nav_bar"
-            android:fitsSystemWindows="true">
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sheet_text_scrim_height_top"
                 android:background="@drawable/scrim_top"
                 android:fitsSystemWindows="true"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sheet_text_scrim_height_bottom"
-                android:layout_gravity="bottom"
                 android:layout_alignBottom="@+id/image"
-                android:background="@drawable/scrim_bottom"/>
+                android:layout_gravity="bottom"
+                android:background="@drawable/scrim_bottom" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                >
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
 
                 <LinearLayout
                     android:id="@+id/toolbar_buttons_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="end">
+                    android:gravity="end"
+                    android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/toolbar_save_button"
+                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:textColor="@android:color/white"
-                        android:text="@string/save" />
+                        android:text="@string/save"
+                        android:textColor="@android:color/white" />
 
                 </LinearLayout>
 
@@ -69,16 +68,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="@android:color/transparent"
-                android:layout_marginTop="14dp"
                 android:layout_marginBottom="14dp"
-                android:layout_marginStart="48dp"
                 android:layout_marginEnd="80dp"
-                android:maxLines="1"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="14dp"
+                android:background="@android:color/transparent"
                 android:ellipsize="end"
+                android:hint="@string/hint_anchor_title"
                 android:inputType="text"
-                android:text="@string/new_anchor"
-                android:hint="@string/hint_anchor_title"/>
+                android:maxLines="1"
+                android:text="@string/new_anchor" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
