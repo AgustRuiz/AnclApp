@@ -150,9 +150,6 @@ public class NewAnchorActivity extends AppCompatActivity {
 
         // Note: Added a margin on top and bottom to trim Google logo and keep map in center
 
-        // Note2: Due a limitation in Google static maps aspect relation it's better to get a
-        // square map image and then, crop it to our custom size
-
         final int width = mToolbarLayout.getWidth();
         final int height = mToolbarLayout.getHeight();
 
@@ -165,9 +162,6 @@ public class NewAnchorActivity extends AppCompatActivity {
 
         int zoom = 16;
 
-        Log.e(LOG_TAG, "Width: " + width + " - Height: " + height);
-        Log.e(LOG_TAG, "scale: " + scaleFactor + " - Width: " + scaleWidthFactor + " - Height: " + height / MAX_GOOGLE_STATIC_MAP);
-
         String urlString = "http://maps.google.com/maps/api/staticmap?center=" + latitude.toString() + ","
                 + longitude.toString() + "&zoom=" + zoom + "&size=" + scaledWidth + "x"
                 + scaledHeight + "&scale=" + scaleFactor + "&sensor=false";
@@ -176,20 +170,12 @@ public class NewAnchorActivity extends AppCompatActivity {
             @Override
             public void onBitmapReady(Bitmap bitmap) {
                 if (bitmap != null) {
-
-                    Log.e(LOG_TAG, "Bitmap size: " + bitmap.getWidth() + "x" + bitmap.getHeight());
-
                     Bitmap bitmapCropped = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                     Paint p = new Paint();
                     p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
                     Canvas c = new Canvas(bitmapCropped);
                     c.drawRect(0, TRIM_MAP_MARGIN * scaleFactor, 0, TRIM_MAP_MARGIN * scaleFactor, p);
                     c.drawBitmap(bitmap, 0, 0, null);
-
-
-                    Log.e(LOG_TAG, "Bitmap cropped size: " + bitmapCropped.getWidth() + "x" + bitmapCropped.getHeight());
-
-
                     mToolbarLayout.setBackground(new BitmapDrawable(getResources(), bitmapCropped));
                 }
             }
