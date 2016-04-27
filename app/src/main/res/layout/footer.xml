@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    android:padding="24dp"
-    android:orientation="vertical">
+    android:clickable="true"
+    android:orientation="vertical"
+    android:padding="24dp">
 
     <ImageView
         android:id="@+id/anchor_icon"
@@ -13,6 +14,7 @@
         android:layout_height="72dp"
         android:layout_gravity="center"
         android:alpha="0.1"
+        android:clickable="true"
         android:contentDescription="@string/anchor_icon"
         android:src="@drawable/anclapp_logo"
         android:tint="#000000" />
@@ -21,6 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:alpha="0.1"
+        android:clickable="true"
         android:gravity="center"
         android:text="@string/app_name"
         android:textColor="#000000" />
