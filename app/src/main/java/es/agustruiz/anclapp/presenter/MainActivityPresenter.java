@@ -39,6 +39,7 @@ public class MainActivityPresenter implements Presenter {
     public MainActivityPresenter(MainActivity activity) {
         mActivity = activity;
         mContext = mActivity.getApplicationContext();
+
         eventsUtil.addEventListener(EventsUtil.MAP_CLICK, new IEventHandler() {
             @Override
             public void callback(Event event) {

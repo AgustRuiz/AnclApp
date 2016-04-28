@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -31,6 +32,7 @@ import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
+import es.agustruiz.anclapp.presenter.NewAnchorPresenter;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class NewAnchorActivity extends AppCompatActivity {
@@ -46,6 +48,7 @@ public class NewAnchorActivity extends AppCompatActivity {
     private final String COLOR_DIALOG_TAG = "dialog";
 
     Context mContext;
+    NewAnchorPresenter mPresenter;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -87,6 +90,9 @@ public class NewAnchorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_anchor);
         ButterKnife.bind(this);
+
+        mPresenter = new NewAnchorPresenter(this);
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -98,6 +104,7 @@ public class NewAnchorActivity extends AppCompatActivity {
                 getString(R.string.key_pref_anchors_color),
                 getString(R.string.pref_anchors_color_default_value)
         );
+
         mSelectedColorTitle = getString(R.string.default_color);
         setAnchorColorValues(mSelectedColorTitle, mSelectedColorValue);
 
@@ -111,20 +118,12 @@ public class NewAnchorActivity extends AppCompatActivity {
         mBtnSaveAnchor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Anchor newAnchor = new Anchor();
-                newAnchor.setLatitude(mIntentLatitude);
-                newAnchor.setLongitude(mIntentLongitude);
-                newAnchor.setTitle(mTextViewTitle.getText().toString());
-                newAnchor.setDescription(mTextViewDescription.getText().toString());
-                newAnchor.setColor(mSelectedColorValue);
-                newAnchor.setReminder(false); // TODO complete this
-                AnchorDAO mAnchorDAO = new AnchorDAO(mContext);
-                mAnchorDAO.openWritable();
-                mAnchorDAO.add(newAnchor);
-                mAnchorDAO.close();
-
-                // TODO see anchor here
-                Toast.makeText(mContext, "Anchor saved!", Toast.LENGTH_SHORT).show();
+                // TODO show messages using snackbars
+                if(mPresenter.saveNewAnchor()){
+                    showMessageView("Anchor saved!");
+                }else{
+                    showMessageView("Error saving new anchor");
+                }
             }
         });
     }
@@ -142,6 +141,36 @@ public class NewAnchorActivity extends AppCompatActivity {
         mSelectedColorValue = entryValue;
         mAnchorColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
         mAnchorColorText.setText(mSelectedColorTitle);
+    }
+
+    public void showMessageView(String message) {
+        Snackbar.make(mToolbarLayout, message, Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show();
+    }
+
+    public Double getLatitudeValue(){
+        return mIntentLatitude;
+    }
+
+    public Double getLongitudeValue(){
+        return mIntentLongitude;
+    }
+
+    public String getTitleValue(){
+        return mTextViewTitle.getText().toString();
+    }
+
+    public String getDescriptionValue(){
+        return mTextViewDescription.getText().toString();
+    }
+
+    public String getColorValue(){
+        return mSelectedColorValue;
+    }
+
+    public boolean getReminderValue(){
+        return false; // TODO new anchor reminder selection
     }
 
     //endregion
