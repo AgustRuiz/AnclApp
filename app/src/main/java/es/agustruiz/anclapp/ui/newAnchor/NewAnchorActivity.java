@@ -19,17 +19,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
-import es.agustruiz.anclapp.SystemUtils;
+import es.agustruiz.anclapp.dao.AnchorDAO;
+import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class NewAnchorActivity extends AppCompatActivity {
@@ -53,7 +54,7 @@ public class NewAnchorActivity extends AppCompatActivity {
     CollapsingToolbarLayout mToolbarLayout;
 
     @Bind(R.id.toolbar_save_button)
-    Button mSave;
+    Button mBtnSaveAnchor;
 
     @Bind(R.id.toolbar_title)
     EditText mTextViewTitle;
@@ -104,6 +105,26 @@ public class NewAnchorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDialog();
+            }
+        });
+
+        mBtnSaveAnchor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Anchor newAnchor = new Anchor();
+                newAnchor.setLatitude(mIntentLatitude);
+                newAnchor.setLongitude(mIntentLongitude);
+                newAnchor.setTitle(mTextViewTitle.getText().toString());
+                newAnchor.setDescription(mTextViewDescription.getText().toString());
+                newAnchor.setColor(mSelectedColorValue);
+                newAnchor.setReminder(false); // TODO complete this
+                AnchorDAO mAnchorDAO = new AnchorDAO(mContext);
+                mAnchorDAO.openWritable();
+                mAnchorDAO.add(newAnchor);
+                mAnchorDAO.close();
+
+                // TODO see anchor here
+                Toast.makeText(mContext, "Anchor saved!", Toast.LENGTH_SHORT).show();
             }
         });
     }
