@@ -83,6 +83,10 @@ public class AnchorListAdapter extends BaseAdapter {
         return row;
     }
 
+    public List<Anchor> getData(){
+        return mData;
+    }
+
     protected static class AnchorHolder {
         @Bind(R.id.anchor_list_icon)
         ImageView mIcon;

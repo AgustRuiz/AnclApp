@@ -2,8 +2,12 @@ package es.agustruiz.anclapp.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +30,11 @@ import es.agustruiz.anclapp.ui.adapter.AnchorListAdapter;
 
 public class AnchorListFragment extends Fragment {
 
+    public static final String LOG_TAG = AnchorListFragment.class.getName()+"[A]";
+
+    @Bind(R.id.anchor_list_swipe_refresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     @Bind(R.id.anchor_list_view)
     ListView mAnchorListView;
 
@@ -45,6 +54,20 @@ public class AnchorListFragment extends Fragment {
 
         mContext = getContext();
         mAnchorDAO = new AnchorDAO(mContext);
+
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent, mContext.getTheme()));
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAnchorDAO.openReadOnly();
+                mAnchorList = mAnchorDAO.getList();
+                mAnchorDAO.close();
+                mAnchorListAdapter.getData().clear();
+                mAnchorListAdapter.getData().addAll(mAnchorList);
+                mAnchorListAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         mAnchorDAO.openReadOnly();
         mAnchorList = mAnchorDAO.getList();
