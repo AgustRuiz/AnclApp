@@ -2,6 +2,7 @@ package es.agustruiz.anclapp.ui.newAnchor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -19,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -68,6 +70,9 @@ public class NewAnchorActivity extends AppCompatActivity {
     @Bind(R.id.new_anchor_tag)
     EditText mTextViewTag;
 
+    @Bind(R.id.new_anchor_reminder_value)
+    SwitchCompat mSwitchReminder;
+
     @Bind(R.id.new_anchor_color_button)
     LinearLayoutCompat mBtnColorSelection;
 
@@ -100,13 +105,7 @@ public class NewAnchorActivity extends AppCompatActivity {
 
         getIntentExtras(getIntent());
 
-        mSelectedColorValue = PreferenceManager.getDefaultSharedPreferences(mContext).getString(
-                getString(R.string.key_pref_anchors_color),
-                getString(R.string.pref_anchors_color_default_value)
-        );
-
-        mSelectedColorTitle = getString(R.string.default_color);
-        setAnchorColorValues(mSelectedColorTitle, mSelectedColorValue);
+        initializeViews();
 
         mBtnColorSelection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,7 +169,7 @@ public class NewAnchorActivity extends AppCompatActivity {
     }
 
     public boolean getReminderValue(){
-        return false; // TODO new anchor reminder selection
+        return mSwitchReminder.isChecked();
     }
 
     //endregion
@@ -181,7 +180,21 @@ public class NewAnchorActivity extends AppCompatActivity {
         mIntentLatitude = intent.getDoubleExtra(LATITUDE_INTENT_TAG, 0);
         mIntentLongitude = intent.getDoubleExtra(LONGITUDE_INTENT_TAG, 0);
         mIntentDescription = intent.getStringExtra(DESCRIPTION_INTENT_TAG);
+    }
+
+    private void initializeViews(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mTextViewDescription.setText(mIntentDescription);
+        mSwitchReminder.setChecked(preferences.getBoolean(
+                getString(R.string.key_pref_location_reminder),
+                false
+        ));
+        mSelectedColorValue = preferences.getString(
+                getString(R.string.key_pref_anchors_color),
+                getString(R.string.pref_anchors_color_default_value)
+        );
+        mSelectedColorTitle = getString(R.string.default_color);
+        setAnchorColorValues(mSelectedColorTitle, mSelectedColorValue);
     }
 
     private void showDialog() {

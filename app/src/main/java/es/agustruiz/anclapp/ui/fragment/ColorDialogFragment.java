@@ -67,7 +67,6 @@ public class ColorDialogFragment extends DialogFragment {
                 callingActivity.setAnchorColorValues(
                         mAnchorColorList.get(position).getEntry(),
                         mAnchorColorList.get(position).getEntryValue());
-
                 dismiss();
             }
         });
