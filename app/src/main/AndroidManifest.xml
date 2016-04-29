@@ -48,7 +48,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="es.agustruiz.anclapp.ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.seeAnchor.SeeAnchorActivity"></activity>
+        <activity android:name=".ui.seeAnchor.SeeAnchorActivity"
+            android:label="@string/title_activity_see_anchor"
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
