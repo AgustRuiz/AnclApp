@@ -26,7 +26,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.SystemUtils;
+import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.presenter.MainActivityPresenter;
+import es.agustruiz.anclapp.ui.customView.CustomViewPager;
 import es.agustruiz.anclapp.ui.settings.SettingsActivity;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout;
 import es.agustruiz.anclapp.ui.tabsNavigatorElements.ViewPagerAdapter;
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     SlidingTabLayout mSlidingTabLayout;
 
     @Bind(R.id.pager)
-    ViewPager mViewPager;
+    CustomViewPager mViewPager;
 
     @Bind(R.id.nav_view)
     NavigationView mNavigationView;
@@ -173,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
         //region [Tab navigator]
 
+        mViewPager.setPagingEnabled(false);
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), tabTitles, tabNumbOfTabs);
         mViewPager.setAdapter(mViewPagerAdapter);
         mSlidingTabLayout.setDistributeEvenly(true);

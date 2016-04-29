@@ -2,6 +2,7 @@ package es.agustruiz.anclapp.event;
 
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
