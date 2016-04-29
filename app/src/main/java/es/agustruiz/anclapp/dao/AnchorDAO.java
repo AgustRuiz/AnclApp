@@ -91,25 +91,24 @@ public class AnchorDAO {
         return result > 0;
     }
 
-    /*
-    public Anchor get(long id) {
-        for (Anchor anchor : mAnchorList) {
-            if (anchor.getId() == id) {
-                return anchor;
-            }
-        }
-        return null;
-    }
 
-    public boolean remove(long id) {
-        for (Anchor anchor : mAnchorList) {
-            if (anchor.getId() == id) {
-                mAnchorList.remove(anchor);
-                return true;
-            }
+    public Anchor get(long id) {
+        Anchor result = null;
+        String query = "select * from " + TABLE_NAME + " where id=?";
+        String[] params = new String[]{String.valueOf(id)};
+        Cursor cursor = mDatabase.rawQuery(query, params);
+        if (cursor.moveToFirst()) {
+            double latitude = cursor.getDouble(1);
+            double longitude = cursor.getDouble(2);
+            String title = cursor.getString(3);
+            String description = cursor.getString(4);
+            String color = cursor.getString(5);
+            boolean reminder = cursor.getInt(6) != 0;
+            result = new Anchor(id, latitude, longitude, title, description, color, reminder);
         }
-        return false;
-    }/**/
+        cursor.close();
+        return result;
+    }
 
     //endregion
 

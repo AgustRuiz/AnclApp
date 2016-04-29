@@ -1,6 +1,7 @@
 package es.agustruiz.anclapp.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -31,6 +32,7 @@ import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.ui.adapter.AnchorListAdapter;
+import es.agustruiz.anclapp.ui.seeAnchor.SeeAnchorActivity;
 
 public class AnchorListFragment extends Fragment {
 
@@ -91,7 +93,9 @@ public class AnchorListFragment extends Fragment {
                     touchListener.undoPendingDismiss();
                 } else {
                     // TODO launch details anchor activity
-                    Toast.makeText(getContext(), "See anchor " + mAnchorList.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext, SeeAnchorActivity.class);
+                    intent.putExtra(SeeAnchorActivity.ANCHOR_ID_INTENT_TAG, mAnchorList.get(position).getId());
+                    startActivity(intent);
                 }
             }
         });
