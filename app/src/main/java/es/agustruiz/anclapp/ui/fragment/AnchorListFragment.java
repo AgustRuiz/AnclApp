@@ -89,6 +89,9 @@ public class AnchorListFragment extends Fragment {
 
                     @Override
                     public void onDismiss(ListViewAdapter recyclerView, int position) {
+                        mAnchorDAO.openWritable();
+                        mAnchorDAO.remove(mAnchorListAdapter.getItemId(position));
+                        mAnchorDAO.close();
                         mAnchorListAdapter.remove(position);
                     }
                 }

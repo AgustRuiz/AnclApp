@@ -86,6 +86,11 @@ public class AnchorDAO {
         return mDatabase.insert(TABLE_NAME, null, values);
     }
 
+    public boolean remove(long id) {
+        int result = mDatabase.delete(TABLE_NAME, "id=?", new String[]{String.valueOf(id)});
+        return result > 0;
+    }
+
     /*
     public Anchor get(long id) {
         for (Anchor anchor : mAnchorList) {
