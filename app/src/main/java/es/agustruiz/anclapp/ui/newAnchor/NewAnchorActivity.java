@@ -83,7 +83,9 @@ public class NewAnchorActivity extends AppCompatActivity {
     TextView mAnchorColorText;
 
     String mSelectedColorValue = null;
+    public static final String SELECTED_COLOR_VALUE_TAG = "mSelectedColorValue";
     String mSelectedColorTitle = null;
+    public static final String SELECTED_COLOR_TITLE_TAG = "mSelectedColorTitle";
     Double mIntentLatitude = null;
     Double mIntentLongitude = null;
     String mIntentDescription = null;
@@ -105,7 +107,7 @@ public class NewAnchorActivity extends AppCompatActivity {
 
         getIntentExtras(getIntent());
 
-        initializeViews();
+        initializeViews(savedInstanceState);
 
         mBtnColorSelection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,13 +120,20 @@ public class NewAnchorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO show messages using snackbars
-                if(mPresenter.saveNewAnchor()){
+                if (mPresenter.saveNewAnchor()) {
                     showMessageView("Anchor saved!");
-                }else{
+                } else {
                     showMessageView("Error saving new anchor");
                 }
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(SELECTED_COLOR_VALUE_TAG, mSelectedColorValue);
+        outState.putString(SELECTED_COLOR_TITLE_TAG, mSelectedColorTitle);
     }
 
     @Override
@@ -148,27 +157,27 @@ public class NewAnchorActivity extends AppCompatActivity {
                 .show();
     }
 
-    public Double getLatitudeValue(){
+    public Double getLatitudeValue() {
         return mIntentLatitude;
     }
 
-    public Double getLongitudeValue(){
+    public Double getLongitudeValue() {
         return mIntentLongitude;
     }
 
-    public String getTitleValue(){
+    public String getTitleValue() {
         return mTextViewTitle.getText().toString();
     }
 
-    public String getDescriptionValue(){
+    public String getDescriptionValue() {
         return mTextViewDescription.getText().toString();
     }
 
-    public String getColorValue(){
+    public String getColorValue() {
         return mSelectedColorValue;
     }
 
-    public boolean getReminderValue(){
+    public boolean getReminderValue() {
         return mSwitchReminder.isChecked();
     }
 
@@ -182,18 +191,24 @@ public class NewAnchorActivity extends AppCompatActivity {
         mIntentDescription = intent.getStringExtra(DESCRIPTION_INTENT_TAG);
     }
 
-    private void initializeViews(){
+    private void initializeViews(Bundle savedInstanceState) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mTextViewDescription.setText(mIntentDescription);
         mSwitchReminder.setChecked(preferences.getBoolean(
                 getString(R.string.key_pref_location_reminder),
                 false
         ));
-        mSelectedColorValue = preferences.getString(
-                getString(R.string.key_pref_anchors_color),
-                getString(R.string.pref_anchors_color_default_value)
-        );
-        mSelectedColorTitle = getString(R.string.default_color);
+
+        if(savedInstanceState!=null){
+            mSelectedColorValue = savedInstanceState.getString(SELECTED_COLOR_VALUE_TAG);
+            mSelectedColorTitle = savedInstanceState.getString(SELECTED_COLOR_TITLE_TAG);
+        }else{
+            mSelectedColorValue = preferences.getString(
+                            getString(R.string.key_pref_anchors_color),
+                            getString(R.string.pref_anchors_color_default_value));
+            mSelectedColorTitle = getString(R.string.default_color);
+        }
+
         setAnchorColorValues(mSelectedColorTitle, mSelectedColorValue);
     }
 
