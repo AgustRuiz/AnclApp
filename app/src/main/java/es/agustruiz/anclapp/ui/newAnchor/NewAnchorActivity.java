@@ -119,12 +119,7 @@ public class NewAnchorActivity extends AppCompatActivity {
         mBtnSaveAnchor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO show messages using snackbars
-                if (mPresenter.saveNewAnchor()) {
-                    showMessageView("Anchor saved!");
-                } else {
-                    showMessageView("Error saving new anchor");
-                }
+                mPresenter.saveNewAnchor();
             }
         });
     }
@@ -199,13 +194,13 @@ public class NewAnchorActivity extends AppCompatActivity {
                 false
         ));
 
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             mSelectedColorValue = savedInstanceState.getString(SELECTED_COLOR_VALUE_TAG);
             mSelectedColorTitle = savedInstanceState.getString(SELECTED_COLOR_TITLE_TAG);
-        }else{
+        } else {
             mSelectedColorValue = preferences.getString(
-                            getString(R.string.key_pref_anchors_color),
-                            getString(R.string.pref_anchors_color_default_value));
+                    getString(R.string.key_pref_anchors_color),
+                    getString(R.string.pref_anchors_color_default_value));
             mSelectedColorTitle = getString(R.string.default_color);
         }
 

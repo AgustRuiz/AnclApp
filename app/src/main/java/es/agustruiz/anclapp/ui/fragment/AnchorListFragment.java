@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.hudomju.swipe.SwipeToDismissTouchListener;
 import com.hudomju.swipe.adapter.ListViewAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -58,26 +59,11 @@ public class AnchorListFragment extends Fragment {
         mContext = getContext();
         mAnchorDAO = new AnchorDAO(mContext);
 
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent, mContext.getTheme()));
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mAnchorDAO.openReadOnly();
-                mAnchorList = mAnchorDAO.getList();
-                mAnchorDAO.close();
-                mAnchorListAdapter.getData().clear();
-                mAnchorListAdapter.getData().addAll(mAnchorList);
-                mAnchorListAdapter.notifyDataSetChanged();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
-        mAnchorDAO.openReadOnly();
-        mAnchorList = mAnchorDAO.getList();
-        mAnchorDAO.close();
+        mAnchorList = new ArrayList<>();
 
         mAnchorListAdapter = new AnchorListAdapter(getContext(), inflater, R.layout.anchor_list_row, mAnchorList);
         mAnchorListView.setAdapter(mAnchorListAdapter);
+
         mAnchorListView.setClickable(true);
         final SwipeToDismissTouchListener<ListViewAdapter> touchListener = new SwipeToDismissTouchListener<>(
                 new ListViewAdapter(mAnchorListView),
@@ -109,6 +95,32 @@ public class AnchorListFragment extends Fragment {
                 }
             }
         });
+
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent, mContext.getTheme()));
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshAnchorList();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshAnchorList();
+    }
+
+    private void refreshAnchorList() {
+        Log.d(LOG_TAG, "refreshAnchorList");
+        mAnchorDAO.openReadOnly();
+        mAnchorList = mAnchorDAO.getList();
+        mAnchorDAO.close();
+        mAnchorListAdapter.getData().clear();
+        mAnchorListAdapter.getData().addAll(mAnchorList);
+        mAnchorListAdapter.notifyDataSetChanged();
     }
 }

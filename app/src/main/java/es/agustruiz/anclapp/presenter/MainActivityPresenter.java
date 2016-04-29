@@ -151,11 +151,6 @@ public class MainActivityPresenter implements Presenter {
     //region [Presenter]
 
     @Override
-    public void showMessage(View view, String message) {
-        mActivity.showMessageView(view, message);
-    }
-
-    @Override
     public void showMessage(String message) {
         mActivity.showMessageView(null, message);
     }
