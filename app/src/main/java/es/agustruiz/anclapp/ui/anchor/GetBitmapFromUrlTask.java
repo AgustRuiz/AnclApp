@@ -13,6 +13,9 @@ public class GetBitmapFromUrlTask extends AsyncTask<String, Void, Bitmap> {
 
     public static final String LOG_TAG = GetBitmapFromUrlTask.class.getName() + "[A]";
 
+    public static final int TRIM_MAP_MARGIN = 10;
+    public static final int MAX_GOOGLE_STATIC_MAP = 640;
+
     protected OnBitmapFromUrlListener mOnBitmapFromUrlListener;
     protected Bitmap mBitmap;
 

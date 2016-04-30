@@ -11,6 +11,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -22,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,8 +42,7 @@ public class NewAnchorActivity extends AppCompatActivity {
 
     public final String LOG_TAG = NewAnchorActivity.class.getName() + "[A]";
 
-    private final int TRIM_MAP_MARGIN = 10;
-    private final int MAX_GOOGLE_STATIC_MAP = 640;
+    private final int HEADER_TRANSITION_DURATION = 500;
     public static final String LATITUDE_INTENT_TAG = "latitudeIntentTag";
     public static final String LONGITUDE_INTENT_TAG = "longitudeIntentTag";
     public static final String DESCRIPTION_INTENT_TAG = "descriptionIntentTag";
@@ -58,6 +60,9 @@ public class NewAnchorActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar_save_button)
     Button mBtnSaveAnchor;
+
+    @Bind(R.id.toolbar_marker_icon)
+    ImageView mToolbarMarkerIcon;
 
     @Bind(R.id.toolbar_title)
     EditText mTextViewTitle;
@@ -132,7 +137,10 @@ public class NewAnchorActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        getMapHeaderImage(mIntentLatitude, mIntentLongitude);
+        if(!isHeaderLoaded) {
+            getMapHeaderImage(mIntentLatitude, mIntentLongitude);
+        }
+        tintElementsWithAnchorColor();
     }
 
     //region [Public methods]
@@ -142,6 +150,7 @@ public class NewAnchorActivity extends AppCompatActivity {
         mSelectedColorValue = entryValue;
         mAnchorColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
         mAnchorColorText.setText(mSelectedColorTitle);
+        tintElementsWithAnchorColor();
     }
 
     public void showMessageView(String message) {
@@ -224,34 +233,54 @@ public class NewAnchorActivity extends AppCompatActivity {
         final int width = mToolbarLayout.getWidth();
         final int height = mToolbarLayout.getHeight();
 
-        int scaleWidthFactor = (int) Math.ceil((float) width / (float) MAX_GOOGLE_STATIC_MAP);
-        int scaleHeightFactor = (int) Math.ceil((float) height / (float) MAX_GOOGLE_STATIC_MAP);
+        int scaleWidthFactor = (int) Math.ceil((float) width / (float) GetBitmapFromUrlTask.MAX_GOOGLE_STATIC_MAP);
+        int scaleHeightFactor = (int) Math.ceil((float) height / (float) GetBitmapFromUrlTask.MAX_GOOGLE_STATIC_MAP);
         final int scaleFactor = Math.max(scaleWidthFactor, scaleHeightFactor) > 0 ? Math.max(scaleWidthFactor, scaleHeightFactor) : 1;
 
         int scaledWidth = (int) Math.ceil(width / scaleFactor);
-        int scaledHeight = (int) Math.ceil(height / scaleFactor) + TRIM_MAP_MARGIN * scaleFactor * 2;
+        int scaledHeight = (int) Math.ceil(height / scaleFactor) + GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor * 2;
 
         int zoom = 16;
 
         String urlString = "http://maps.google.com/maps/api/staticmap?center=" + latitude.toString() + ","
                 + longitude.toString() + "&zoom=" + zoom + "&size=" + scaledWidth + "x"
                 + scaledHeight + "&scale=" + scaleFactor + "&sensor=false";
+
         GetBitmapFromUrlTask getHeaderTask = new GetBitmapFromUrlTask();
         getHeaderTask.setBitmapFromUrlListener(new GetBitmapFromUrlTask.OnBitmapFromUrlListener() {
             @Override
-            public void onBitmapReady(Bitmap bitmap) {
-                if (bitmap != null) {
-                    Bitmap bitmapCropped = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            public void onBitmapReady(Bitmap bitmapFull) {
+                if (bitmapFull != null) {
+                    Bitmap mBitmapHeader = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                     Paint p = new Paint();
                     p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-                    Canvas c = new Canvas(bitmapCropped);
-                    c.drawRect(0, TRIM_MAP_MARGIN * scaleFactor, 0, TRIM_MAP_MARGIN * scaleFactor, p);
-                    c.drawBitmap(bitmap, 0, 0, null);
-                    mToolbarLayout.setBackground(new BitmapDrawable(getResources(), bitmapCropped));
+                    Canvas c = new Canvas(mBitmapHeader);
+                    c.drawRect(
+                            0, GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor,
+                            0, GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor, p);
+                    c.drawBitmap(bitmapFull, 0, 0, null);
+
+                    // Soft transition
+                    Drawable backgrounds[] = new Drawable[]{
+                            mToolbarLayout.getBackground(),
+                            new BitmapDrawable(getResources(), mBitmapHeader)
+                    };
+                    TransitionDrawable crossfader = new TransitionDrawable(backgrounds);
+                    mToolbarLayout.setBackground(crossfader);
+                    crossfader.startTransition(HEADER_TRANSITION_DURATION);
+                    isHeaderLoaded = true;
                 }
             }
         });
         getHeaderTask.execute(urlString);
+    }
+
+    private void tintElementsWithAnchorColor() {
+        int color = Color.parseColor(mSelectedColorValue);
+        if(!isHeaderLoaded) {
+            mToolbarLayout.setBackgroundColor(color);
+        }
+        mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(color));
     }
 
     //endregion

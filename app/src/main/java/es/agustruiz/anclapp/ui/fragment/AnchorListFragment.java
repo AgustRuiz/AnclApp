@@ -113,7 +113,6 @@ public class AnchorListFragment extends Fragment {
     }
 
     private void refreshAnchorList() {
-        Log.d(LOG_TAG, "refreshAnchorList");
         mAnchorDAO.openReadOnly();
         mAnchorList = mAnchorDAO.getList();
         mAnchorDAO.close();

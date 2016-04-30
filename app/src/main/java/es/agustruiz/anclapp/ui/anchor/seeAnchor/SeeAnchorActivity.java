@@ -3,7 +3,15 @@ package es.agustruiz.anclapp.ui.anchor.seeAnchor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -18,16 +26,21 @@ import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
+import es.agustruiz.anclapp.ui.anchor.GetBitmapFromUrlTask;
 
 public class SeeAnchorActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = SeeAnchorActivity.class.getName() + "[A]";
+    private final int HEADER_TRANSITION_DURATION = 500;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
     @Bind(R.id.toolbar_layout)
     CollapsingToolbarLayout mToolbarLayout;
+
+    @Bind(R.id.toolbar_marker_icon)
+    ImageView mToolbarMarkerIcon;
 
     @Bind(R.id.fab_edit_anchor)
     FloatingActionButton mFabEditAnchor;
@@ -60,6 +73,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
     protected AnchorDAO mAnchorDAO;
     protected Anchor mAnchor = null;
 
+    boolean isHeaderLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +89,20 @@ public class SeeAnchorActivity extends AppCompatActivity {
         mAnchor = mAnchorDAO.get(mIntentAnchorId);
         mAnchorDAO.close();
 
-        Log.d(LOG_TAG, "Anchor id: " + mIntentAnchorId);
-
         initialize();
-        tintElementsWithAnchorColor();
         fillData();
-
     }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (!isHeaderLoaded) {
+            getMapHeaderImage(mAnchor.getLatitude(), mAnchor.getLongitude());
+        }
+        tintElementsWithAnchorColor();
+    }
+
+    //region [Private methods]
 
     private void getIntentExtras(Intent intent) {
         mIntentAnchorId = intent.getLongExtra(ANCHOR_ID_INTENT_TAG, Long.MIN_VALUE);
@@ -98,6 +119,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
             mTextViewDescription.setText(mAnchor.getDescription());
             if (mAnchor.isReminder()) {
                 mTextViewReminder.setText(R.string.reminder_location_enabled);
+                mImageViewReminderIcon.setImageTintList(ColorStateList.valueOf(getColor(R.color.colorAccent)));
             } else {
                 mTextViewReminder.setText(R.string.reminder_location_disabled);
                 mImageViewReminderIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_notifications_off_black_24dp, getTheme()));
@@ -106,9 +128,61 @@ public class SeeAnchorActivity extends AppCompatActivity {
         }
     }
 
+    private void getMapHeaderImage(Double latitude, Double longitude) {
+
+        // Note: Added a margin on top and bottom to trim Google logo and keep map in center
+
+        final int width = mToolbarLayout.getWidth();
+        final int height = mToolbarLayout.getHeight();
+
+        int scaleWidthFactor = (int) Math.ceil((float) width / (float) GetBitmapFromUrlTask.MAX_GOOGLE_STATIC_MAP);
+        int scaleHeightFactor = (int) Math.ceil((float) height / (float) GetBitmapFromUrlTask.MAX_GOOGLE_STATIC_MAP);
+        final int scaleFactor = Math.max(scaleWidthFactor, scaleHeightFactor) > 0 ? Math.max(scaleWidthFactor, scaleHeightFactor) : 1;
+
+        int scaledWidth = (int) Math.ceil(width / scaleFactor);
+        int scaledHeight = (int) Math.ceil(height / scaleFactor) + GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor * 2;
+
+        int zoom = 16;
+
+        String urlString = "http://maps.google.com/maps/api/staticmap?center=" + latitude.toString() + ","
+                + longitude.toString() + "&zoom=" + zoom + "&size=" + scaledWidth + "x"
+                + scaledHeight + "&scale=" + scaleFactor + "&sensor=false";
+
+        GetBitmapFromUrlTask getHeaderTask = new GetBitmapFromUrlTask();
+        getHeaderTask.setBitmapFromUrlListener(new GetBitmapFromUrlTask.OnBitmapFromUrlListener() {
+            @Override
+            public void onBitmapReady(Bitmap bitmapFull) {
+                if (bitmapFull != null) {
+                    Bitmap mBitmapHeader = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                    Paint p = new Paint();
+                    p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+                    Canvas c = new Canvas(mBitmapHeader);
+                    c.drawRect(
+                            0, GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor,
+                            0, GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor, p);
+                    c.drawBitmap(bitmapFull, 0, 0, null);
+
+                    // Soft transition
+                    Drawable backgrounds[] = new Drawable[]{
+                            mToolbarLayout.getBackground(),
+                            new BitmapDrawable(getResources(), mBitmapHeader)
+                    };
+                    TransitionDrawable crossfader = new TransitionDrawable(backgrounds);
+                    mToolbarLayout.setBackground(crossfader);
+                    crossfader.startTransition(HEADER_TRANSITION_DURATION);
+                    isHeaderLoaded = true;
+                }
+            }
+        });
+        getHeaderTask.execute(urlString);
+    }
+
     private void tintElementsWithAnchorColor() {
         int color = Color.parseColor(mAnchor.getColor());
         mToolbarLayout.setBackgroundColor(color);
         mFabEditAnchor.setBackgroundTintList(ColorStateList.valueOf(color));
+        mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(color));
     }
+
+    //endregion
 }
