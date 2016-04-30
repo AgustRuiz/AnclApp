@@ -5,7 +5,7 @@ import android.widget.Toast;
 
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
-import es.agustruiz.anclapp.ui.newAnchor.NewAnchorActivity;
+import es.agustruiz.anclapp.ui.anchor.newAnchor.NewAnchorActivity;
 
 public class NewAnchorPresenter implements Presenter {
 

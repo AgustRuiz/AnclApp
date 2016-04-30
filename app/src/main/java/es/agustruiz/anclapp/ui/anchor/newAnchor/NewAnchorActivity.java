@@ -1,4 +1,4 @@
-package es.agustruiz.anclapp.ui.newAnchor;
+package es.agustruiz.anclapp.ui.anchor.newAnchor;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,14 +27,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
-import es.agustruiz.anclapp.dao.AnchorDAO;
-import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.presenter.NewAnchorPresenter;
+import es.agustruiz.anclapp.ui.anchor.GetBitmapFromUrlTask;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class NewAnchorActivity extends AppCompatActivity {

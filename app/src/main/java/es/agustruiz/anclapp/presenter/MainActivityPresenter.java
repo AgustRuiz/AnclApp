@@ -6,8 +6,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.util.Log;
-import android.view.View;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -19,7 +17,7 @@ import es.agustruiz.anclapp.event.Event;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.ui.MainActivity;
-import es.agustruiz.anclapp.ui.newAnchor.NewAnchorActivity;
+import es.agustruiz.anclapp.ui.anchor.newAnchor.NewAnchorActivity;
 
 public class MainActivityPresenter implements Presenter {
 

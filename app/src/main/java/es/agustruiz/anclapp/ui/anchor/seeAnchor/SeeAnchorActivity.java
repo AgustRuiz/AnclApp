@@ -1,17 +1,15 @@
-package es.agustruiz.anclapp.ui.seeAnchor;
+package es.agustruiz.anclapp.ui.anchor.seeAnchor;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.TextureView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +28,9 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar_layout)
     CollapsingToolbarLayout mToolbarLayout;
+
+    @Bind(R.id.fab_edit_anchor)
+    FloatingActionButton mFabEditAnchor;
 
     @Bind(R.id.toolbar_text_view_title)
     TextView mTextViewTitle;
@@ -77,7 +78,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "Anchor id: " + mIntentAnchorId);
 
         initialize();
-
+        tintElementsWithAnchorColor();
         fillData();
 
     }
@@ -86,22 +87,28 @@ public class SeeAnchorActivity extends AppCompatActivity {
         mIntentAnchorId = intent.getLongExtra(ANCHOR_ID_INTENT_TAG, Long.MIN_VALUE);
     }
 
-    private void initialize(){
+    private void initialize() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void fillData(){
-        if(mAnchor!=null){
+    private void fillData() {
+        if (mAnchor != null) {
             mTextViewTitle.setText(mAnchor.getTitle());
             mTextViewDescription.setText(mAnchor.getDescription());
-            if(mAnchor.isReminder()){
-                mTextViewReminder.setText("Reminder by location enabled");
-            }else{
-                mTextViewReminder.setText("Reminder by location disabled");
+            if (mAnchor.isReminder()) {
+                mTextViewReminder.setText(R.string.reminder_location_enabled);
+            } else {
+                mTextViewReminder.setText(R.string.reminder_location_disabled);
                 mImageViewReminderIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_notifications_off_black_24dp, getTheme()));
             }
             mImageViewColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(mAnchor.getColor())));
         }
+    }
+
+    private void tintElementsWithAnchorColor() {
+        int color = Color.parseColor(mAnchor.getColor());
+        mToolbarLayout.setBackgroundColor(color);
+        mFabEditAnchor.setBackgroundTintList(ColorStateList.valueOf(color));
     }
 }

@@ -1,4 +1,4 @@
-package es.agustruiz.anclapp.ui.newAnchor;
+package es.agustruiz.anclapp.ui.anchor;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

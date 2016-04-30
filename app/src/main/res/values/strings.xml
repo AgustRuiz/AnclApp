@@ -207,5 +207,7 @@
     <string name="deleted">Deleted</string>
     <string name="undo">Undo</string>
     <string name="title_activity_see_anchor">See anchor</string>
+    <string name="reminder_location_enabled">Reminder by location enabled</string>
+    <string name="reminder_location_disabled">Reminder by location disabled</string>
 
 </resources>

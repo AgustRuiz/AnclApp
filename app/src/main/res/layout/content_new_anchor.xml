@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.newAnchor.NewAnchorActivity"
+    tools:context=".ui.anchor.newAnchor.NewAnchorActivity"
     tools:showIn="@layout/activity_new_anchor">
 
     <android.support.v7.widget.LinearLayoutCompat
