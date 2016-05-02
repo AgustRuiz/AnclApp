@@ -24,7 +24,8 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/form_anchor_icon_margin"
                 android:contentDescription="@string/description_icon"
-                android:src="@drawable/ic_short_text_black_24dp" />
+                android:src="@drawable/ic_short_text_black_24dp"
+                android:tint="@color/grey700" />
 
             <EditText
                 android:id="@+id/new_anchor_description"
@@ -49,8 +50,35 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/form_anchor_icon_margin"
+                android:contentDescription="@string/description_icon"
+                android:src="@drawable/ic_gps_fixed_24dp"
+                android:tint="@color/grey700" />
+
+            <TextView
+                android:id="@+id/new_anchor_lat_lng"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/form_anchor_text_size" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <include layout="@layout/vertical_separator" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/form_anchor_line_height">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/form_anchor_icon_margin"
                 android:contentDescription="@string/tag_icon"
-                android:src="@drawable/ic_tag_black_24dp" />
+                android:src="@drawable/ic_tag_black_24dp"
+                android:tint="@color/grey700" />
 
             <EditText
                 android:id="@+id/new_anchor_tag"
@@ -78,27 +106,29 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/form_anchor_icon_margin"
                 android:contentDescription="@string/notification_icon"
-                android:src="@drawable/ic_notifications_black_24dp" />
+                android:src="@drawable/ic_notifications_black_24dp"
+                android:tint="@color/grey700" />
 
             <TextView
                 android:id="@+id/new_anchor_reminder_label"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
-                android:background="@android:color/transparent"
+                android:layout_toEndOf="@+id/new_anchor_reminder_icon"
                 android:gravity="center_vertical"
                 android:text="@string/reminder"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/form_anchor_text_size"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/new_anchor_reminder_icon" />
+                tools:ignore="RelativeOverlap" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/new_anchor_reminder_value"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
                 android:layout_margin="@dimen/form_anchor_icon_margin"
-                android:gravity="center_vertical"
-                android:layout_alignParentEnd="true" />
+                android:gravity="center_vertical" />
 
         </RelativeLayout>
 
@@ -119,7 +149,8 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/form_anchor_icon_margin"
                 android:contentDescription="@string/color_preview"
-                android:src="@drawable/ic_color_item_solid_24dp" />
+                android:src="@drawable/ic_color_item_solid_24dp"
+                android:tint="@color/grey700" />
 
             <TextView
                 android:id="@+id/new_anchor_color_text"
@@ -128,6 +159,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
                 android:text="@string/color"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/form_anchor_text_size" />
 
         </android.support.v7.widget.LinearLayoutCompat>

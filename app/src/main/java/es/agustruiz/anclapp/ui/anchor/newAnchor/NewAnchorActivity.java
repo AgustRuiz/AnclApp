@@ -24,7 +24,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -65,13 +64,16 @@ public class NewAnchorActivity extends AppCompatActivity {
     ImageView mToolbarMarkerIcon;
 
     @Bind(R.id.toolbar_title)
-    EditText mTextViewTitle;
+    EditText mEditTextTitle;
 
     @Bind(R.id.new_anchor_description)
-    EditText mTextViewDescription;
+    EditText mEditTextDescription;
+
+    @Bind(R.id.new_anchor_lat_lng)
+    TextView mLatLngText;
 
     @Bind(R.id.new_anchor_tag)
-    EditText mTextViewTag;
+    EditText mEditTextTag;
 
     @Bind(R.id.new_anchor_reminder_value)
     SwitchCompat mSwitchReminder;
@@ -137,7 +139,7 @@ public class NewAnchorActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if(!isHeaderLoaded) {
+        if (!isHeaderLoaded) {
             getMapHeaderImage(mIntentLatitude, mIntentLongitude);
         }
         tintElementsWithAnchorColor();
@@ -168,11 +170,11 @@ public class NewAnchorActivity extends AppCompatActivity {
     }
 
     public String getTitleValue() {
-        return mTextViewTitle.getText().toString();
+        return mEditTextTitle.getText().toString();
     }
 
     public String getDescriptionValue() {
-        return mTextViewDescription.getText().toString();
+        return mEditTextDescription.getText().toString();
     }
 
     public String getColorValue() {
@@ -195,7 +197,8 @@ public class NewAnchorActivity extends AppCompatActivity {
 
     private void initializeViews(Bundle savedInstanceState) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mTextViewDescription.setText(mIntentDescription);
+        mEditTextDescription.setText(mIntentDescription);
+        mLatLngText.setText(mIntentLatitude.toString() + ", " + mIntentLongitude.toString());
         mSwitchReminder.setChecked(preferences.getBoolean(
                 getString(R.string.key_pref_location_reminder),
                 false
@@ -277,7 +280,7 @@ public class NewAnchorActivity extends AppCompatActivity {
 
     private void tintElementsWithAnchorColor() {
         int color = Color.parseColor(mSelectedColorValue);
-        if(!isHeaderLoaded) {
+        if (!isHeaderLoaded) {
             mToolbarLayout.setBackgroundColor(color);
         }
         mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(color));
