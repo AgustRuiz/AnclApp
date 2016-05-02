@@ -209,5 +209,8 @@
     <string name="title_activity_see_anchor">See anchor</string>
     <string name="reminder_location_enabled">Reminder by location enabled</string>
     <string name="reminder_location_disabled">Reminder by location disabled</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_remove">Remove</string>
+    <string name="menu_button">Menu button</string>
 
 </resources>

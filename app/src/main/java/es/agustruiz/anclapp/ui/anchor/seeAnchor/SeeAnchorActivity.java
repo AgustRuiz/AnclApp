@@ -12,14 +12,25 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,9 +55,6 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     @Bind(R.id.fab_edit_anchor)
     FloatingActionButton mFabEditAnchor;
-
-    @Bind(R.id.toolbar_text_view_title)
-    TextView mTextViewTitle;
 
     @Bind(R.id.see_anchor_description)
     TextView mTextViewDescription;
@@ -73,7 +81,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
     protected AnchorDAO mAnchorDAO;
     protected Anchor mAnchor = null;
 
-    boolean isHeaderLoaded = false;
+    Bitmap mBitmapHeader = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +102,40 @@ public class SeeAnchorActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.see_anchor, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        Log.d(LOG_TAG, "Menu Opened");
+        return super.onMenuOpened(featureId, menu);
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (!isHeaderLoaded) {
+        if (mBitmapHeader != null) {
+            mToolbarLayout.setBackground(new BitmapDrawable(getResources(), mBitmapHeader));
+        }else{
             getMapHeaderImage(mAnchor.getLatitude(), mAnchor.getLongitude());
         }
         tintElementsWithAnchorColor();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                Log.d(LOG_TAG, "Edit anchor");
+                return true;
+            case R.id.action_remove:
+                Log.d(LOG_TAG, "Remove anchor");
+                return true;
+            default:
+                return false;
+        }
     }
 
     //region [Private methods]
@@ -115,7 +151,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     private void fillData() {
         if (mAnchor != null) {
-            mTextViewTitle.setText(mAnchor.getTitle());
+            setTitle(mAnchor.getTitle()); //mTextViewTitle.setText(mAnchor.getTitle());
             mTextViewDescription.setText(mAnchor.getDescription());
             if (mAnchor.isReminder()) {
                 mTextViewReminder.setText(R.string.reminder_location_enabled);
@@ -153,7 +189,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
             @Override
             public void onBitmapReady(Bitmap bitmapFull) {
                 if (bitmapFull != null) {
-                    Bitmap mBitmapHeader = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                    mBitmapHeader = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                     Paint p = new Paint();
                     p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
                     Canvas c = new Canvas(mBitmapHeader);
@@ -170,7 +206,6 @@ public class SeeAnchorActivity extends AppCompatActivity {
                     TransitionDrawable crossfader = new TransitionDrawable(backgrounds);
                     mToolbarLayout.setBackground(crossfader);
                     crossfader.startTransition(HEADER_TRANSITION_DURATION);
-                    isHeaderLoaded = true;
                 }
             }
         });

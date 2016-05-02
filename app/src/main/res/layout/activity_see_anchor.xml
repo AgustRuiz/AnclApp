@@ -27,8 +27,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_place_white_36dp"
-                android:contentDescription="@string/anchor_icon" />
+                android:contentDescription="@string/anchor_icon"
+                android:src="@drawable/ic_place_white_36dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -51,31 +51,7 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                <LinearLayout
-                    android:id="@+id/toolbar_buttons_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:orientation="horizontal">
-
-                </LinearLayout>
-
             </android.support.v7.widget.Toolbar>
-
-            <TextView
-                android:id="@+id/toolbar_text_view_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="14dp"
-                android:layout_marginEnd="14dp"
-                android:layout_marginStart="56dp"
-                android:layout_marginTop="14dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@string/title"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
