@@ -44,7 +44,6 @@ import es.agustruiz.anclapp.ui.anchor.GetBitmapFromUrlTask;
 public class SeeAnchorActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = SeeAnchorActivity.class.getName() + "[A]";
-    private final int HEADER_TRANSITION_DURATION = 500;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -84,10 +83,6 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     protected Context mContext;
     protected SeeAnchorPresenter mPresenter = null;
-    protected AnchorDAO mAnchorDAO;
-    protected Anchor mAnchor = null;
-
-    Bitmap mBitmapHeader = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,16 +91,10 @@ public class SeeAnchorActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = getApplicationContext();
         mPresenter = new SeeAnchorPresenter(this);
-
         getIntentExtras(getIntent());
-
-        mAnchorDAO = new AnchorDAO(mContext);
-        mAnchorDAO.openReadOnly();
-        mAnchor = mAnchorDAO.get(mIntentAnchorId);
-        mAnchorDAO.close();
-
         initialize();
-        fillData();
+        fillData(mPresenter.getAnchor(mIntentAnchorId));
+        tintElementsWithAnchorColor(Color.parseColor(mPresenter.getAnchor(mIntentAnchorId).getColor()));
     }
 
     @Override
@@ -117,12 +106,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (mBitmapHeader != null) {
-            mToolbarLayout.setBackground(new BitmapDrawable(getResources(), mBitmapHeader));
-        } else {
-            getMapHeaderImage(mAnchor.getLatitude(), mAnchor.getLongitude());
-        }
-        tintElementsWithAnchorColor();
+        mPresenter.setHeaderImage();
     }
 
     @Override
@@ -145,6 +129,22 @@ public class SeeAnchorActivity extends AppCompatActivity {
                 .show();
     }
 
+    public void setHeaderBackground(Drawable background){
+        mToolbarLayout.setBackground(background);
+    }
+
+    public Drawable getHeaderBackground(){
+        return mToolbarLayout.getBackground();
+    }
+
+    public int getHeaderWidth(){
+        return mToolbarLayout.getWidth();
+    }
+
+    public int getHeaderHeight(){
+        return mToolbarLayout.getHeight();
+    }
+
     //region [Private methods]
 
     private void getIntentExtras(Intent intent) {
@@ -162,72 +162,23 @@ public class SeeAnchorActivity extends AppCompatActivity {
         });
     }
 
-    private void fillData() {
-        if (mAnchor != null) {
-            setTitle(mAnchor.getTitle()); //mTextViewTitle.setText(mAnchor.getTitle());
-            mTextViewDescription.setText(mAnchor.getDescription());
-            mTextViewLatLng.setText(mAnchor.getLatitude() + ", " + mAnchor.getLongitude());
-            if (mAnchor.isReminder()) {
+    private void fillData(Anchor anchor) {
+        if (anchor != null) {
+            setTitle(anchor.getTitle()); //mTextViewTitle.setText(mAnchor.getTitle());
+            mTextViewDescription.setText(anchor.getDescription());
+            mTextViewLatLng.setText(anchor.getLatitude() + ", " + anchor.getLongitude());
+            if (anchor.isReminder()) {
                 mTextViewReminder.setText(R.string.reminder_location_enabled);
                 mImageViewReminderIcon.setImageTintList(ColorStateList.valueOf(getColor(R.color.colorAccent)));
             } else {
                 mTextViewReminder.setText(R.string.reminder_location_disabled);
                 mImageViewReminderIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_notifications_off_black_24dp, getTheme()));
             }
-            mImageViewColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(mAnchor.getColor())));
+            mImageViewColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(anchor.getColor())));
         }
     }
 
-    private void getMapHeaderImage(Double latitude, Double longitude) {
-
-        // Note: Added a margin on top and bottom to trim Google logo and keep map in center
-
-        final int width = mToolbarLayout.getWidth();
-        final int height = mToolbarLayout.getHeight();
-
-        int scaleWidthFactor = (int) Math.ceil((float) width / (float) GetBitmapFromUrlTask.MAX_GOOGLE_STATIC_MAP);
-        int scaleHeightFactor = (int) Math.ceil((float) height / (float) GetBitmapFromUrlTask.MAX_GOOGLE_STATIC_MAP);
-        final int scaleFactor = Math.max(scaleWidthFactor, scaleHeightFactor) > 0 ? Math.max(scaleWidthFactor, scaleHeightFactor) : 1;
-
-        int scaledWidth = (int) Math.ceil(width / scaleFactor);
-        int scaledHeight = (int) Math.ceil(height / scaleFactor) + GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor * 2;
-
-        int zoom = 16;
-
-        String urlString = "http://maps.google.com/maps/api/staticmap?center=" + latitude.toString() + ","
-                + longitude.toString() + "&zoom=" + zoom + "&size=" + scaledWidth + "x"
-                + scaledHeight + "&scale=" + scaleFactor + "&sensor=false";
-
-        GetBitmapFromUrlTask getHeaderTask = new GetBitmapFromUrlTask();
-        getHeaderTask.setBitmapFromUrlListener(new GetBitmapFromUrlTask.OnBitmapFromUrlListener() {
-            @Override
-            public void onBitmapReady(Bitmap bitmapFull) {
-                if (bitmapFull != null) {
-                    mBitmapHeader = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-                    Paint p = new Paint();
-                    p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-                    Canvas c = new Canvas(mBitmapHeader);
-                    c.drawRect(
-                            0, GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor,
-                            0, GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor, p);
-                    c.drawBitmap(bitmapFull, 0, 0, null);
-
-                    // Soft transition
-                    Drawable backgrounds[] = new Drawable[]{
-                            mToolbarLayout.getBackground(),
-                            new BitmapDrawable(getResources(), mBitmapHeader)
-                    };
-                    TransitionDrawable crossfader = new TransitionDrawable(backgrounds);
-                    mToolbarLayout.setBackground(crossfader);
-                    crossfader.startTransition(HEADER_TRANSITION_DURATION);
-                }
-            }
-        });
-        getHeaderTask.execute(urlString);
-    }
-
-    private void tintElementsWithAnchorColor() {
-        int color = Color.parseColor(mAnchor.getColor());
+    private void tintElementsWithAnchorColor(int color) {
         mToolbarLayout.setBackgroundColor(color);
         mFabEditAnchor.setBackgroundTintList(ColorStateList.valueOf(color));
         mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(color));
