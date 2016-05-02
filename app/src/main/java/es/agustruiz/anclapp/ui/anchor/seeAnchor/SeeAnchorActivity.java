@@ -59,6 +59,9 @@ public class SeeAnchorActivity extends AppCompatActivity {
     @Bind(R.id.see_anchor_description)
     TextView mTextViewDescription;
 
+    @Bind(R.id.see_anchor_lat_lng)
+    TextView mTextViewLatLng;
+
     @Bind(R.id.see_anchor_tag)
     TextView mTextViewTag;
 
@@ -153,6 +156,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
         if (mAnchor != null) {
             setTitle(mAnchor.getTitle()); //mTextViewTitle.setText(mAnchor.getTitle());
             mTextViewDescription.setText(mAnchor.getDescription());
+            mTextViewLatLng.setText(mAnchor.getLatitude() + ", " + mAnchor.getLongitude());
             if (mAnchor.isReminder()) {
                 mTextViewReminder.setText(R.string.reminder_location_enabled);
                 mImageViewReminderIcon.setImageTintList(ColorStateList.valueOf(getColor(R.color.colorAccent)));

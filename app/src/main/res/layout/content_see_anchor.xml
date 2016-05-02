@@ -34,6 +34,34 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/form_anchor_text_size" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <include layout="@layout/vertical_separator" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/form_anchor_line_height">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/form_anchor_icon_margin"
+                android:contentDescription="@string/tag_icon"
+                android:src="@drawable/ic_gps_fixed_24dp"
+                android:tint="@color/grey700" />
+
+            <TextView
+                android:id="@+id/see_anchor_lat_lng"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/form_anchor_text_size" />
 
         </android.support.v7.widget.LinearLayoutCompat>
@@ -60,6 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/form_anchor_text_size" />
 
         </android.support.v7.widget.LinearLayoutCompat>
@@ -91,6 +120,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/reminder"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/form_anchor_text_size" />
 
         </android.support.v7.widget.LinearLayoutCompat>
@@ -120,6 +150,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
                 android:text="@string/color"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/form_anchor_text_size" />
 
         </android.support.v7.widget.LinearLayoutCompat>
