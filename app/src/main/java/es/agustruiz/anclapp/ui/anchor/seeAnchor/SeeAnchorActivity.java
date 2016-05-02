@@ -15,6 +15,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -37,6 +38,7 @@ import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
+import es.agustruiz.anclapp.presenter.SeeAnchorPresenter;
 import es.agustruiz.anclapp.ui.anchor.GetBitmapFromUrlTask;
 
 public class SeeAnchorActivity extends AppCompatActivity {
@@ -81,6 +83,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
     public static final String ANCHOR_ID_INTENT_TAG = "mIntentAnchorId";
 
     protected Context mContext;
+    protected SeeAnchorPresenter mPresenter = null;
     protected AnchorDAO mAnchorDAO;
     protected Anchor mAnchor = null;
 
@@ -92,6 +95,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_see_anchor);
         ButterKnife.bind(this);
         mContext = getApplicationContext();
+        mPresenter = new SeeAnchorPresenter(this);
 
         getIntentExtras(getIntent());
 
@@ -111,17 +115,11 @@ public class SeeAnchorActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        Log.d(LOG_TAG, "Menu Opened");
-        return super.onMenuOpened(featureId, menu);
-    }
-
-    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (mBitmapHeader != null) {
             mToolbarLayout.setBackground(new BitmapDrawable(getResources(), mBitmapHeader));
-        }else{
+        } else {
             getMapHeaderImage(mAnchor.getLatitude(), mAnchor.getLongitude());
         }
         tintElementsWithAnchorColor();
@@ -131,14 +129,20 @@ public class SeeAnchorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit:
-                Log.d(LOG_TAG, "Edit anchor");
+                mPresenter.editAnchor();
                 return true;
             case R.id.action_remove:
-                Log.d(LOG_TAG, "Remove anchor");
+                mPresenter.removeAnchor();
                 return true;
             default:
                 return false;
         }
+    }
+
+    public void showMessageView(String message) {
+        Snackbar.make(mToolbarLayout, message, Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show();
     }
 
     //region [Private methods]
@@ -150,6 +154,12 @@ public class SeeAnchorActivity extends AppCompatActivity {
     private void initialize() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mFabEditAnchor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.editAnchor();
+            }
+        });
     }
 
     private void fillData() {

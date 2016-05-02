@@ -55,7 +55,7 @@ public class NewAnchorPresenter implements Presenter {
 
     //endregion
 
-    //region [Presenter overeriden methods]
+    //region [Presenter overriden methods]
 
     @Override
     public void showMessage(String message) {
