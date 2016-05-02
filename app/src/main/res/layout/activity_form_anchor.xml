@@ -91,6 +91,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_new_anchor" />
+    <include layout="@layout/content_form_anchor" />
 
 </android.support.design.widget.CoordinatorLayout>

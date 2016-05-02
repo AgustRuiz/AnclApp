@@ -32,7 +32,7 @@ public class EditAnchorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_anchor);
+        setContentView(R.layout.activity_form_anchor);
         ButterKnife.bind(this);
         mContext = getApplicationContext();
         mPresenter = new EditAnchorPresenter(this);

@@ -101,7 +101,7 @@ public class NewAnchorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_anchor);
+        setContentView(R.layout.activity_form_anchor);
         ButterKnife.bind(this);
         mPresenter = new NewAnchorPresenter(this);
         mContext = getApplicationContext();
