@@ -48,7 +48,8 @@ public class SeeAnchorPresenter implements Presenter {
     public void editAnchor() {
         Intent intent = new Intent(mContext, EditAnchorActivity.class);
         intent.putExtra(EditAnchorActivity.ID_INTENT_TAG, mAnchor.getId());
-
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
     }
 
     public void removeAnchor() {

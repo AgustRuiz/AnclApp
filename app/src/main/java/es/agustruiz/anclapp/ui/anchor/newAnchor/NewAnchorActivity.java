@@ -91,6 +91,7 @@ public class NewAnchorActivity extends AppCompatActivity {
     public static final String SELECTED_COLOR_VALUE_TAG = "mSelectedColorValue";
     String mSelectedColorTitle = null;
     public static final String SELECTED_COLOR_TITLE_TAG = "mSelectedColorTitle";
+
     Double mIntentLatitude = null;
     Double mIntentLongitude = null;
     String mIntentDescription = null;
@@ -102,31 +103,10 @@ public class NewAnchorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_anchor);
         ButterKnife.bind(this);
-
         mPresenter = new NewAnchorPresenter(this);
-
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         mContext = getApplicationContext();
-
         getIntentExtras(getIntent());
-
         initializeViews(savedInstanceState);
-
-        mBtnColorSelection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        });
-
-        mBtnSaveAnchor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.saveNewAnchor();
-            }
-        });
     }
 
     @Override
@@ -196,6 +176,9 @@ public class NewAnchorActivity extends AppCompatActivity {
     }
 
     private void initializeViews(Bundle savedInstanceState) {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mEditTextDescription.setText(mIntentDescription);
         mLatLngText.setText(mIntentLatitude.toString() + ", " + mIntentLongitude.toString());
@@ -215,6 +198,20 @@ public class NewAnchorActivity extends AppCompatActivity {
         }
 
         setAnchorColorValues(mSelectedColorTitle, mSelectedColorValue);
+
+        mBtnColorSelection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+            }
+        });
+
+        mBtnSaveAnchor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.saveNewAnchor();
+            }
+        });
     }
 
     private void showDialog() {
