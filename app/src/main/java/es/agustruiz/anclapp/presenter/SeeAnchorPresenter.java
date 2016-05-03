@@ -1,6 +1,7 @@
 package es.agustruiz.anclapp.presenter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -10,8 +11,10 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.ui.anchor.GetBitmapFromUrlTask;
@@ -36,7 +39,7 @@ public class SeeAnchorPresenter implements Presenter {
     }
 
     public Anchor getAnchor(long mIntentAnchorId) {
-        if(mAnchor==null) {
+        if (mAnchor == null) {
             prepareDAO();
             mAnchorDAO.openReadOnly();
             mAnchor = mAnchorDAO.get(mIntentAnchorId);
@@ -53,14 +56,30 @@ public class SeeAnchorPresenter implements Presenter {
     }
 
     public void removeAnchor() {
-        Log.d(LOG_TAG, "removeAnchor");
+        //Log.d(LOG_TAG, "removeAnchor");
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
+        alertDialogBuilder.setMessage("Do you want to remove this anchor?");
+        alertDialogBuilder.setPositiveButton(mContext.getResources().getString(R.string.accept),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        prepareDAO();
+                        mAnchorDAO.openWritable();
+                        mAnchorDAO.remove(mAnchor);
+                        mAnchorDAO.close();
+                        mActivity.onBackPressed();
+                    }
+                });
+        alertDialogBuilder.setNegativeButton(mContext.getResources().getString(R.string.cancel), null);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
-    public void setHeaderImage(){
-        if(mBitmapHeader==null){
+    public void setHeaderImage() {
+        if (mBitmapHeader == null) {
             downloadMapHeaderImage(mAnchor.getLatitude(), mAnchor.getLongitude(),
                     mActivity.getHeaderWidth(), mActivity.getHeaderHeight());
-        }else{
+        } else {
             mActivity.setHeaderBackground(new BitmapDrawable(mActivity.getResources(), mBitmapHeader));
         }
     }
@@ -123,8 +142,8 @@ public class SeeAnchorPresenter implements Presenter {
 
     //region [Private methods]
 
-    protected void prepareDAO(){
-        if(mAnchorDAO==null) {
+    protected void prepareDAO() {
+        if (mAnchorDAO == null) {
             mAnchorDAO = new AnchorDAO(mContext);
         }
     }
