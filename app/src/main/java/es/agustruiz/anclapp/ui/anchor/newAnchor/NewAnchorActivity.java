@@ -34,10 +34,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.presenter.NewAnchorPresenter;
+import es.agustruiz.anclapp.ui.anchor.ColorDialogAppCompatActivity;
 import es.agustruiz.anclapp.ui.anchor.GetBitmapFromUrlTask;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
-public class NewAnchorActivity extends AppCompatActivity {
+public class NewAnchorActivity extends AppCompatActivity implements ColorDialogAppCompatActivity {
 
     public final String LOG_TAG = NewAnchorActivity.class.getName() + "[A]";
 
@@ -127,14 +128,6 @@ public class NewAnchorActivity extends AppCompatActivity {
 
     //region [Public methods]
 
-    public void setAnchorColorValues(String title, String entryValue) {
-        mSelectedColorTitle = title;
-        mSelectedColorValue = entryValue;
-        mAnchorColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
-        mAnchorColorText.setText(mSelectedColorTitle);
-        tintElementsWithAnchorColor();
-    }
-
     public void showMessageView(String message) {
         Snackbar.make(mToolbarLayout, message, Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
@@ -202,7 +195,7 @@ public class NewAnchorActivity extends AppCompatActivity {
         mBtnColorSelection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                showColorDialog();
             }
         });
 
@@ -212,18 +205,6 @@ public class NewAnchorActivity extends AppCompatActivity {
                 mPresenter.saveNewAnchor();
             }
         });
-    }
-
-    private void showDialog() {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        Fragment prev = getSupportFragmentManager().findFragmentByTag(COLOR_DIALOG_TAG);
-        if (prev != null) {
-            fragmentTransaction.remove(prev);
-        }
-        fragmentTransaction.addToBackStack(null);
-
-        DialogFragment newFragment = ColorDialogFragment.newInstance(mSelectedColorValue, mSelectedColorTitle);
-        newFragment.show(fragmentTransaction, COLOR_DIALOG_TAG);
     }
 
     private void getMapHeaderImage(Double latitude, Double longitude) {
@@ -281,6 +262,32 @@ public class NewAnchorActivity extends AppCompatActivity {
             mToolbarLayout.setBackgroundColor(color);
         }
         mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(color));
+    }
+
+    //endregion
+
+    //region [ColorDialogAppCompatActivity methods]
+
+    @Override
+    public void showColorDialog() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(COLOR_DIALOG_TAG);
+        if (prev != null) {
+            fragmentTransaction.remove(prev);
+        }
+        fragmentTransaction.addToBackStack(null);
+
+        DialogFragment newFragment = ColorDialogFragment.newInstance(mSelectedColorValue, mSelectedColorTitle);
+        newFragment.show(fragmentTransaction, COLOR_DIALOG_TAG);
+    }
+
+    @Override
+    public void setAnchorColorValues(String title, String entryValue) {
+        mSelectedColorTitle = title;
+        mSelectedColorValue = entryValue;
+        mAnchorColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
+        mAnchorColorText.setText(mSelectedColorTitle);
+        tintElementsWithAnchorColor();
     }
 
     //endregion

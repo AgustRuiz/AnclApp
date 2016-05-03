@@ -1,5 +1,6 @@
 package es.agustruiz.anclapp.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
@@ -15,6 +16,8 @@ import java.util.List;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.model.AnchorColor;
 import es.agustruiz.anclapp.ui.adapter.ColorListAdapter;
+import es.agustruiz.anclapp.ui.anchor.ColorDialogAppCompatActivity;
+import es.agustruiz.anclapp.ui.anchor.editAnchor.EditAnchorActivity;
 import es.agustruiz.anclapp.ui.anchor.newAnchor.NewAnchorActivity;
 
 public class ColorDialogFragment extends DialogFragment {
@@ -63,7 +66,7 @@ public class ColorDialogFragment extends DialogFragment {
         mColorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                NewAnchorActivity callingActivity = (NewAnchorActivity) getActivity();
+                ColorDialogAppCompatActivity callingActivity = (ColorDialogAppCompatActivity) getActivity();
                 callingActivity.setAnchorColorValues(
                         mAnchorColorList.get(position).getEntry(),
                         mAnchorColorList.get(position).getEntryValue());
@@ -95,5 +98,18 @@ public class ColorDialogFragment extends DialogFragment {
                                 getResources().getString(R.string.pref_anchors_color_default_value)),
                 !isCurrentColorChecked));
         return anchorColorList;
+    }
+
+    public static String getColorTitle(Context context, String color) {
+        String colorTitle = context.getResources().getString(R.string.default_color);
+        String[] colorTitles = context.getResources().getStringArray(R.array.pref_anchors_color_titles);
+        String[] colorValues = context.getResources().getStringArray(R.array.pref_anchors_color_values);
+        for (int i = 0; i < colorValues.length; ++i) {
+            if (colorValues[i].equals(color)) {
+                colorTitle = colorTitles[i];
+                break;
+            }
+        }
+        return colorTitle;
     }
 }
