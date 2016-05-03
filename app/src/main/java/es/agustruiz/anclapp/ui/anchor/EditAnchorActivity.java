@@ -3,7 +3,15 @@ package es.agustruiz.anclapp.ui.anchor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -14,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +35,7 @@ import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.presenter.EditAnchorPresenter;
 import es.agustruiz.anclapp.ui.anchor.utils.ColorDialogAppCompatActivity;
+import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class EditAnchorActivity extends AppCompatActivity implements ColorDialogAppCompatActivity {
@@ -97,6 +107,32 @@ public class EditAnchorActivity extends AppCompatActivity implements ColorDialog
                 Color.parseColor(mPresenter.getAnchor(mIntentAnchorId).getColor()));
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        mPresenter.setHeaderImage();
+    }
+
+    //endregion
+
+    //region [Public methods]
+
+    public void setHeaderBackground(Drawable background){
+        mToolbarLayout.setBackground(background);
+    }
+
+    public Drawable getHeaderBackground(){
+        return mToolbarLayout.getBackground();
+    }
+
+    public int getHeaderWidth(){
+        return mToolbarLayout.getWidth();
+    }
+
+    public int getHeaderHeight(){
+        return mToolbarLayout.getHeight();
+    }
+
     //endregion
 
     //region [Private methods]
@@ -154,7 +190,7 @@ public class EditAnchorActivity extends AppCompatActivity implements ColorDialog
         mSelectedColorValue = entryValue;
         mAnchorColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
         mAnchorColorText.setText(mSelectedColorTitle);
-        tintElementsWithAnchorColor(Color.parseColor(mSelectedColorValue));
+        mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
     }
 
     //endregion
