@@ -4,7 +4,7 @@ import android.content.Context;
 
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
-import es.agustruiz.anclapp.ui.anchor.editAnchor.EditAnchorActivity;
+import es.agustruiz.anclapp.ui.anchor.EditAnchorActivity;
 
 public class EditAnchorPresenter implements Presenter {
 

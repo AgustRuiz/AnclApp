@@ -1,4 +1,4 @@
-package es.agustruiz.anclapp.ui.anchor.newAnchor;
+package es.agustruiz.anclapp.ui.anchor;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,8 +34,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.presenter.NewAnchorPresenter;
-import es.agustruiz.anclapp.ui.anchor.ColorDialogAppCompatActivity;
-import es.agustruiz.anclapp.ui.anchor.GetBitmapFromUrlTask;
+import es.agustruiz.anclapp.ui.anchor.utils.ColorDialogAppCompatActivity;
+import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class NewAnchorActivity extends AppCompatActivity implements ColorDialogAppCompatActivity {

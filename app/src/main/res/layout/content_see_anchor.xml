@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/fab_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.anchor.seeAnchor.SeeAnchorActivity"
+    tools:context=".ui.anchor.SeeAnchorActivity"
     tools:showIn="@layout/activity_see_anchor">
 
     <android.support.v7.widget.LinearLayoutCompat

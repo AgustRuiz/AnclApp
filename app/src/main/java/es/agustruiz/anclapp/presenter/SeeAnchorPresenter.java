@@ -12,14 +12,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
-import es.agustruiz.anclapp.ui.anchor.GetBitmapFromUrlTask;
-import es.agustruiz.anclapp.ui.anchor.editAnchor.EditAnchorActivity;
-import es.agustruiz.anclapp.ui.anchor.seeAnchor.SeeAnchorActivity;
+import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
+import es.agustruiz.anclapp.ui.anchor.EditAnchorActivity;
+import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 
 public class SeeAnchorPresenter implements Presenter {
 

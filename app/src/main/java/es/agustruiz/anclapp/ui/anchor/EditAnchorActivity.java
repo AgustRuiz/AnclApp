@@ -1,4 +1,4 @@
-package es.agustruiz.anclapp.ui.anchor.editAnchor;
+package es.agustruiz.anclapp.ui.anchor;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.presenter.EditAnchorPresenter;
-import es.agustruiz.anclapp.ui.anchor.ColorDialogAppCompatActivity;
+import es.agustruiz.anclapp.ui.anchor.utils.ColorDialogAppCompatActivity;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class EditAnchorActivity extends AppCompatActivity implements ColorDialogAppCompatActivity {

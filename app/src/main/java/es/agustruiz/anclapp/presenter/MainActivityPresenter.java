@@ -17,7 +17,7 @@ import es.agustruiz.anclapp.event.Event;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.ui.MainActivity;
-import es.agustruiz.anclapp.ui.anchor.newAnchor.NewAnchorActivity;
+import es.agustruiz.anclapp.ui.anchor.NewAnchorActivity;
 
 public class MainActivityPresenter implements Presenter {
 
