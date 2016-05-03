@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -30,8 +31,8 @@ public class SeeAnchorActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.toolbar_layout)
-    CollapsingToolbarLayout mToolbarLayout;
+    @Bind(R.id.toolbar_collapsing)
+    CollapsingToolbarLayout mCollapsingToolbar;
 
     @Bind(R.id.toolbar_marker_icon)
     ImageView mToolbarMarkerIcon;
@@ -64,6 +65,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
     public static final String ANCHOR_ID_INTENT_TAG = "mIntentAnchorId";
 
     protected Context mContext;
+    protected ActionBar mActionBar;
     protected SeeAnchorPresenter mPresenter = null;
 
     @Override
@@ -74,8 +76,13 @@ public class SeeAnchorActivity extends AppCompatActivity {
         mContext = getApplicationContext();
         mPresenter = new SeeAnchorPresenter(this);
         getIntentExtras(getIntent());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initialize();
-        fillData(mPresenter.getAnchor(mIntentAnchorId));
+        fillData(mPresenter.refreshAnchor(mIntentAnchorId));
         tintElementsWithAnchorColor(Color.parseColor(mPresenter.getAnchor(mIntentAnchorId).getColor()));
     }
 
@@ -106,25 +113,25 @@ public class SeeAnchorActivity extends AppCompatActivity {
     }
 
     public void showMessageView(String message) {
-        Snackbar.make(mToolbarLayout, message, Snackbar.LENGTH_LONG)
+        Snackbar.make(mCollapsingToolbar, message, Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .show();
     }
 
-    public void setHeaderBackground(Drawable background){
-        mToolbarLayout.setBackground(background);
+    public void setHeaderBackground(Drawable background) {
+        mCollapsingToolbar.setBackground(background);
     }
 
-    public Drawable getHeaderBackground(){
-        return mToolbarLayout.getBackground();
+    public Drawable getHeaderBackground() {
+        return mCollapsingToolbar.getBackground();
     }
 
-    public int getHeaderWidth(){
-        return mToolbarLayout.getWidth();
+    public int getHeaderWidth() {
+        return mCollapsingToolbar.getWidth();
     }
 
-    public int getHeaderHeight(){
-        return mToolbarLayout.getHeight();
+    public int getHeaderHeight() {
+        return mCollapsingToolbar.getHeight();
     }
 
     //region [Private methods]
@@ -135,7 +142,10 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     private void initialize() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mActionBar = getSupportActionBar();
+        if (mActionBar != null) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+        }
         mFabEditAnchor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +156,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     private void fillData(Anchor anchor) {
         if (anchor != null) {
-            setTitle(anchor.getTitle()); //mTextViewTitle.setText(mAnchor.getTitle());
+            mCollapsingToolbar.setTitle(anchor.getTitle());
             mTextViewDescription.setText(anchor.getDescription());
             mTextViewLatLng.setText(anchor.getLatitude() + ", " + anchor.getLongitude());
             if (anchor.isReminder()) {
@@ -161,7 +171,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
     }
 
     private void tintElementsWithAnchorColor(int color) {
-        mToolbarLayout.setBackgroundColor(color);
+        mCollapsingToolbar.setBackgroundColor(color);
         mFabEditAnchor.setBackgroundTintList(ColorStateList.valueOf(color));
         mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(color));
     }

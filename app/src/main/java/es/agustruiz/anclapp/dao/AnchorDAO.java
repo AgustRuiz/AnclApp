@@ -86,12 +86,29 @@ public class AnchorDAO {
         return mDatabase.insert(TABLE_NAME, null, values);
     }
 
+    public boolean update(Anchor anchor) {
+        ContentValues values = new ContentValues();
+        //values.put(COL_ID, id);
+        values.put(COL_LATITUDE, anchor.getLatitude());
+        values.put(COL_LONGITUDE, anchor.getLongitude());
+        values.put(COL_TITLE, anchor.getTitle());
+        values.put(COL_DESCRIPTION, anchor.getDescription());
+        values.put(COL_COLOR, anchor.getColor());
+        values.put(COL_REMINDER, (anchor.isReminder() ? 1 : 0));
+        String whereClause = COL_ID + "=?";
+        String[] whereArgs = new String[]{String.valueOf(anchor.getId())};
+        int result = mDatabase.update(TABLE_NAME, values, whereClause, whereArgs);
+        return result > 0;
+    }
+
     public boolean remove(Anchor anchor) {
         return remove(anchor.getId());
     }
 
     public boolean remove(long id) {
-        int result = mDatabase.delete(TABLE_NAME, "id=?", new String[]{String.valueOf(id)});
+        String whereClause = COL_ID + "=?";
+        String[] whereArgs = new String[]{String.valueOf(id)};
+        int result = mDatabase.delete(TABLE_NAME, whereClause, whereArgs);
         return result > 0;
     }
 

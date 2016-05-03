@@ -3,18 +3,12 @@ package es.agustruiz.anclapp.ui.anchor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,7 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,14 +29,11 @@ import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.presenter.EditAnchorPresenter;
 import es.agustruiz.anclapp.ui.anchor.utils.ColorDialogAppCompatActivity;
-import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class EditAnchorActivity extends AppCompatActivity implements ColorDialogAppCompatActivity {
 
     public final String LOG_TAG = EditAnchorActivity.class.getName() + "[A]";
-
-    private final int HEADER_TRANSITION_DURATION = 500;
 
     public static final String ID_INTENT_TAG = "idIntentTag";
     protected long mIntentAnchorId;
@@ -88,9 +79,7 @@ public class EditAnchorActivity extends AppCompatActivity implements ColorDialog
 
     private final String COLOR_DIALOG_TAG = "dialog";
     String mSelectedColorValue = null;
-    public static final String SELECTED_COLOR_VALUE_TAG = "mSelectedColorValue";
     String mSelectedColorTitle = null;
-    public static final String SELECTED_COLOR_TITLE_TAG = "mSelectedColorTitle";
 
     //region [Activity methods]
 
@@ -103,14 +92,22 @@ public class EditAnchorActivity extends AppCompatActivity implements ColorDialog
         mPresenter = new EditAnchorPresenter(this);
         getIntentExtras(getIntent());
         initializeViews(mPresenter.getAnchor(mIntentAnchorId));
-        tintElementsWithAnchorColor(
-                Color.parseColor(mPresenter.getAnchor(mIntentAnchorId).getColor()));
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         mPresenter.setHeaderImage();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                this.finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //endregion
@@ -131,6 +128,28 @@ public class EditAnchorActivity extends AppCompatActivity implements ColorDialog
 
     public int getHeaderHeight(){
         return mToolbarLayout.getHeight();
+    }
+
+    public String getAnchorTitle(){
+        return mEditTextTitle.getText().toString();
+    }
+
+    public String getAnchorDescription(){
+        return mEditTextDescription.getText().toString();
+    }
+
+    public String getAnchorColor(){
+        return mSelectedColorValue;
+    }
+
+    public boolean isReminder(){
+        return mSwitchReminder.isChecked();
+    }
+
+    public void showMessageView(String message) {
+        Snackbar.make(mToolbarLayout, message, Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show();
     }
 
     //endregion
@@ -158,6 +177,14 @@ public class EditAnchorActivity extends AppCompatActivity implements ColorDialog
         });
         mSelectedColorTitle = ColorDialogFragment.getColorTitle(mContext, mSelectedColorValue);
         setAnchorColorValues(mSelectedColorTitle, mSelectedColorValue);
+        tintElementsWithAnchorColor(
+                Color.parseColor(mPresenter.getAnchor(mIntentAnchorId).getColor()));
+        mBtnSaveAnchor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.updateAnchor();
+            }
+        });
     }
 
     private void tintElementsWithAnchorColor(int color) {

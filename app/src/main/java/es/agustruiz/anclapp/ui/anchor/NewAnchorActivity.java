@@ -4,15 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -35,14 +28,12 @@ import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.presenter.NewAnchorPresenter;
 import es.agustruiz.anclapp.ui.anchor.utils.ColorDialogAppCompatActivity;
-import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class NewAnchorActivity extends AppCompatActivity implements ColorDialogAppCompatActivity {
 
     public final String LOG_TAG = NewAnchorActivity.class.getName() + "[A]";
 
-    private final int HEADER_TRANSITION_DURATION = 500;
     public static final String LATITUDE_INTENT_TAG = "latitudeIntentTag";
     public static final String LONGITUDE_INTENT_TAG = "longitudeIntentTag";
     public static final String DESCRIPTION_INTENT_TAG = "descriptionIntentTag";
@@ -217,54 +208,6 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
                 mPresenter.saveNewAnchor();
             }
         });
-    }
-
-    private void getMapHeaderImage(Double latitude, Double longitude) {
-
-        // Note: Added a margin on top and bottom to trim Google logo and keep map in center
-
-        final int width = mToolbarLayout.getWidth();
-        final int height = mToolbarLayout.getHeight();
-
-        int scaleWidthFactor = (int) Math.ceil((float) width / (float) GetBitmapFromUrlTask.MAX_GOOGLE_STATIC_MAP);
-        int scaleHeightFactor = (int) Math.ceil((float) height / (float) GetBitmapFromUrlTask.MAX_GOOGLE_STATIC_MAP);
-        final int scaleFactor = Math.max(scaleWidthFactor, scaleHeightFactor) > 0 ? Math.max(scaleWidthFactor, scaleHeightFactor) : 1;
-
-        int scaledWidth = (int) Math.ceil(width / scaleFactor);
-        int scaledHeight = (int) Math.ceil(height / scaleFactor) + GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor * 2;
-
-        int zoom = 16;
-
-        String urlString = "http://maps.google.com/maps/api/staticmap?center=" + latitude.toString() + ","
-                + longitude.toString() + "&zoom=" + zoom + "&size=" + scaledWidth + "x"
-                + scaledHeight + "&scale=" + scaleFactor + "&sensor=false";
-
-        GetBitmapFromUrlTask getHeaderTask = new GetBitmapFromUrlTask();
-        getHeaderTask.setBitmapFromUrlListener(new GetBitmapFromUrlTask.OnBitmapFromUrlListener() {
-            @Override
-            public void onBitmapReady(Bitmap bitmapFull) {
-                if (bitmapFull != null) {
-                    Bitmap mBitmapHeader = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-                    Paint p = new Paint();
-                    p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-                    Canvas c = new Canvas(mBitmapHeader);
-                    c.drawRect(
-                            0, GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor,
-                            0, GetBitmapFromUrlTask.TRIM_MAP_MARGIN * scaleFactor, p);
-                    c.drawBitmap(bitmapFull, 0, 0, null);
-
-                    // Soft transition
-                    Drawable backgrounds[] = new Drawable[]{
-                            mToolbarLayout.getBackground(),
-                            new BitmapDrawable(getResources(), mBitmapHeader)
-                    };
-                    TransitionDrawable crossfader = new TransitionDrawable(backgrounds);
-                    mToolbarLayout.setBackground(crossfader);
-                    crossfader.startTransition(HEADER_TRANSITION_DURATION);
-                }
-            }
-        });
-        getHeaderTask.execute(urlString);
     }
 
     private void tintElementsWithAnchorColor() {

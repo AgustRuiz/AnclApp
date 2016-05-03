@@ -9,6 +9,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.util.Log;
 
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
@@ -16,6 +17,8 @@ import es.agustruiz.anclapp.ui.anchor.EditAnchorActivity;
 import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
 
 public class EditAnchorPresenter implements Presenter {
+
+    public static final String LOG_TAG = EditAnchorPresenter.class.getName() + "[A]";
 
     EditAnchorActivity mActivity = null;
     Context mContext = null;
@@ -25,13 +28,13 @@ public class EditAnchorPresenter implements Presenter {
 
     //region [Public methods]
 
-    public  EditAnchorPresenter(EditAnchorActivity activity){
+    public EditAnchorPresenter(EditAnchorActivity activity) {
         mActivity = activity;
         mContext = mActivity.getApplicationContext();
     }
 
-    public Anchor getAnchor(long id){
-        if(mAnchor==null){
+    public Anchor getAnchor(long id) {
+        if (mAnchor == null) {
             prepareDAO();
             mAnchorDAO.openReadOnly();
             mAnchor = mAnchorDAO.get(id);
@@ -40,21 +43,44 @@ public class EditAnchorPresenter implements Presenter {
         return mAnchor;
     }
 
+    public void updateAnchor() {
+        boolean result = false;
+        Anchor updatedAnchor = new Anchor(
+                mAnchor.getId(),
+                mAnchor.getLatitude(),
+                mAnchor.getLongitude(),
+                mActivity.getAnchorTitle(),
+                mActivity.getAnchorDescription(),
+                mActivity.getAnchorColor(),
+                mActivity.isReminder());
+        if (updatedAnchor.isOk()) {
+            prepareDAO();
+            mAnchorDAO.openWritable();
+            result = mAnchorDAO.update(updatedAnchor);
+            mAnchorDAO.close();
+        }
+        if (result) {
+            mActivity.finish();
+        } else {
+            showMessage("Error updating. Please check");
+        }
+    }
+
     //endregion
 
     //region [Overriden methods]
 
     @Override
     public void showMessage(String message) {
-
+        mActivity.showMessageView(message);
     }
 
     //endregion
 
     //region [Private methods]
 
-    protected void prepareDAO(){
-        if(mAnchorDAO==null)
+    protected void prepareDAO() {
+        if (mAnchorDAO == null)
             mAnchorDAO = new AnchorDAO(mContext);
     }
 

@@ -37,17 +37,19 @@ public class Anchor {
 
     /**
      * Id getter
+     *
      * @return Anchor id
      */
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 
     /**
      * Id setter
+     *
      * @param id Anchor id
      */
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -157,6 +159,18 @@ public class Anchor {
      */
     public void setReminder(Boolean reminder) {
         this.reminder = reminder;
+    }
+
+    /**
+     * Check if anchor is ok to save
+     *
+     * @return
+     */
+    public boolean isOk() {
+        boolean status = true;
+        if (title.length() == 0)
+            status = false;
+        return status;
     }
 
     //enregion

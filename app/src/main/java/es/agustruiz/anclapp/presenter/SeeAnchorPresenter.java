@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
@@ -37,11 +38,18 @@ public class SeeAnchorPresenter implements Presenter {
         mContext = mActivity.getApplicationContext();
     }
 
+    public Anchor refreshAnchor(long mIntentAnchorId) {
+        mAnchor = null;
+        getAnchor(mIntentAnchorId);
+        return mAnchor;
+    }
+
     public Anchor getAnchor(long mIntentAnchorId) {
         if (mAnchor == null) {
             prepareDAO();
             mAnchorDAO.openReadOnly();
             mAnchor = mAnchorDAO.get(mIntentAnchorId);
+            Log.d(LOG_TAG, "get anchor from DB, id=" + mIntentAnchorId);
             mAnchorDAO.close();
         }
         return mAnchor;
