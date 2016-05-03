@@ -158,6 +158,22 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
         return mSwitchReminder.isChecked();
     }
 
+    public void setHeaderBackground(Drawable background){
+        mToolbarLayout.setBackground(background);
+    }
+
+    public Drawable getHeaderBackground(){
+        return mToolbarLayout.getBackground();
+    }
+
+    public int getHeaderWidth(){
+        return mToolbarLayout.getWidth();
+    }
+
+    public int getHeaderHeight(){
+        return mToolbarLayout.getHeight();
+    }
+
     //endregion
 
     //region [Private methods]
