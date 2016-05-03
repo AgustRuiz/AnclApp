@@ -31,15 +31,6 @@ public class NewAnchorPresenter implements Presenter {
         mContext = activity.getApplicationContext();
     }
 
-    public void setHeaderImage() {
-        if (mBitmapHeader == null) {
-            downloadMapHeaderImage(mActivity.getLatitudeValue(), mActivity.getLongitudeValue(),
-                    mActivity.getHeaderWidth(), mActivity.getHeaderHeight());
-        } else {
-            mActivity.setHeaderBackground(new BitmapDrawable(mActivity.getResources(), mBitmapHeader));
-        }
-    }
-
     public void saveNewAnchor() {
         boolean resultOk = false;
         if(isNewAnchorDataOk()) {
@@ -92,6 +83,15 @@ public class NewAnchorPresenter implements Presenter {
             result = false;
         }
         return result;
+    }
+
+    public void setHeaderImage() {
+        if (mBitmapHeader == null) {
+            downloadMapHeaderImage(mActivity.getLatitudeValue(), mActivity.getLongitudeValue(),
+                    mActivity.getHeaderWidth(), mActivity.getHeaderHeight());
+        } else {
+            mActivity.setHeaderBackground(new BitmapDrawable(mActivity.getResources(), mBitmapHeader));
+        }
     }
 
     private void downloadMapHeaderImage(Double latitude, Double longitude, final int width, final int height) {

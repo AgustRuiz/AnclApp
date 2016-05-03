@@ -97,8 +97,6 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
     Double mIntentLongitude = null;
     String mIntentDescription = null;
 
-    boolean isHeaderLoaded = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +106,7 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
         mContext = getApplicationContext();
         getIntentExtras(getIntent());
         initializeViews(savedInstanceState);
+        tintElementsWithAnchorColor();
     }
 
     @Override
@@ -120,10 +119,7 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (!isHeaderLoaded) {
-            getMapHeaderImage(mIntentLatitude, mIntentLongitude);
-        }
-        tintElementsWithAnchorColor();
+        mPresenter.setHeaderImage();
     }
 
     //region [Public methods]
@@ -265,7 +261,6 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
                     TransitionDrawable crossfader = new TransitionDrawable(backgrounds);
                     mToolbarLayout.setBackground(crossfader);
                     crossfader.startTransition(HEADER_TRANSITION_DURATION);
-                    isHeaderLoaded = true;
                 }
             }
         });
@@ -274,9 +269,7 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
 
     private void tintElementsWithAnchorColor() {
         int color = Color.parseColor(mSelectedColorValue);
-        if (!isHeaderLoaded) {
-            mToolbarLayout.setBackgroundColor(color);
-        }
+        mToolbarLayout.setBackgroundColor(color);
         mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(color));
     }
 
