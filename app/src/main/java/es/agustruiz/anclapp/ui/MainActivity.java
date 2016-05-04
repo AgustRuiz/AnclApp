@@ -226,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mPresenter.refreshAnchorMarkers();
-        mPresenter.cancelMarker();
     }
 
     @Override
@@ -283,10 +282,6 @@ public class MainActivity extends AppCompatActivity {
             mFabCenterView.getDrawable()
                     .setTint(getResources().getColor(R.color.grey700, getTheme()));
         }
-    }
-
-    public boolean isAutoCenterMap() {
-        return isAutoCenterMap;
     }
 
     public void showLocationCardView() {

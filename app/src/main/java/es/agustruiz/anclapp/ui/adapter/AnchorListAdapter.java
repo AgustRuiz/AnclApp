@@ -79,7 +79,10 @@ public class AnchorListAdapter extends BaseAdapter {
         holder.mIcon.setImageTintList(
                 ColorStateList.valueOf(Color.parseColor(anchor.getColor())));
         holder.mDistance.setText("?km");
-
+        if(anchor.isReminder()){
+            holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_black_24dp));
+            holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.blue500));
+        }
         return row;
     }
 
@@ -92,6 +95,8 @@ public class AnchorListAdapter extends BaseAdapter {
         ImageView mIcon;
         @Bind(R.id.anchor_list_title)
         TextView mTitle;
+        @Bind(R.id.anchor_list_notification_icon)
+        ImageView mNotificationIcon;
         @Bind(R.id.anchor_list_distance)
         TextView mDistance;
 

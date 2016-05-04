@@ -48,11 +48,10 @@ public class GoogleMapFragment extends Fragment {
     protected SupportMapFragment mMapFragment;
     protected GoogleMap mGoogleMap;
 
+    protected String mNewMarkerColor = null;
     protected Marker mNewMarker = null;
     protected MarkerOptions mNewMarkerOptions = null;
-    protected String mNewMarkerColor = null;
     protected final String NEW_MARKER_OPTIONS_TAG = "mNewMarkerOptions";
-    public final int MARKER_DP_SIZE = 36;
 
     public final char CENTER_MAP_OFF = 0;
     public final char CENTER_MAP_CURRENT_LOCATION = 1;
@@ -83,22 +82,11 @@ public class GoogleMapFragment extends Fragment {
                 mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
-                        if (mNewMarker != null) {
-                            removeNewMarker();
-                        }
-                        setAutoCenterMapMode(CENTER_MAP_MARKER);
+                        removeNewMarkerView();
+                        createNewMarkerView(latLng);
                         centerMapOnLocation(latLng);
-                        mNewMarkerColor = PreferenceManager.getDefaultSharedPreferences(mContext)
-                                .getString(
-                                        getString(R.string.key_pref_anchors_color),
-                                        getString(R.string.pref_anchors_color_default_value)
-                                );
-                        mNewMarkerOptions = new MarkerOptions()
-                                .position(latLng)
-                                .icon(getMarkerIcon(mNewMarkerColor))
-                                .draggable(true);
-                        mNewMarker = mGoogleMap.addMarker(mNewMarkerOptions);
-                        mEventsUtil.mapClick(latLng);
+                        mPresenter.notifyNewMarkerData(latLng);
+                        setAutoCenterMapMode(CENTER_MAP_MARKER);
                     }
                 });
                 mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -112,7 +100,8 @@ public class GoogleMapFragment extends Fragment {
 
                     @Override
                     public void onMarkerDragEnd(Marker marker) {
-                        mEventsUtil.mapClick(marker.getPosition());
+                        centerMapOnLocation(marker.getPosition());
+                        mPresenter.notifyNewMarkerData(marker.getPosition());
                     }
                 });
 
@@ -122,6 +111,8 @@ public class GoogleMapFragment extends Fragment {
                         if (mMarkerMap.get(marker) != null) {
                             setAutoCenterMapMode(CENTER_MAP_OFF);
                             mEventsUtil.dismissFabCenterMap();
+
+
                         }
                         return false;
                     }
@@ -207,14 +198,6 @@ public class GoogleMapFragment extends Fragment {
         }
     }
 
-    public void removeNewMarker() {
-        if (mNewMarker != null) {
-            mNewMarker.remove();
-            mNewMarker = null;
-            mNewMarkerOptions = null;
-        }
-    }
-
     public void centerMapOnLocation(Location location) {
         if (location != null) {
             centerMapOnLocation(new LatLng(location.getLatitude(), location.getLongitude()));
@@ -248,6 +231,37 @@ public class GoogleMapFragment extends Fragment {
                 mMarkerMap.put(marker, anchor.getId());
             }
         }
+    }
+
+    public Marker getNewMarkerView(){
+        return mNewMarker;
+    }
+
+    public MarkerOptions getNewMarkerOptionsView(){
+        return mNewMarkerOptions;
+    }
+
+    public void removeNewMarkerView(){
+        if (mNewMarker != null) {
+            mNewMarker.remove();
+            mNewMarker = null;
+            mNewMarkerOptions = null;
+        }
+    }
+
+    public void createNewMarkerView(LatLng latLng){
+        mNewMarkerColor = PreferenceManager.getDefaultSharedPreferences(mContext)
+                .getString(
+                        getString(R.string.key_pref_anchors_color),
+                        getString(R.string.pref_anchors_color_default_value)
+                );
+        mNewMarkerOptions = new MarkerOptions()
+                .position(latLng)
+                .icon(getMarkerIcon(mNewMarkerColor))
+                .draggable(true);
+        mNewMarker = mGoogleMap.addMarker(mNewMarkerOptions);
+
+
     }
 
     //endregion

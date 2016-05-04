@@ -12,6 +12,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.widget.Toast;
 
 import es.agustruiz.anclapp.dao.AnchorDAO;
+import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.ui.anchor.NewAnchorActivity;
 import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;

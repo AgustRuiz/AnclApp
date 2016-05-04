@@ -2,9 +2,13 @@ package es.agustruiz.anclapp.presenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -13,14 +17,19 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
+import java.io.IOException;
 import java.util.List;
 
+import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.event.Event;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.model.Anchor;
+import es.agustruiz.anclapp.ui.anchor.NewAnchorActivity;
 import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 import es.agustruiz.anclapp.ui.fragment.GoogleMapFragment;
 
@@ -38,6 +47,10 @@ public class GoogleMapFragmentPresenter {
     protected LocationRequest mLocationRequest = null;
     protected EventsUtil mEventsUtil = EventsUtil.getInstance();
     protected AnchorDAO mAnchorDAO = null;
+    
+    protected String mNewMarkerAddress = "";
+    protected String mNewMarkerLocality = "";
+    protected String nNewMarkerDistance = "";
 
     //region [Public methods]
 
@@ -73,19 +86,44 @@ public class GoogleMapFragmentPresenter {
         mEventsUtil.addEventListener(EventsUtil.CENTER_MAP_ON_CURRENT_LOCATION, new IEventHandler() {
             @Override
             public void callback(Event event) {
-                if (event.getParameter().equals(true)) {
+                if (event.getParameter().equals(true))
                     mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_CURRENT_LOCATION);
-                }else{
+                else
                     mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_OFF);
+            }
+        });
+
+        mEventsUtil.addEventListener(EventsUtil.ADD_NEW_ANCHOR_ON_MAP, new IEventHandler() {
+            @Override
+            public void callback(Event event) {
+                Marker marker = mFragment.getNewMarkerView();
+                if (marker != null) {
+                    Intent intent = new Intent(mContext, NewAnchorActivity.class);
+                    intent.putExtra(NewAnchorActivity.LATITUDE_INTENT_TAG, marker.getPosition().latitude);
+                    intent.putExtra(NewAnchorActivity.LONGITUDE_INTENT_TAG, marker.getPosition().longitude);
+                    intent.putExtra(NewAnchorActivity.DESCRIPTION_INTENT_TAG, mNewMarkerAddress);
+                    mEventsUtil.hideLocationCard();
+                    mFragment.removeNewMarkerView();
+                    mContext.startActivity(intent);
+                } else if (mCurrentLocation != null) {
+                    fillNewMarkerDescription(mCurrentLocation);
+                    Intent intent = new Intent(mContext, NewAnchorActivity.class);
+                    intent.putExtra(NewAnchorActivity.LATITUDE_INTENT_TAG, mCurrentLocation.getLatitude());
+                    intent.putExtra(NewAnchorActivity.LONGITUDE_INTENT_TAG, mCurrentLocation.getLongitude());
+                    intent.putExtra(NewAnchorActivity.DESCRIPTION_INTENT_TAG, mNewMarkerAddress);
+                    mContext.startActivity(intent);
+                } else {
+                    Toast.makeText(mContext, mContext.getString(R.string.no_location_found),
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+
         mEventsUtil.addEventListener(EventsUtil.MAP_CANCEL_NEW_MARKER, new IEventHandler() {
             @Override
             public void callback(Event event) {
-                mFragment.removeNewMarker();
-                mEventsUtil.setMarkerDetails(mCurrentLocation);
+                removeNewMarker();
             }
         });
 
@@ -113,14 +151,19 @@ public class GoogleMapFragmentPresenter {
         return result;
     }
 
-    public void seeAnchor(long id){
+    public void seeAnchor(long id) {
         Intent intent = new Intent(mContext, SeeAnchorActivity.class);
         intent.putExtra(SeeAnchorActivity.ANCHOR_ID_INTENT_TAG, id);
         mContext.startActivity(intent);
     }
 
-    public Location getCurrentLocation(){
+
+    public Location getCurrentLocation() {
         return mCurrentLocation;
+    }
+
+    private LatLng getCurrentLatLng() {
+        return new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
     }
 
     //endregion
@@ -136,27 +179,65 @@ public class GoogleMapFragmentPresenter {
     }
 
     private void startLocationUpdates() {
-        //Log.d(LOG_TAG, "Location update started");
-        //if (mGoogleApiClient.isConnected()) {
-        PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+        LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
                         mCurrentLocation = location;
-                        //mEventsUtil.currentLocationChange(mCurrentLocation);
-                        if (mFragment.isAutoCenterMapCurrentLocation()){
+                        if (mFragment.isAutoCenterMapCurrentLocation()) {
                             mFragment.centerMapOnLocation(mCurrentLocation);
-                            mEventsUtil.setMarkerDetails(mCurrentLocation);
-                        }else if(!mFragment.isAutoCenterMapModeOnMarker()){
-                            mEventsUtil.setMarkerDetails(location);
                         }
                     }
                 }); // TODO Permission check
-        //}
     }
 
-    private void prepareAnchorDAO(){
-        if(mAnchorDAO==null){
+    public void fillNewMarkerDescription(Location location) {
+        fillNewMarkerDescription(new LatLng(location.getLatitude(), location.getLongitude()));
+    }
+
+    public void fillNewMarkerDescription(LatLng latLng) {
+        boolean isError = false;
+        Geocoder geocoder = new Geocoder(mContext);
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            if (addresses.size() == 0) {
+                isError = true;
+            } else {
+                Address address = addresses.get(0);
+                Location markerLocation = new Location(LocationManager.GPS_PROVIDER);
+                markerLocation.setLatitude(latLng.latitude);
+                markerLocation.setLongitude(latLng.longitude);
+                mNewMarkerAddress = address.getAddressLine(0);
+                mNewMarkerLocality = address.getLocality();
+                nNewMarkerDistance = (mCurrentLocation != null)
+                        ? (Math.round(mCurrentLocation.distanceTo(markerLocation) / 10) / 100f)
+                        + mContext.getString(R.string.km_unit)
+                        : "";
+            }
+        } catch (IOException e) {
+            isError = true;
+        }
+        if (isError) {
+            mNewMarkerAddress = mContext.getString(R.string.no_location_found);
+            mNewMarkerLocality = nNewMarkerDistance = "";
+        }
+    }
+
+
+    public void notifyNewMarkerData(LatLng latLng) {
+        fillNewMarkerDescription(latLng);
+        String[] data = new String[]{mNewMarkerAddress, mNewMarkerLocality, nNewMarkerDistance};
+        mEventsUtil.getNewMarkerData(data);
+    }
+
+    private void removeNewMarker() {
+        mFragment.removeNewMarkerView();
+        fillNewMarkerDescription(getCurrentLatLng());
+    }
+
+
+    private void prepareAnchorDAO() {
+        if (mAnchorDAO == null) {
             mAnchorDAO = new AnchorDAO(mContext);
         }
     }

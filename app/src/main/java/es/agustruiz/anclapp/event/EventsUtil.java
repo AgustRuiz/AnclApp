@@ -10,20 +10,18 @@ public class EventsUtil extends EventDispatcher {
     private static EventsUtil ourInstance = new EventsUtil();
 
     public static final String CENTER_MAP_ON_CURRENT_LOCATION = "centerMapOnCurrentLocation";
-    public static final String MAP_NEW_MARKER = "mapNewMarker";
+    public static final String ADD_NEW_ANCHOR_ON_MAP = "addNewAnchorOnMap";
+    public static final String GET_NEW_MARKER_DATA = "getNewMarkerData";
     public static final String MAP_CANCEL_NEW_MARKER = "mapCancelNewMarker";
-    public static final String CURRENT_LOCATION_CHANGE = "currentLocationChange";
-    public static final String GET_MARKER_DETAILS = "setMarkerDetails";
     public static final String REFRESH_ANCHOR_MARKERS = "refreshAnchorMarkers";
     public static final String DISMISS_FAB_CENTER_MAP = "dismissFabCenterMap";
+    public static final String HIDE_LOCATION_CARD = "hideLocationCard";
 
     //region [Singleton constructor]
 
     public static EventsUtil getInstance() {
         return ourInstance;
     }
-
-    //private EventsUtil() {}
 
     //endregion
 
@@ -33,20 +31,16 @@ public class EventsUtil extends EventDispatcher {
         dispatchEvent(new Event(CENTER_MAP_ON_CURRENT_LOCATION, state));
     }
 
-    public void mapClick(LatLng latLng){
-        dispatchEvent(new Event(MAP_NEW_MARKER, latLng));
+    public void addNewAnchorOnMap(){
+        dispatchEvent(new Event(ADD_NEW_ANCHOR_ON_MAP));
     }
 
-    public void cancelNewMarker(){
+    public void getNewMarkerData(String[] data){
+        dispatchEvent(new Event(GET_NEW_MARKER_DATA, data));
+    }
+
+    public void mapCancelNewMarker(){
         dispatchEvent(new Event(MAP_CANCEL_NEW_MARKER));
-    }
-
-    public void currentLocationChange(Location location){
-        dispatchEvent(new Event(CURRENT_LOCATION_CHANGE, location));
-    }
-
-    public void setMarkerDetails(Location location){
-        dispatchEvent(new Event(GET_MARKER_DETAILS, location));
     }
 
     public void refreshAnchorMarkers(){
@@ -55,6 +49,10 @@ public class EventsUtil extends EventDispatcher {
 
     public void dismissFabCenterMap(){
         dispatchEvent(new Event(DISMISS_FAB_CENTER_MAP));
+    }
+
+    public void hideLocationCard(){
+        dispatchEvent(new Event(HIDE_LOCATION_CARD));
     }
 
     //endregion
