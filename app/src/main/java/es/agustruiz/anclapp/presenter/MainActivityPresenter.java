@@ -61,12 +61,14 @@ public class MainActivityPresenter implements Presenter {
                 fillIntentExtras(latLng.latitude, latLng.longitude, description);
             }
         });
+
         eventsUtil.addEventListener(EventsUtil.CURRENT_LOCATION_CHANGE, new IEventHandler() {
             @Override
             public void callback(Event event) {
                 mCurrentLocation = (Location) event.getParameter();
             }
         });
+
         eventsUtil.addEventListener(EventsUtil.GET_MARKER_DETAILS, new IEventHandler(){
             @Override
             public void callback(Event event) {
@@ -83,6 +85,13 @@ public class MainActivityPresenter implements Presenter {
                     e.printStackTrace();
                 }
                 fillIntentExtras(location.getLatitude(), location.getLongitude(), description);
+            }
+        });
+
+        eventsUtil.getInstance().addEventListener(EventsUtil.DISMISS_FAB_CENTER_MAP, new IEventHandler() {
+            @Override
+            public void callback(Event event) {
+                mActivity.setFabCenterViewState(false);
             }
         });
     }

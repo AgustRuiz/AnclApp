@@ -116,13 +116,12 @@ public class GoogleMapFragment extends Fragment {
                     }
                 });
 
-
                 mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
                         if (mMarkerMap.get(marker) != null) {
                             setAutoCenterMapMode(CENTER_MAP_OFF);
-                            mEventsUtil.centerMapOnCurrentLocationEvent(false);
+                            mEventsUtil.dismissFabCenterMap();
                         }
                         return false;
                     }
