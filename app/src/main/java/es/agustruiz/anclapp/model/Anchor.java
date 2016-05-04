@@ -3,6 +3,8 @@ package es.agustruiz.anclapp.model;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Anchor {
 
     Long id;
@@ -171,6 +173,10 @@ public class Anchor {
         if (title.length() == 0)
             status = false;
         return status;
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(latitude, longitude);
     }
 
     //enregion

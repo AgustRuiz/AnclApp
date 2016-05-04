@@ -26,7 +26,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.SystemUtils;
-import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.presenter.MainActivityPresenter;
 import es.agustruiz.anclapp.ui.customView.CustomViewPager;
 import es.agustruiz.anclapp.ui.settings.SettingsActivity;
@@ -108,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             isAutoCenterMap = savedInstanceState.getBoolean(IS_AUTO_CENTER_MAP_TAG);
-            setAutoCenterMap(isAutoCenterMap);
+            setFabCenterViewState(isAutoCenterMap);
             isCardViewShown = savedInstanceState.getBoolean(IS_CARD_VIEW_SHOWN);
             cardViewAddress.setText(savedInstanceState.getCharSequence(CARD_VIEW_ADDRESS));
             cardViewLocality.setText(savedInstanceState.getCharSequence(CARD_VIEW_LOCALITY));
@@ -131,8 +130,9 @@ public class MainActivity extends AppCompatActivity {
         mFabCenterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setAutoCenterMap(!isAutoCenterMap);
-                mPresenter.centerMapOnCurrentLocation();
+                isAutoCenterMap = !isAutoCenterMap;
+                setFabCenterViewState(isAutoCenterMap);
+                mPresenter.centerMapOnCurrentLocation(isAutoCenterMap);
             }
         });
 
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         mSlidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
+                return getResources().getColor(R.color.tabsScrollColor, getTheme());
             }
         });
         mSlidingTabLayout.setViewPager(mViewPager);
@@ -207,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //endregion
-
     }
 
     @Override
@@ -218,6 +217,13 @@ public class MainActivity extends AppCompatActivity {
         outState.putCharSequence(CARD_VIEW_ADDRESS, cardViewAddress.getText());
         outState.putCharSequence(CARD_VIEW_LOCALITY, cardViewLocality.getText());
         outState.putCharSequence(CARD_VIEW_DISTANCE, cardViewDistance.getText());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.refreshAnchorMarkers();
+        mPresenter.cancelMarker();
     }
 
     @Override
@@ -265,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         mFabDismissCardView.hide();
     }
 
-    public void setAutoCenterMap(boolean value) {
+    public void setFabCenterViewState(boolean value) {
         isAutoCenterMap = value;
         if (isAutoCenterMap) {
             mFabCenterView.getDrawable()
@@ -322,14 +328,14 @@ public class MainActivity extends AppCompatActivity {
         return isCardViewShown;
     }
 
-    public int getTabSelected() {
-        return tabSelected;
-    }
-
     public void fillLocationCardView(String address, String locality, String distance) {
         cardViewAddress.setText(address);
         cardViewLocality.setText(locality);
         cardViewDistance.setText(distance);
+    }
+
+    public int getTabSelected() {
+        return tabSelected;
     }
 
     public Context getContext(){

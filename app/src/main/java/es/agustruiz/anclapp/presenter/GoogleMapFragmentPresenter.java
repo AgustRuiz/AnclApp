@@ -1,6 +1,7 @@
 package es.agustruiz.anclapp.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,9 +14,14 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.List;
+
+import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.event.Event;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
+import es.agustruiz.anclapp.model.Anchor;
+import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 import es.agustruiz.anclapp.ui.fragment.GoogleMapFragment;
 
 public class GoogleMapFragmentPresenter {
@@ -31,6 +37,7 @@ public class GoogleMapFragmentPresenter {
     protected Location mCurrentLocation = null;
     protected LocationRequest mLocationRequest = null;
     protected EventsUtil mEventsUtil = EventsUtil.getInstance();
+    protected AnchorDAO mAnchorDAO = null;
 
     //region [Public methods]
 
@@ -39,6 +46,7 @@ public class GoogleMapFragmentPresenter {
         mContext = mFragment.getContext();
 
         createLocationRequest();
+
         mGoogleApiClient = new GoogleApiClient
                 .Builder(mContext)
                 .addApi(LocationServices.API) //.addApi(AppIndex.API)
@@ -62,23 +70,29 @@ public class GoogleMapFragmentPresenter {
                 })
                 .build();
 
-        mEventsUtil.addEventListener(EventsUtil.FAB_CENTER_MAP, new IEventHandler() {
+        mEventsUtil.addEventListener(EventsUtil.CENTER_MAP_ON_CURRENT_LOCATION, new IEventHandler() {
             @Override
             public void callback(Event event) {
                 if (event.getParameter().equals(true)) {
                     mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_CURRENT_LOCATION);
-                    mFragment.centerMapOnLocation(mCurrentLocation);
-                } else {
+                }else{
                     mFragment.setAutoCenterMapMode(mFragment.CENTER_MAP_OFF);
                 }
             }
         });
 
-        mEventsUtil.addEventListener(EventsUtil.CANCEL_NEW_MARKER, new IEventHandler() {
+        mEventsUtil.addEventListener(EventsUtil.MAP_CANCEL_NEW_MARKER, new IEventHandler() {
             @Override
             public void callback(Event event) {
-                mFragment.removeMarker();
+                mFragment.removeNewMarker();
                 mEventsUtil.setMarkerDetails(mCurrentLocation);
+            }
+        });
+
+        mEventsUtil.addEventListener(EventsUtil.REFRESH_ANCHOR_MARKERS, new IEventHandler() {
+            @Override
+            public void callback(Event event) {
+                mFragment.reloadAnchorsInMap();
             }
         });
     }
@@ -89,6 +103,24 @@ public class GoogleMapFragmentPresenter {
 
     public void GoogleApiClientDisconnect() {
         mGoogleApiClient.disconnect();
+    }
+
+    public List<Anchor> getAnchorList() {
+        prepareAnchorDAO();
+        mAnchorDAO.openReadOnly();
+        List<Anchor> result = mAnchorDAO.getAll();
+        mAnchorDAO.close();
+        return result;
+    }
+
+    public void seeAnchor(long id){
+        Intent intent = new Intent(mContext, SeeAnchorActivity.class);
+        intent.putExtra(SeeAnchorActivity.ANCHOR_ID_INTENT_TAG, id);
+        mContext.startActivity(intent);
+    }
+
+    public Location getCurrentLocation(){
+        return mCurrentLocation;
     }
 
     //endregion
@@ -111,8 +143,8 @@ public class GoogleMapFragmentPresenter {
                     @Override
                     public void onLocationChanged(Location location) {
                         mCurrentLocation = location;
-                        mEventsUtil.currentLocationChange(mCurrentLocation);
-                        if (mFragment.isAutoCenterMapCurrentOnLocation()){
+                        //mEventsUtil.currentLocationChange(mCurrentLocation);
+                        if (mFragment.isAutoCenterMapCurrentLocation()){
                             mFragment.centerMapOnLocation(mCurrentLocation);
                             mEventsUtil.setMarkerDetails(mCurrentLocation);
                         }else if(!mFragment.isAutoCenterMapModeOnMarker()){
@@ -121,6 +153,12 @@ public class GoogleMapFragmentPresenter {
                     }
                 }); // TODO Permission check
         //}
+    }
+
+    private void prepareAnchorDAO(){
+        if(mAnchorDAO==null){
+            mAnchorDAO = new AnchorDAO(mContext);
+        }
     }
 
     //endregion

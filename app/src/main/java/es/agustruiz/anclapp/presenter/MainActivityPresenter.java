@@ -38,7 +38,7 @@ public class MainActivityPresenter implements Presenter {
         mActivity = activity;
         mContext = mActivity.getApplicationContext();
 
-        eventsUtil.addEventListener(EventsUtil.MAP_CLICK, new IEventHandler() {
+        eventsUtil.addEventListener(EventsUtil.MAP_NEW_MARKER, new IEventHandler() {
             @Override
             public void callback(Event event) {
                 LatLng latLng = (LatLng) event.getParameter();
@@ -46,7 +46,6 @@ public class MainActivityPresenter implements Presenter {
                 mActivity.hideFabCenterView();
                 mActivity.showFabDismissCardView();
                 mActivity.showLocationCardView();
-
 
                 String description = "";
                 Geocoder geocoder = new Geocoder(mContext);
@@ -88,8 +87,8 @@ public class MainActivityPresenter implements Presenter {
         });
     }
 
-    public void centerMapOnCurrentLocation() {
-        eventsUtil.centerMapOnLocationEvent(mActivity.isAutoCenterMap());
+    public void centerMapOnCurrentLocation(boolean state) {
+        eventsUtil.centerMapOnCurrentLocationEvent(state);
     }
 
     public void addAnchor() {
@@ -106,13 +105,13 @@ public class MainActivityPresenter implements Presenter {
 
     public void cancelMarker() {
         mActivity.hideLocationCardView();
-        mActivity.setAutoCenterMap(false);
+        mActivity.setFabCenterViewState(false);
         mActivity.showFabCenterView();
         mActivity.hideFabDismissCardView();
         eventsUtil.cancelNewMarker();
     }
 
-    public void fillLocationCardView(LatLng latLng) {
+    private void fillLocationCardView(LatLng latLng) {
         Geocoder geocoder = new Geocoder(mContext);
         try {
             List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -138,10 +137,8 @@ public class MainActivityPresenter implements Presenter {
         }
     }
 
-    public void fillIntentExtras(Double latitude, Double longitude, String description){
-        mIntentLatitude = latitude;
-        mIntentLongitude = longitude;
-        mIntentDescription = description;
+    public void refreshAnchorMarkers(){
+        eventsUtil.refreshAnchorMarkers();
     }
 
     //endregion
@@ -151,6 +148,16 @@ public class MainActivityPresenter implements Presenter {
     @Override
     public void showMessage(String message) {
         mActivity.showMessageView(null, message);
+    }
+
+    //endregion
+
+    //region [Private methods]
+
+    private void fillIntentExtras(Double latitude, Double longitude, String description){
+        mIntentLatitude = latitude;
+        mIntentLongitude = longitude;
+        mIntentDescription = description;
     }
 
     //endregion

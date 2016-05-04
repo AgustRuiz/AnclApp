@@ -23,6 +23,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
+import es.agustruiz.anclapp.event.Event;
+import es.agustruiz.anclapp.event.EventsUtil;
+import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.ui.adapter.AnchorListAdapter;
 import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
@@ -74,6 +77,7 @@ public class AnchorListFragment extends Fragment {
                         mAnchorDAO.remove(mAnchorListAdapter.getItemId(position));
                         mAnchorDAO.close();
                         mAnchorListAdapter.remove(position);
+                        EventsUtil.getInstance().refreshAnchorMarkers();
                     }
                 }
         );
@@ -113,7 +117,7 @@ public class AnchorListFragment extends Fragment {
 
     private void refreshAnchorList() {
         mAnchorDAO.openReadOnly();
-        mAnchorList = mAnchorDAO.getList();
+        mAnchorList = mAnchorDAO.getAll();
         mAnchorDAO.close();
         mAnchorListAdapter.getData().clear();
         mAnchorListAdapter.getData().addAll(mAnchorList);

@@ -1,8 +1,6 @@
 package es.agustruiz.anclapp.event;
 
-import android.graphics.Bitmap;
 import android.location.Location;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -10,11 +8,13 @@ public class EventsUtil extends EventDispatcher {
 
     public static final String LOG_TAG = EventsUtil.class.getName()+"[A]";
     private static EventsUtil ourInstance = new EventsUtil();
-    public static final String FAB_CENTER_MAP = "fabCenterMapEvent";
-    public static final String MAP_CLICK = "mapClick";
-    public static final String CANCEL_NEW_MARKER = "cancelNewMarker";
+
+    public static final String CENTER_MAP_ON_CURRENT_LOCATION = "centerMapOnCurrentLocation";
+    public static final String MAP_NEW_MARKER = "mapNewMarker";
+    public static final String MAP_CANCEL_NEW_MARKER = "mapCancelNewMarker";
     public static final String CURRENT_LOCATION_CHANGE = "currentLocationChange";
     public static final String GET_MARKER_DETAILS = "setMarkerDetails";
+    public static final String REFRESH_ANCHOR_MARKERS = "refreshAnchorMarkers";
 
     //region [Singleton constructor]
 
@@ -28,16 +28,16 @@ public class EventsUtil extends EventDispatcher {
 
     //region [Public events]
 
-    public void centerMapOnLocationEvent(boolean state){
-        dispatchEvent(new Event(FAB_CENTER_MAP, state));
+    public void centerMapOnCurrentLocationEvent(boolean state){
+        dispatchEvent(new Event(CENTER_MAP_ON_CURRENT_LOCATION, state));
     }
 
     public void mapClick(LatLng latLng){
-        dispatchEvent(new Event(MAP_CLICK, latLng));
+        dispatchEvent(new Event(MAP_NEW_MARKER, latLng));
     }
 
     public void cancelNewMarker(){
-        dispatchEvent(new Event(CANCEL_NEW_MARKER));
+        dispatchEvent(new Event(MAP_CANCEL_NEW_MARKER));
     }
 
     public void currentLocationChange(Location location){
@@ -46,6 +46,10 @@ public class EventsUtil extends EventDispatcher {
 
     public void setMarkerDetails(Location location){
         dispatchEvent(new Event(GET_MARKER_DETAILS, location));
+    }
+
+    public void refreshAnchorMarkers(){
+        dispatchEvent(new Event(REFRESH_ANCHOR_MARKERS));
     }
 
     //endregion

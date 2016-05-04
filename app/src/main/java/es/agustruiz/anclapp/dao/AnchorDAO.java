@@ -54,7 +54,7 @@ public class AnchorDAO {
         mDatabase = null;
     }
 
-    public List<Anchor> getList() {
+    public List<Anchor> getAll() {
         List<Anchor> result = new ArrayList<>();
         String query = "select * from " + TABLE_NAME;
         String[] params = new String[]{};
@@ -70,6 +70,18 @@ public class AnchorDAO {
                 boolean reminder = cursor.getInt(6) != 0;
                 result.add(new Anchor(id, latitude, longitude, title, description, color, reminder));
             } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return result;
+    }
+
+    public int countAll(){
+        int result = 0;
+        String query = "select count(*) from " + TABLE_NAME;
+        String[] params = new String[]{};
+        Cursor cursor = mDatabase.rawQuery(query, params);
+        if (cursor.moveToFirst()) {
+            result = cursor.getInt(0);
         }
         cursor.close();
         return result;
