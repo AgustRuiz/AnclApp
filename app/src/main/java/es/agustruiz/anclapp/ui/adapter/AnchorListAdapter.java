@@ -1,23 +1,17 @@
 package es.agustruiz.anclapp.ui.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hudomju.swipe.adapter.ListViewAdapter;
-import com.hudomju.swipe.adapter.ViewAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,7 +20,7 @@ import es.agustruiz.anclapp.model.Anchor;
 
 public class AnchorListAdapter extends BaseAdapter {
 
-    public static final String LOG_TAG = AnchorListAdapter.class.getName()+"[A]";
+    public static final String LOG_TAG = AnchorListAdapter.class.getName() + "[A]";
 
     Context mContext;
     LayoutInflater mInflater;
@@ -35,7 +29,7 @@ public class AnchorListAdapter extends BaseAdapter {
 
     public AnchorListAdapter(Context context, LayoutInflater inflater, int layoutResourceId, List<Anchor> data) {
         mContext = context;
-        mInflater= inflater;
+        mInflater = inflater;
         mLayoutResourceId = layoutResourceId;
         mData = data;
     }
@@ -55,7 +49,7 @@ public class AnchorListAdapter extends BaseAdapter {
         return mData.get(position).getId(); // TODO check this
     }
 
-    public void remove(int position){
+    public void remove(int position) {
         mData.remove(position);
         notifyDataSetChanged();
     }
@@ -78,15 +72,16 @@ public class AnchorListAdapter extends BaseAdapter {
         holder.mTitle.setText(anchor.getTitle());
         holder.mIcon.setImageTintList(
                 ColorStateList.valueOf(Color.parseColor(anchor.getColor())));
-        holder.mDistance.setText("?km");
-        if(anchor.isReminder()){
+        Float distance = anchor.getDistanceInKms();
+        holder.mDistance.setText((distance > 0 ? distance.toString() + mContext.getString(R.string.km_unit) : ""));
+        if (anchor.isReminder()) {
             holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_black_24dp));
             holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.blue500));
         }
         return row;
     }
 
-    public List<Anchor> getData(){
+    public List<Anchor> getData() {
         return mData;
     }
 

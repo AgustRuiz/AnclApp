@@ -1,6 +1,7 @@
 package es.agustruiz.anclapp.model;
 
 import android.graphics.Color;
+import android.location.Location;
 import android.preference.PreferenceManager;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -14,6 +15,8 @@ public class Anchor {
     String description;
     String color;
     Boolean reminder;
+
+    static Location referenceLocation = null;
 
     //region [Public Methods]
 
@@ -177,6 +180,21 @@ public class Anchor {
 
     public LatLng getLatLng() {
         return new LatLng(latitude, longitude);
+    }
+
+    public Float getDistanceInKms() {
+        if (referenceLocation != null) {
+            Location location = new Location("");
+            location.setLatitude(latitude);
+            location.setLongitude(longitude);
+            return Math.round(referenceLocation.distanceTo(location) / 10f) / 100f;
+        } else {
+            return -1f;
+        }
+    }
+
+    static public void setReferenceLocation(Location location) {
+        referenceLocation = location;
     }
 
     //enregion

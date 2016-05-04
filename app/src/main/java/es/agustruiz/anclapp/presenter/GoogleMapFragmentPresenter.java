@@ -47,7 +47,7 @@ public class GoogleMapFragmentPresenter {
     protected LocationRequest mLocationRequest = null;
     protected EventsUtil mEventsUtil = EventsUtil.getInstance();
     protected AnchorDAO mAnchorDAO = null;
-    
+
     protected String mNewMarkerAddress = "";
     protected String mNewMarkerLocality = "";
     protected String nNewMarkerDistance = "";
@@ -187,6 +187,7 @@ public class GoogleMapFragmentPresenter {
                         if (mFragment.isAutoCenterMapCurrentLocation()) {
                             mFragment.centerMapOnLocation(mCurrentLocation);
                         }
+                        Anchor.setReferenceLocation(mCurrentLocation);
                     }
                 }); // TODO Permission check
     }

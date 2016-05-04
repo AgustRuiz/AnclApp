@@ -2,6 +2,7 @@ package es.agustruiz.anclapp.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,7 +33,7 @@ import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 
 public class AnchorListFragment extends Fragment {
 
-    public static final String LOG_TAG = AnchorListFragment.class.getName()+"[A]";
+    public static final String LOG_TAG = AnchorListFragment.class.getName() + "[A]";
 
     @Bind(R.id.anchor_list_swipe_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -45,6 +46,7 @@ public class AnchorListFragment extends Fragment {
 
     Context mContext;
     AnchorDAO mAnchorDAO;
+    Location mCurrentLocation = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -106,6 +108,13 @@ public class AnchorListFragment extends Fragment {
             }
         });
 
+        EventsUtil.getInstance().addEventListener(EventsUtil.NOTIFIY_CURRENT_LOCATION_CHANGED, new IEventHandler() {
+            @Override
+            public void callback(Event event) {
+                refreshAnchorListDistance();
+            }
+        });
+
         return v;
     }
 
@@ -119,6 +128,13 @@ public class AnchorListFragment extends Fragment {
         mAnchorDAO.openReadOnly();
         mAnchorList = mAnchorDAO.getAll();
         mAnchorDAO.close();
+        mAnchorListAdapter.getData().clear();
+        mAnchorListAdapter.getData().addAll(mAnchorList);
+        mAnchorListAdapter.notifyDataSetChanged();
+    }
+
+    private void refreshAnchorListDistance(){
+        mAnchorList = mAnchorListAdapter.getData();
         mAnchorListAdapter.getData().clear();
         mAnchorListAdapter.getData().addAll(mAnchorList);
         mAnchorListAdapter.notifyDataSetChanged();

@@ -21,7 +21,6 @@ public class MainActivityPresenter implements Presenter {
 
     MainActivity mActivity;
     Context mContext;
-    Location mCurrentLocation = null;
     EventsUtil eventsUtil = EventsUtil.getInstance();
 
     Double mIntentLatitude = null;
@@ -43,12 +42,6 @@ public class MainActivityPresenter implements Presenter {
                 showLocationCard();
             }
         });
-
-
-
-
-
-
 
         eventsUtil.addEventListener(EventsUtil.HIDE_LOCATION_CARD, new IEventHandler() {
             @Override

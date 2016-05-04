@@ -16,6 +16,7 @@ public class EventsUtil extends EventDispatcher {
     public static final String REFRESH_ANCHOR_MARKERS = "refreshAnchorMarkers";
     public static final String DISMISS_FAB_CENTER_MAP = "dismissFabCenterMap";
     public static final String HIDE_LOCATION_CARD = "hideLocationCard";
+    public static final String NOTIFIY_CURRENT_LOCATION_CHANGED = "notifyCurrentLocationChanged";
 
     //region [Singleton constructor]
 
@@ -53,6 +54,10 @@ public class EventsUtil extends EventDispatcher {
 
     public void hideLocationCard(){
         dispatchEvent(new Event(HIDE_LOCATION_CARD));
+    }
+
+    public void notifyCurrentLocationChanged(Location location){
+        dispatchEvent(new Event(NOTIFIY_CURRENT_LOCATION_CHANGED, location));
     }
 
     //endregion
