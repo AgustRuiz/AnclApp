@@ -77,6 +77,9 @@ public class AnchorListAdapter extends BaseAdapter {
         if (anchor.isReminder()) {
             holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_black_24dp));
             holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.blue500));
+        }else{
+            holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_off_black_24dp));
+            holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.grey500));
         }
         return row;
     }

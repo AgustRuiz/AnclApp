@@ -161,10 +161,12 @@ public class SeeAnchorActivity extends AppCompatActivity {
             mTextViewLatLng.setText(anchor.getLatitude() + ", " + anchor.getLongitude());
             if (anchor.isReminder()) {
                 mTextViewReminder.setText(R.string.reminder_location_enabled);
+                mImageViewReminderIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_notifications_black_24dp, getTheme()));
                 mImageViewReminderIcon.setImageTintList(ColorStateList.valueOf(getColor(R.color.colorAccent)));
             } else {
                 mTextViewReminder.setText(R.string.reminder_location_disabled);
                 mImageViewReminderIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_notifications_off_black_24dp, getTheme()));
+                mImageViewReminderIcon.setImageTintList(ColorStateList.valueOf(getColor(R.color.grey700)));
             }
             mImageViewColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(anchor.getColor())));
         }
