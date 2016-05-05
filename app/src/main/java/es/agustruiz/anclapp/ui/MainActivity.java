@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         mPresenter = new MainActivityPresenter(this);
         initializeSavedInstanceState(savedInstanceState);
         initializeViews();
+        initializeDrawerToggle();
         initializeTabNavigation();
     }
 
@@ -282,6 +283,13 @@ public class MainActivity extends AppCompatActivity {
                 mPresenter.cancelMarker();
             }
         });
+    }
+
+    private void initializeDrawerToggle(){
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.setDrawerListener(toggle);
+        toggle.syncState();
     }
 
     private void initializeTabNavigation() {
