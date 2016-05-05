@@ -42,29 +42,43 @@ public class AnchorListFragment extends Fragment {
     @Bind(R.id.anchor_list_view)
     ListView mAnchorListView;
 
+    Context mContext;
+    AnchorDAO mAnchorDAO;
     List<Anchor> mAnchorList;
     AnchorListAdapter mAnchorListAdapter;
 
-    Context mContext;
-    AnchorDAO mAnchorDAO;
-    Location mCurrentLocation = null;
+    //region [Fragment methods]
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_anchor_list, container, false);
         ButterKnife.bind(this, v);
-
-        View footerView = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer, null, false);
-        mAnchorListView.addFooterView(footerView);
-
         mContext = getContext();
+        initialize(inflater);
+        registryEventListeners();
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshAnchorList();
+    }
+
+    //endregion
+
+    //region [Private methods]
+
+    private void initialize(LayoutInflater inflater){
         mAnchorDAO = new AnchorDAO(mContext);
 
         mAnchorList = new ArrayList<>();
-
         mAnchorListAdapter = new AnchorListAdapter(getContext(), inflater, R.layout.anchor_list_row, mAnchorList);
-        mAnchorListView.setAdapter(mAnchorListAdapter);
 
+        mAnchorListView.setAdapter(mAnchorListAdapter);
+        mAnchorListView.addFooterView(((LayoutInflater) mContext
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.footer, null, false));
         mAnchorListView.setClickable(true);
         final SwipeToDismissTouchListener<ListViewAdapter> touchListener = new SwipeToDismissTouchListener<>(
                 new ListViewAdapter(mAnchorListView),
@@ -108,21 +122,6 @@ public class AnchorListFragment extends Fragment {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-
-        EventsUtil.getInstance().addEventListener(EventsUtil.NOTIFIY_CURRENT_LOCATION_CHANGED, new IEventHandler() {
-            @Override
-            public void callback(Event event) {
-                refreshAnchorList();
-            }
-        });
-
-        return v;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        refreshAnchorList();
     }
 
     private void refreshAnchorList() {
@@ -133,4 +132,18 @@ public class AnchorListFragment extends Fragment {
         mAnchorListAdapter.getData().addAll(mAnchorList);
         mAnchorListAdapter.notifyDataSetChanged();
     }
+
+    private void registryEventListeners() {
+        EventsUtil mEventsUtil = EventsUtil.getInstance();
+        mEventsUtil.addEventListener(EventsUtil.NOTIFIY_CURRENT_LOCATION_CHANGED,
+                new IEventHandler() {
+                    @Override
+                    public void callback(Event event) {
+                        refreshAnchorList();
+                    }
+                }
+        );
+    }
+
+    //endregion
 }

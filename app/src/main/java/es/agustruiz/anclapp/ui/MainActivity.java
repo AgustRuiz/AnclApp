@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = MainActivity.class.getName() + "[A]";
 
+    //region [Binded views and variables]
+
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -52,9 +54,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.tabs)
     TabLayout mTabLayout;
+    CharSequence tabTitles[] = {"Map", "Anchors"};
+    int tabNumbOfTabs = tabTitles.length;
+    public final int TAB_MAP = 0;
+    public final int TAB_LIST = 1;
+    int tabSelected = TAB_MAP;
 
     @Bind(R.id.pager)
     CustomViewPager mCustomViewPager;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     @Bind(R.id.card_view)
     CardView mCardView;
@@ -76,21 +84,14 @@ public class MainActivity extends AppCompatActivity {
     TextView cardViewDistance;
     final String CARD_VIEW_DISTANCE = "cardViewDistance";
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    CharSequence tabTitles[] = {"Map", "Anchors"};
-    int tabNumbOfTabs = tabTitles.length;
-    ActionBarDrawerToggle mDrawerToggle;
-
-    public final int TAB_MAP = 0;
-    public final int TAB_LIST = 1;
-    int tabSelected = TAB_MAP;
-
     boolean isAutoCenterMap = false; // TODO Consider change it to a shared prefference
     final String IS_AUTO_CENTER_MAP_TAG = "isAutoCenterMap";
     final int ANIMATION_DURATION = 200;
 
-    MainActivityPresenter mPresenter;
     Context mContext;
+    MainActivityPresenter mPresenter;
+
+    //endregion
 
     //region [Activity methods]
 
@@ -101,115 +102,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = getApplicationContext();
         mPresenter = new MainActivityPresenter(this);
-
-        //region [Saved state]
-
-        if (savedInstanceState != null) {
-            isAutoCenterMap = savedInstanceState.getBoolean(IS_AUTO_CENTER_MAP_TAG);
-            setFabCenterViewState(isAutoCenterMap);
-            isCardViewShown = savedInstanceState.getBoolean(IS_CARD_VIEW_SHOWN);
-            cardViewAddress.setText(savedInstanceState.getCharSequence(CARD_VIEW_ADDRESS));
-            cardViewLocality.setText(savedInstanceState.getCharSequence(CARD_VIEW_LOCALITY));
-            cardViewDistance.setText(savedInstanceState.getCharSequence(CARD_VIEW_DISTANCE));
-        }
-
-        //endregion
-
-        //region [Layout views]
-
-        setSupportActionBar(mToolbar);
-
-        mFabAddAnchor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.addAnchor();
-            }
-        });
-
-        mFabCenterView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isAutoCenterMap = !isAutoCenterMap;
-                setFabCenterViewState(isAutoCenterMap);
-                mPresenter.centerMapOnCurrentLocation(isAutoCenterMap);
-            }
-        });
-
-        mFabDismissCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.cancelMarker();
-            }
-        });
-
-        //endregion
-
-        /*/region [Sidedrawer]
-
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.setDrawerListener(mDrawerToggle);
-        mDrawerToggle.syncState();
-        mNavigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.menu_settings:
-                                startActivity(new Intent(mContext, SettingsActivity.class));
-                                break;
-                            case R.id.menu_about:
-                                startActivity(new Intent(mContext, AboutActivity.class));
-                                break;
-                            default:
-                                showMessageView("Not implemented");
-                        }
-                        mDrawer.closeDrawer(GravityCompat.START);
-                        return true;
-                    }
-                }
-        );
-
-        //endregion*/
-
-        //region [Tab navigator]
-
-        mCustomViewPager.setPagingEnabled(false);
-        mCustomViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-            @Override
-            public void onPageSelected(int position) {
-                tabSelected = position;
-                if (position == 0 && !isLocationCardViewShown()) {
-                    showFabCenterView();
-                } else {
-                    hideFabCenterView();
-                }
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mCustomViewPager.setAdapter(mSectionsPagerAdapter);
-        mTabLayout.setupWithViewPager(mCustomViewPager);
-        mTabLayout.setSelectedTabIndicatorColor(getColor(R.color.tabsScrollColor));
-        mTabLayout.setSelectedTabIndicatorHeight((int) (3 * getResources().getDisplayMetrics().density));
-
-        //endregion
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(IS_AUTO_CENTER_MAP_TAG, isAutoCenterMap);
-        outState.putBoolean(IS_CARD_VIEW_SHOWN, isCardViewShown);
-        outState.putCharSequence(CARD_VIEW_ADDRESS, cardViewAddress.getText());
-        outState.putCharSequence(CARD_VIEW_LOCALITY, cardViewLocality.getText());
-        outState.putCharSequence(CARD_VIEW_DISTANCE, cardViewDistance.getText());
+        initializeSavedInstanceState(savedInstanceState);
+        initializeViews();
+        initializeTabNavigation();
     }
 
     @Override
@@ -223,11 +118,45 @@ public class MainActivity extends AppCompatActivity {
         return outView;
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(IS_AUTO_CENTER_MAP_TAG, isAutoCenterMap);
+        outState.putBoolean(IS_CARD_VIEW_SHOWN, isCardViewShown);
+        outState.putCharSequence(CARD_VIEW_ADDRESS, cardViewAddress.getText());
+        outState.putCharSequence(CARD_VIEW_LOCALITY, cardViewLocality.getText());
+        outState.putCharSequence(CARD_VIEW_DISTANCE, cardViewDistance.getText());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     //endregion
 
     //region [Public methods]
 
-    // TODO consider change the duration by message length
     public void showMessageView(View view, String message) {
         view = (view != null ? view : mFabCenterView);
         Snackbar.make(view, message, Snackbar.LENGTH_LONG)
@@ -306,10 +235,6 @@ public class MainActivity extends AppCompatActivity {
         isCardViewShown = false;
     }
 
-    public boolean isLocationCardViewShown() {
-        return isCardViewShown;
-    }
-
     public void fillLocationCardView(String address, String locality, String distance) {
         cardViewAddress.setText(address);
         cardViewLocality.setText(locality);
@@ -320,43 +245,79 @@ public class MainActivity extends AppCompatActivity {
         return tabSelected;
     }
 
-    public Context getContext() {
-        return mContext;
+    //endregion
+
+    //region [Private methods]
+
+    private void initializeSavedInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            isAutoCenterMap = savedInstanceState.getBoolean(IS_AUTO_CENTER_MAP_TAG);
+            setFabCenterViewState(isAutoCenterMap);
+            isCardViewShown = savedInstanceState.getBoolean(IS_CARD_VIEW_SHOWN);
+            cardViewAddress.setText(savedInstanceState.getCharSequence(CARD_VIEW_ADDRESS));
+            cardViewLocality.setText(savedInstanceState.getCharSequence(CARD_VIEW_LOCALITY));
+            cardViewDistance.setText(savedInstanceState.getCharSequence(CARD_VIEW_DISTANCE));
+        }
+    }
+
+    private void initializeViews() {
+        setSupportActionBar(mToolbar);
+        mFabAddAnchor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.addAnchor();
+            }
+        });
+        mFabCenterView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isAutoCenterMap = !isAutoCenterMap;
+                setFabCenterViewState(isAutoCenterMap);
+                mPresenter.centerMapOnCurrentLocation(isAutoCenterMap);
+            }
+        });
+        mFabDismissCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.cancelMarker();
+            }
+        });
+    }
+
+    private void initializeTabNavigation() {
+        mCustomViewPager.setPagingEnabled(false);
+        mCustomViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                tabSelected = position;
+                if (position == 0 && !isCardViewShown) {
+                    showFabCenterView();
+                } else {
+                    hideFabCenterView();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mCustomViewPager.setAdapter(mSectionsPagerAdapter);
+        mTabLayout.setupWithViewPager(mCustomViewPager);
+        mTabLayout.setSelectedTabIndicatorColor(getColor(R.color.tabsScrollColor));
+        mTabLayout.setSelectedTabIndicatorHeight((int) (3 * getResources().getDisplayMetrics().density));
     }
 
     //endregion
 
-    //region [Activity methods]
+    //region [PlaceholderFragment]
 
-    @Override
-    public void onBackPressed() {
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDrawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.action_settings:
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    //endregion
-
-
-    public static class PlaceholderFragment extends Fragment {
+    private static class PlaceholderFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -401,10 +362,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //endregion
 
     //region [SectionsPagerAdapter]
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);

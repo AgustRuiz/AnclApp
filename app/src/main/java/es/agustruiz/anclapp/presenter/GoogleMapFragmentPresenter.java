@@ -37,6 +37,8 @@ public class GoogleMapFragmentPresenter {
 
     public static final String LOG_TAG = GoogleMapFragmentPresenter.class.getName() + "[A]";
 
+    //region [Variables]
+
     protected static final long LOCATION_REQUEST_INTERVAL = 1000 * 10; // 10 milliseconds
     protected static final long LOCATION_REQUEST_FATEST_INTERVAL = 1000 * 5; // 5 milliseconds
 
@@ -52,14 +54,55 @@ public class GoogleMapFragmentPresenter {
     protected String mNewMarkerLocality = "";
     protected String nNewMarkerDistance = "";
 
+    //endregion
+
     //region [Public methods]
 
     public GoogleMapFragmentPresenter(GoogleMapFragment fragment) {
         mFragment = fragment;
         mContext = mFragment.getContext();
-
         createLocationRequest();
+        initializeGoogleApiClient();
+        registerEvents();
+    }
 
+    public void GoogleApiClientConnect() {
+        mGoogleApiClient.connect();
+    }
+
+    public void GoogleApiClientDisconnect() {
+        mGoogleApiClient.disconnect();
+    }
+
+    public List<Anchor> getAnchorList() {
+        prepareAnchorDAO();
+        mAnchorDAO.openReadOnly();
+        List<Anchor> result = mAnchorDAO.getAll();
+        mAnchorDAO.close();
+        return result;
+    }
+
+    public void launchSeeAnchorActivity(long id) {
+        Intent intent = new Intent(mContext, SeeAnchorActivity.class);
+        intent.putExtra(SeeAnchorActivity.ANCHOR_ID_INTENT_TAG, id);
+        mContext.startActivity(intent);
+    }
+
+    public Location getCurrentLocation() {
+        return mCurrentLocation;
+    }
+
+    public void notifyNewMarkerData(LatLng latLng) {
+        fillNewMarkerDescription(latLng);
+        String[] data = new String[]{mNewMarkerAddress, mNewMarkerLocality, nNewMarkerDistance};
+        mEventsUtil.getNewMarkerData(data);
+    }
+
+    //endregion
+
+    //region [Private methods]
+
+    private void initializeGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient
                 .Builder(mContext)
                 .addApi(LocationServices.API) //.addApi(AppIndex.API)
@@ -82,8 +125,6 @@ public class GoogleMapFragmentPresenter {
                     }
                 })
                 .build();
-
-        registerEvents();
     }
 
     private void registerEvents() {
@@ -139,41 +180,6 @@ public class GoogleMapFragmentPresenter {
         });
     }
 
-    public void GoogleApiClientConnect() {
-        mGoogleApiClient.connect();
-    }
-
-    public void GoogleApiClientDisconnect() {
-        mGoogleApiClient.disconnect();
-    }
-
-    public List<Anchor> getAnchorList() {
-        prepareAnchorDAO();
-        mAnchorDAO.openReadOnly();
-        List<Anchor> result = mAnchorDAO.getAll();
-        mAnchorDAO.close();
-        return result;
-    }
-
-    public void seeAnchor(long id) {
-        Intent intent = new Intent(mContext, SeeAnchorActivity.class);
-        intent.putExtra(SeeAnchorActivity.ANCHOR_ID_INTENT_TAG, id);
-        mContext.startActivity(intent);
-    }
-
-
-    public Location getCurrentLocation() {
-        return mCurrentLocation;
-    }
-
-    private LatLng getCurrentLatLng() {
-        return new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-    }
-
-    //endregion
-
-    //region [Private methods]
-
     private void createLocationRequest() {
         //Log.d(LOG_TAG, "createLocationRequest");
         mLocationRequest = new LocationRequest();
@@ -197,11 +203,11 @@ public class GoogleMapFragmentPresenter {
                 }); // TODO Permission check
     }
 
-    public void fillNewMarkerDescription(Location location) {
+    private void fillNewMarkerDescription(Location location) {
         fillNewMarkerDescription(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
-    public void fillNewMarkerDescription(LatLng latLng) {
+    private void fillNewMarkerDescription(LatLng latLng) {
         boolean isError = false;
         Geocoder geocoder = new Geocoder(mContext);
         try {
@@ -229,23 +235,19 @@ public class GoogleMapFragmentPresenter {
         }
     }
 
-
-    public void notifyNewMarkerData(LatLng latLng) {
-        fillNewMarkerDescription(latLng);
-        String[] data = new String[]{mNewMarkerAddress, mNewMarkerLocality, nNewMarkerDistance};
-        mEventsUtil.getNewMarkerData(data);
-    }
-
     private void removeNewMarker() {
         mFragment.removeNewMarkerView();
         fillNewMarkerDescription(getCurrentLatLng());
     }
 
-
     private void prepareAnchorDAO() {
         if (mAnchorDAO == null) {
             mAnchorDAO = new AnchorDAO(mContext);
         }
+    }
+
+    private LatLng getCurrentLatLng() {
+        return new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
     }
 
     //endregion

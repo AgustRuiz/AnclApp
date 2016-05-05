@@ -41,6 +41,8 @@ public class GoogleMapFragment extends Fragment {
 
     public static final String LOG_TAG = GoogleMapFragment.class.getName() + "[A]";
 
+    //region [Varibles]
+
     protected GoogleMapFragmentPresenter mPresenter;
     protected Context mContext;
     protected EventsUtil mEventsUtil = EventsUtil.getInstance();
@@ -48,22 +50,23 @@ public class GoogleMapFragment extends Fragment {
     protected SupportMapFragment mMapFragment;
     protected GoogleMap mGoogleMap;
 
-    protected String mNewMarkerColor = null;
     protected Marker mNewMarker = null;
+    protected Map<Marker, Long> mMarkerMap = new ArrayMap<>();
     protected MarkerOptions mNewMarkerOptions = null;
-    protected final String NEW_MARKER_OPTIONS_TAG = "mNewMarkerOptions";
+    protected String mNewMarkerColor = null;
 
     public final char CENTER_MAP_OFF = 0;
     public final char CENTER_MAP_CURRENT_LOCATION = 1;
     public final char CENTER_MAP_MARKER = 2;
     protected char autoCenterMapMode = CENTER_MAP_OFF;
     protected final String AUTO_CENTER_MAP_MODE_TAG = "autoCenterMapMode";
+    protected final String NEW_MARKER_OPTIONS_TAG = "mNewMarkerOptions";
 
     protected static final float MAP_MIN_ZOOM = 15;
 
-    protected Map<Marker, Long> mMarkerMap = new ArrayMap<>();
+    //endregion
 
-    //region [Overriden methods]
+    //region [Fragment methods]
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -71,75 +74,8 @@ public class GoogleMapFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         mContext = getContext();
         mPresenter = new GoogleMapFragmentPresenter(this);
-
-        mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                mGoogleMap = googleMap;
-                mGoogleMap.setMyLocationEnabled(true); // TODO Permission check
-                mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
-                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        removeNewMarkerView();
-                        createNewMarkerView(latLng);
-                        centerMapOnLocation(latLng);
-                        mPresenter.notifyNewMarkerData(latLng);
-                        setAutoCenterMapMode(CENTER_MAP_MARKER);
-                    }
-                });
-                mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-                    @Override
-                    public void onMarkerDragStart(Marker marker) {
-                    }
-
-                    @Override
-                    public void onMarkerDrag(Marker marker) {
-                    }
-
-                    @Override
-                    public void onMarkerDragEnd(Marker marker) {
-                        centerMapOnLocation(marker.getPosition());
-                        mPresenter.notifyNewMarkerData(marker.getPosition());
-                    }
-                });
-
-                mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(Marker marker) {
-                        if (mMarkerMap.get(marker) != null) {
-                            setAutoCenterMapMode(CENTER_MAP_OFF);
-                            mEventsUtil.dismissFabCenterMap();
-
-
-                        }
-                        return false;
-                    }
-                });
-
-                mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                    @Override
-                    public void onInfoWindowClick(Marker marker) {
-                        Long anchorId = mMarkerMap.get(marker);
-                        if (anchorId != null) {
-                            mPresenter.seeAnchor(anchorId);
-                        }
-                    }
-                });
-
-                if (mNewMarkerOptions != null) {
-                    mNewMarker = mGoogleMap.addMarker(mNewMarkerOptions);
-                }
-
-                reloadAnchorsInMap();
-            }
-        });
-        if (savedInstanceState != null) {
-            autoCenterMapMode = savedInstanceState.getChar(AUTO_CENTER_MAP_MODE_TAG);
-            mNewMarkerOptions = savedInstanceState.getParcelable(NEW_MARKER_OPTIONS_TAG);
-        }
+        initializeSavedInstanceState(savedInstanceState);
+        initializeMapFragment();
         return v;
     }
 
@@ -175,14 +111,6 @@ public class GoogleMapFragment extends Fragment {
 
     public boolean isAutoCenterMapCurrentLocation() {
         return autoCenterMapMode == CENTER_MAP_CURRENT_LOCATION;
-    }
-
-    public boolean isAutoCenterMapModeOnMarker() {
-        return autoCenterMapMode == CENTER_MAP_MARKER;
-    }
-
-    public boolean isAutoCenterMapModeOff() {
-        return autoCenterMapMode == CENTER_MAP_OFF;
     }
 
     public void setAutoCenterMapMode(char mode) {
@@ -237,10 +165,6 @@ public class GoogleMapFragment extends Fragment {
         return mNewMarker;
     }
 
-    public MarkerOptions getNewMarkerOptionsView(){
-        return mNewMarkerOptions;
-    }
-
     public void removeNewMarkerView(){
         if (mNewMarker != null) {
             mNewMarker.remove();
@@ -249,7 +173,81 @@ public class GoogleMapFragment extends Fragment {
         }
     }
 
-    public void createNewMarkerView(LatLng latLng){
+    //endregion
+
+    //region [Private methods]
+
+    private void initializeMapFragment() {
+        mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mMapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                mGoogleMap = googleMap;
+                mGoogleMap.setMyLocationEnabled(true); // TODO Permission check
+                mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
+                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        removeNewMarkerView();
+                        createNewMarkerView(latLng);
+                        centerMapOnLocation(latLng);
+                        mPresenter.notifyNewMarkerData(latLng);
+                        setAutoCenterMapMode(CENTER_MAP_MARKER);
+                    }
+                });
+                mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                    @Override
+                    public void onMarkerDragStart(Marker marker) {
+                    }
+
+                    @Override
+                    public void onMarkerDrag(Marker marker) {
+                    }
+
+                    @Override
+                    public void onMarkerDragEnd(Marker marker) {
+                        centerMapOnLocation(marker.getPosition());
+                        mPresenter.notifyNewMarkerData(marker.getPosition());
+                    }
+                });
+                mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        if (mMarkerMap.get(marker) != null) {
+                            setAutoCenterMapMode(CENTER_MAP_OFF);
+                            mEventsUtil.dismissFabCenterMap();
+
+
+                        }
+                        return false;
+                    }
+                });
+                mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        Long anchorId = mMarkerMap.get(marker);
+                        if (anchorId != null) {
+                            mPresenter.launchSeeAnchorActivity(anchorId);
+                        }
+                    }
+                });
+                if (mNewMarkerOptions != null) {
+                    mNewMarker = mGoogleMap.addMarker(mNewMarkerOptions);
+                }
+                reloadAnchorsInMap();
+            }
+        });
+    }
+
+    private void initializeSavedInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            autoCenterMapMode = savedInstanceState.getChar(AUTO_CENTER_MAP_MODE_TAG);
+            mNewMarkerOptions = savedInstanceState.getParcelable(NEW_MARKER_OPTIONS_TAG);
+        }
+    }
+
+    private void createNewMarkerView(LatLng latLng){
         mNewMarkerColor = PreferenceManager.getDefaultSharedPreferences(mContext)
                 .getString(
                         getString(R.string.key_pref_anchors_color),
@@ -260,13 +258,14 @@ public class GoogleMapFragment extends Fragment {
                 .icon(getMarkerIcon(mNewMarkerColor))
                 .draggable(true);
         mNewMarker = mGoogleMap.addMarker(mNewMarkerOptions);
-
-
     }
 
-    //endregion
-
-    //region [Private methods]
+    private void removeAnchorsInMap() {
+        for (Map.Entry<Marker, Long> item : mMarkerMap.entrySet()) {
+            item.getKey().remove();
+        }
+        mMarkerMap.clear();
+    }
 
     private BitmapDescriptor getMarkerIcon(String color) {
         Bitmap ob = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_place_white_36dp);
@@ -276,13 +275,6 @@ public class GoogleMapFragment extends Fragment {
         paint.setColorFilter(new PorterDuffColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_ATOP));
         canvas.drawBitmap(ob, 0f, 0f, paint);
         return BitmapDescriptorFactory.fromBitmap(obm);
-    }
-
-    private void removeAnchorsInMap() {
-        for (Map.Entry<Marker, Long> item : mMarkerMap.entrySet()) {
-            item.getKey().remove();
-        }
-        mMarkerMap.clear();
     }
 
     //endregion
