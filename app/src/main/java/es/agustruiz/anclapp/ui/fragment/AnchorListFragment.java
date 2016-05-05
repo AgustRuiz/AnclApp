@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,7 +112,7 @@ public class AnchorListFragment extends Fragment {
         EventsUtil.getInstance().addEventListener(EventsUtil.NOTIFIY_CURRENT_LOCATION_CHANGED, new IEventHandler() {
             @Override
             public void callback(Event event) {
-                refreshAnchorListDistance();
+                refreshAnchorList();
             }
         });
 
@@ -128,13 +129,6 @@ public class AnchorListFragment extends Fragment {
         mAnchorDAO.openReadOnly();
         mAnchorList = mAnchorDAO.getAll();
         mAnchorDAO.close();
-        mAnchorListAdapter.getData().clear();
-        mAnchorListAdapter.getData().addAll(mAnchorList);
-        mAnchorListAdapter.notifyDataSetChanged();
-    }
-
-    private void refreshAnchorListDistance(){
-        mAnchorList = mAnchorListAdapter.getData();
         mAnchorListAdapter.getData().clear();
         mAnchorListAdapter.getData().addAll(mAnchorList);
         mAnchorListAdapter.notifyDataSetChanged();

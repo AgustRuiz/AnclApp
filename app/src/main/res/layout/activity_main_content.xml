@@ -25,10 +25,13 @@
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-            <es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout
+            <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed" />
 
         </android.support.design.widget.AppBarLayout>
 
@@ -36,14 +39,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <es.agustruiz.anclapp.ui.customView.CustomViewPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
                 android:layout_above="@+id/card_view"
-                />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <android.support.v7.widget.CardView
                 android:id="@id/card_view"
@@ -54,50 +55,50 @@
                 android:minHeight="72dp"
                 app:layout_behavior="es.agustruiz.anclapp.ui.customView.SnackbarBehaviour">
 
-                    <android.support.v7.widget.LinearLayoutCompat
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/card_view_content_margin"
+                    android:layout_marginEnd="@dimen/card_view_content_margin"
+                    android:layout_marginStart="@dimen/card_view_content_margin"
+                    android:layout_marginTop="@dimen/card_view_content_margin_top"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/card_view_address"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/card_view_content_margin"
-                        android:layout_marginEnd="@dimen/card_view_content_margin"
-                        android:layout_marginStart="@dimen/card_view_content_margin"
-                        android:layout_marginTop="@dimen/card_view_content_margin_top"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/card_view_text_vertical_margin"
+                        android:text="Address"
+                        android:textSize="@dimen/card_view_description_text_size" />
 
-                            <TextView
-                                android:id="@+id/card_view_address"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/card_view_text_vertical_margin"
-                                android:text="Address"
-                                android:textSize="@dimen/card_view_description_text_size" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_view_text_vertical_margin"
+                        android:orientation="horizontal">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/card_view_text_vertical_margin"
-                                android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/card_view_locality"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".75"
+                            android:gravity="start|bottom"
+                            android:text="Locality"
+                            android:textSize="@dimen/card_view_address_text_size" />
 
-                                <TextView
-                                    android:id="@+id/card_view_locality"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".75"
-                                    android:gravity="start|bottom"
-                                    android:text="Locality"
-                                    android:textSize="@dimen/card_view_address_text_size" />
+                        <TextView
+                            android:id="@+id/card_view_distance"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".25"
+                            android:gravity="end|bottom"
+                            android:text="0km"
+                            android:textSize="@dimen/card_view_distance_text_size" />
 
-                                <TextView
-                                    android:id="@+id/card_view_distance"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight=".25"
-                                    android:gravity="end|bottom"
-                                    android:text="0km"
-                                    android:textSize="@dimen/card_view_distance_text_size" />
+                    </LinearLayout>
 
-                            </LinearLayout>
-
-                    </android.support.v7.widget.LinearLayoutCompat>
+                </android.support.v7.widget.LinearLayoutCompat>
 
             </android.support.v7.widget.CardView>
 
@@ -138,8 +139,8 @@
         android:layout_marginEnd="@dimen/fab2_vertical_margin"
         android:src="@drawable/ic_close_black_24dp"
         android:tint="@color/grey700"
-        app:backgroundTint="@color/white"
         android:visibility="gone"
+        app:backgroundTint="@color/white"
         app:fabSize="mini"
         app:layout_anchor="@id/fab_add_anchor"
         app:layout_anchorGravity="start|center_vertical" />

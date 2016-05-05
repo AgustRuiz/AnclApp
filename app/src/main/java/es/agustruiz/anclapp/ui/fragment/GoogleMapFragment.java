@@ -71,6 +71,7 @@ public class GoogleMapFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         mContext = getContext();
         mPresenter = new GoogleMapFragmentPresenter(this);
+
         mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -173,7 +174,6 @@ public class GoogleMapFragment extends Fragment {
     //region [Public methods]
 
     public boolean isAutoCenterMapCurrentLocation() {
-        Log.d(LOG_TAG, "centerMapCurrentLocation : " + (autoCenterMapMode == CENTER_MAP_CURRENT_LOCATION));
         return autoCenterMapMode == CENTER_MAP_CURRENT_LOCATION;
     }
 

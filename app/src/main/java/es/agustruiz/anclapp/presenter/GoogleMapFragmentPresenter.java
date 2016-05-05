@@ -83,6 +83,10 @@ public class GoogleMapFragmentPresenter {
                 })
                 .build();
 
+        registerEvents();
+    }
+
+    private void registerEvents() {
         mEventsUtil.addEventListener(EventsUtil.CENTER_MAP_ON_CURRENT_LOCATION, new IEventHandler() {
             @Override
             public void callback(Event event) {
@@ -188,6 +192,7 @@ public class GoogleMapFragmentPresenter {
                             mFragment.centerMapOnLocation(mCurrentLocation);
                         }
                         Anchor.setReferenceLocation(mCurrentLocation);
+                        mEventsUtil.notifyCurrentLocationChanged(mCurrentLocation);
                     }
                 }); // TODO Permission check
     }

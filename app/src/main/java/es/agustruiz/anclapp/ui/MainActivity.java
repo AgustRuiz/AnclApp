@@ -1,11 +1,13 @@
 package es.agustruiz.anclapp.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,14 +29,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.SystemUtils;
-import es.agustruiz.anclapp.event.Event;
-import es.agustruiz.anclapp.event.EventsUtil;
-import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.presenter.MainActivityPresenter;
 import es.agustruiz.anclapp.ui.customView.CustomViewPager;
-import es.agustruiz.anclapp.ui.settings.SettingsActivity;
-import es.agustruiz.anclapp.ui.tabsNavigatorElements.SlidingTabLayout;
-import es.agustruiz.anclapp.ui.tabsNavigatorElements.ViewPagerAdapter;
+import es.agustruiz.anclapp.ui.fragment.AnchorListFragment;
+import es.agustruiz.anclapp.ui.fragment.GoogleMapFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,13 +51,10 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout mDrawer;
 
     @Bind(R.id.tabs)
-    SlidingTabLayout mSlidingTabLayout;
+    TabLayout mTabLayout;
 
     @Bind(R.id.pager)
-    CustomViewPager mViewPager;
-
-    @Bind(R.id.nav_view)
-    NavigationView mNavigationView;
+    CustomViewPager mCustomViewPager;
 
     @Bind(R.id.card_view)
     CardView mCardView;
@@ -80,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     TextView cardViewDistance;
     final String CARD_VIEW_DISTANCE = "cardViewDistance";
 
-    ViewPagerAdapter mViewPagerAdapter;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
     CharSequence tabTitles[] = {"Map", "Anchors"};
     int tabNumbOfTabs = tabTitles.length;
     ActionBarDrawerToggle mDrawerToggle;
@@ -148,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
         //endregion
 
-        //region [Sidedrawer]
+        /*/region [Sidedrawer]
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -174,26 +170,16 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        //endregion
+        //endregion*/
 
         //region [Tab navigator]
 
-        mViewPager.setPagingEnabled(false);
-        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), tabTitles, tabNumbOfTabs);
-        mViewPager.setAdapter(mViewPagerAdapter);
-        mSlidingTabLayout.setDistributeEvenly(true);
-        mSlidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor, getTheme());
-            }
-        });
-        mSlidingTabLayout.setViewPager(mViewPager);
-        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mCustomViewPager.setPagingEnabled(false);
+        mCustomViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
 
+            }
             @Override
             public void onPageSelected(int position) {
                 tabSelected = position;
@@ -203,11 +189,15 @@ public class MainActivity extends AppCompatActivity {
                     hideFabCenterView();
                 }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
             }
         });
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mCustomViewPager.setAdapter(mSectionsPagerAdapter);
+        mTabLayout.setupWithViewPager(mCustomViewPager);
+        mTabLayout.setSelectedTabIndicatorColor(getColor(R.color.tabsScrollColor));
+        mTabLayout.setSelectedTabIndicatorHeight((int) (3 * getResources().getDisplayMetrics().density));
 
         //endregion
     }
@@ -220,12 +210,6 @@ public class MainActivity extends AppCompatActivity {
         outState.putCharSequence(CARD_VIEW_ADDRESS, cardViewAddress.getText());
         outState.putCharSequence(CARD_VIEW_LOCALITY, cardViewLocality.getText());
         outState.putCharSequence(CARD_VIEW_DISTANCE, cardViewDistance.getText());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mPresenter.refreshAnchorMarkers();
     }
 
     @Override
@@ -265,11 +249,11 @@ public class MainActivity extends AppCompatActivity {
         mFabCenterView.hide();
     }
 
-    public void showFabDismissCardView(){
+    public void showFabDismissCardView() {
         mFabDismissCardView.show();
     }
 
-    public void hideFabDismissCardView(){
+    public void hideFabDismissCardView() {
         mFabDismissCardView.hide();
     }
 
@@ -336,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
         return tabSelected;
     }
 
-    public Context getContext(){
+    public Context getContext() {
         return mContext;
     }
 
@@ -362,12 +346,90 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-        if (id == R.id.action_settings) {
-            return true;
+    //endregion
+
+
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static Fragment newInstance(int sectionNumber) {
+            Fragment fragment = null;
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            switch (sectionNumber) {
+                case 0:
+                    fragment = new GoogleMapFragment();
+                    break;
+                case 1:
+                    fragment = new AnchorListFragment();
+                    break;
+            }
+            if (fragment != null)
+                fragment.setArguments(args);
+            return fragment;
         }
 
-        return super.onOptionsItemSelected(item);
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = null;
+            int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
+            switch (sectionNumber) {
+                case 0:
+                    rootView = inflater.inflate(R.layout.fragment_map, container, false);
+                    break;
+                case 1:
+                    rootView = inflater.inflate(R.layout.fragment_anchor_list, container, false);
+                    break;
+            }
+            return rootView;
+        }
+    }
+
+
+    //region [SectionsPagerAdapter]
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            return PlaceholderFragment.newInstance(position);
+        }
+
+        @Override
+        public int getCount() {
+            return tabNumbOfTabs;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            try {
+                return tabTitles[position];
+            } catch (Exception ignored) {
+            }
+            return null;
+        }
     }
 
     //endregion

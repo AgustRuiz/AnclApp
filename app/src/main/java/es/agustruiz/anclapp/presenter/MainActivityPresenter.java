@@ -78,10 +78,6 @@ public class MainActivityPresenter implements Presenter {
         mActivity.fillLocationCardView(address, locality, distance);
     }
 
-    public void refreshAnchorMarkers() {
-        eventsUtil.refreshAnchorMarkers();
-    }
-
     private void showLocationCard(){
         mActivity.hideFabCenterView();
         mActivity.showFabDismissCardView();
