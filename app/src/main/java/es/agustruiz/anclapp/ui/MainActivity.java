@@ -1,8 +1,10 @@
 package es.agustruiz.anclapp.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -33,6 +35,7 @@ import es.agustruiz.anclapp.presenter.MainActivityPresenter;
 import es.agustruiz.anclapp.ui.customView.CustomViewPager;
 import es.agustruiz.anclapp.ui.fragment.AnchorListFragment;
 import es.agustruiz.anclapp.ui.fragment.GoogleMapFragment;
+import es.agustruiz.anclapp.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.pager)
     CustomViewPager mCustomViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    @Bind(R.id.nav_view)
+    NavigationView mNavigationView;
 
     @Bind(R.id.card_view)
     CardView mCardView;
@@ -104,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         mPresenter = new MainActivityPresenter(this);
         initializeSavedInstanceState(savedInstanceState);
         initializeViews();
-        initializeDrawerToggle();
+        initializeSideDrawer();
         initializeTabNavigation();
     }
 
@@ -285,11 +291,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initializeDrawerToggle(){
+    private void initializeSideDrawer(){
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
+        mNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.menu_settings:
+                                startActivity(new Intent(mContext, SettingsActivity.class));
+                                break;
+                            case R.id.menu_about:
+                                startActivity(new Intent(mContext, AboutActivity.class));
+                                break;
+                            default:
+                                showMessageView("Not implemented");
+                        }
+                        mDrawer.closeDrawer(GravityCompat.START);
+                        return true;
+                    }
+                }
+        );
+
     }
 
     private void initializeTabNavigation() {
