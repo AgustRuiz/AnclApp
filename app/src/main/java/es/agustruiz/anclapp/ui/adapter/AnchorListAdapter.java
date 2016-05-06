@@ -3,6 +3,9 @@ package es.agustruiz.anclapp.ui.adapter;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.model.Anchor;
+import es.agustruiz.anclapp.ui.MainActivity;
 
 public class AnchorListAdapter extends BaseAdapter {
 
@@ -69,7 +73,10 @@ public class AnchorListAdapter extends BaseAdapter {
 
         Anchor anchor = mData.get(position);
 
-        holder.mTitle.setText(anchor.getTitle());
+        //holder.mTitle.setText(anchor.getTitle());
+        holder.mTitle.setText(getHightligthedTitle(anchor.getTitle()), TextView.BufferType.SPANNABLE);
+
+
         holder.mIcon.setImageTintList(
                 ColorStateList.valueOf(Color.parseColor(anchor.getColor())));
         Float distance = anchor.getDistanceInKms();
@@ -77,7 +84,7 @@ public class AnchorListAdapter extends BaseAdapter {
         if (anchor.isReminder()) {
             holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_black_24dp));
             holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.blue500));
-        }else{
+        } else {
             holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_off_black_24dp));
             holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.grey500));
         }
@@ -86,6 +93,26 @@ public class AnchorListAdapter extends BaseAdapter {
 
     public List<Anchor> getData() {
         return mData;
+    }
+
+    private Spannable getHightligthedTitle(String origString) {
+        String[] highlightLowerString = MainActivity.getSearchString().trim().toLowerCase().split(" ");
+        String origLowerString = origString.toLowerCase();
+        Spannable spannable = new SpannableString(origString);
+
+        for(String subString : highlightLowerString) {
+            if (subString.length() > 0) {
+                int from = origLowerString.indexOf(subString);
+                int to = Math.min(from + subString.length(), origString.length());
+                spannable.setSpan(
+                        new ForegroundColorSpan(mContext.getColor(R.color.colorAccent)),
+                        from,
+                        to,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+
+        return spannable;
     }
 
     protected static class AnchorHolder {
