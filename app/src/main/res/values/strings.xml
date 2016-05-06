@@ -213,5 +213,7 @@
     <string name="action_remove">Remove</string>
     <string name="menu_button">Menu button</string>
     <string name="title_activity_edit_anchor">Edit anchor</string>
+    <string name="search_title">Search</string>
+    <string name="search_hint">Search...</string>
 
 </resources>
