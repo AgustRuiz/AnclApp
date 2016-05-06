@@ -1,6 +1,5 @@
 package es.agustruiz.anclapp.ui;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -16,7 +15,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -36,12 +34,12 @@ import android.view.animation.Transformation;
 import android.support.v7.widget.SearchView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.SystemUtils;
+import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.presenter.MainActivityPresenter;
 import es.agustruiz.anclapp.ui.customView.CustomViewPager;
 import es.agustruiz.anclapp.ui.fragment.AnchorListFragment;
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    EditText mSearchEditText;
+    private static EditText mSearchEditText;
 
     @Bind(R.id.fab_add_anchor)
     FloatingActionButton mFabAddAnchor;
@@ -174,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(LOG_TAG, String.format("Search: %s", s));
+                    EventsUtil.getInstance().refreshAnchorList();
                 }
 
                 @Override
@@ -191,25 +189,6 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
-
-        //super.onNewIntent(intent);
-    }
-
-
-    private void handleIntent(Intent intent) {
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Toast.makeText(mContext, "Search: " + query, Toast.LENGTH_SHORT).show();
-            //use the query to search your data somehow
-        }
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -311,6 +290,16 @@ public class MainActivity extends AppCompatActivity {
 
     public int getTabSelected() {
         return tabSelected;
+    }
+
+    //endregion
+
+    //region [Public static methods]
+
+    public static String getSearchString() {
+        if (mSearchEditText != null)
+            return mSearchEditText.getText().toString();
+        else return "";
     }
 
     //endregion

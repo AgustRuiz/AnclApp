@@ -2,8 +2,6 @@ package es.agustruiz.anclapp.event;
 
 import android.location.Location;
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class EventsUtil extends EventDispatcher {
 
     public static final String LOG_TAG = EventsUtil.class.getName()+"[A]";
@@ -17,6 +15,7 @@ public class EventsUtil extends EventDispatcher {
     public static final String DISMISS_FAB_CENTER_MAP = "dismissFabCenterMap";
     public static final String HIDE_LOCATION_CARD = "hideLocationCard";
     public static final String NOTIFIY_CURRENT_LOCATION_CHANGED = "notifyCurrentLocationChanged";
+    public static final String REFRESH_ANCHOR_LIST = "refreshAnchorList";
 
     //region [Singleton constructor]
 
@@ -58,6 +57,10 @@ public class EventsUtil extends EventDispatcher {
 
     public void notifyCurrentLocationChanged(Location location){
         dispatchEvent(new Event(NOTIFIY_CURRENT_LOCATION_CHANGED, location));
+    }
+
+    public void refreshAnchorList(){
+        dispatchEvent(new Event(REFRESH_ANCHOR_LIST));
     }
 
     //endregion

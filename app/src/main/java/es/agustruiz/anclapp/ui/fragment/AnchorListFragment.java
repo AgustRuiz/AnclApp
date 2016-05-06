@@ -2,12 +2,10 @@ package es.agustruiz.anclapp.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +27,7 @@ import es.agustruiz.anclapp.event.Event;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.model.Anchor;
+import es.agustruiz.anclapp.ui.MainActivity;
 import es.agustruiz.anclapp.ui.adapter.AnchorListAdapter;
 import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 
@@ -124,9 +123,14 @@ public class AnchorListFragment extends Fragment {
         });
     }
 
-    private void refreshAnchorList() {
+    private void refreshAnchorList(){
+        String titleQuery = MainActivity.getSearchString();
         mAnchorDAO.openReadOnly();
-        mAnchorList = mAnchorDAO.getAll();
+        if(titleQuery.length()>0){
+            mAnchorList = mAnchorDAO.getByTitle(titleQuery);
+        }else{
+            mAnchorList = mAnchorDAO.getAll();
+        }
         mAnchorDAO.close();
         mAnchorListAdapter.getData().clear();
         mAnchorListAdapter.getData().addAll(mAnchorList);
@@ -143,6 +147,12 @@ public class AnchorListFragment extends Fragment {
                     }
                 }
         );
+        mEventsUtil.addEventListener(EventsUtil.REFRESH_ANCHOR_LIST, new IEventHandler() {
+            @Override
+            public void callback(Event event) {
+                refreshAnchorList();
+            }
+        });
     }
 
     //endregion

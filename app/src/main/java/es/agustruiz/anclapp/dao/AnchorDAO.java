@@ -61,18 +61,36 @@ public class AnchorDAO {
         Cursor cursor = mDatabase.rawQuery(query, params);
         if (cursor.moveToFirst()) {
             do {
-                long id = cursor.getLong(0);
-                double latitude = cursor.getDouble(1);
-                double longitude = cursor.getDouble(2);
-                String title = cursor.getString(3);
-                String description = cursor.getString(4);
-                String color = cursor.getString(5);
-                boolean reminder = cursor.getInt(6) != 0;
-                result.add(new Anchor(id, latitude, longitude, title, description, color, reminder));
+                result.add(getAnchorFromCursor(cursor));
             } while (cursor.moveToNext());
         }
         cursor.close();
         return result;
+    }
+
+    public List<Anchor> getByTitle(String titleQuery){
+
+        titleQuery = titleQuery.trim();
+
+        if(titleQuery.length()>0){
+            List<Anchor> result = new ArrayList<>();
+            String[] titleQueries = titleQuery.split(" ");
+            String query = "select * from " + TABLE_NAME + " where 1=1";
+            for(String q : titleQueries){
+                query = query.concat(" and " + COL_TITLE + " like '%" + q + "%'");
+            }
+            String[] params = new String[]{};
+            Cursor cursor = mDatabase.rawQuery(query, params);
+            if (cursor.moveToFirst()) {
+                do {
+                    result.add(getAnchorFromCursor(cursor));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            return result;
+        }else{
+            return getAll();
+        }
     }
 
     public int countAll(){
@@ -131,13 +149,7 @@ public class AnchorDAO {
         String[] params = new String[]{String.valueOf(id)};
         Cursor cursor = mDatabase.rawQuery(query, params);
         if (cursor.moveToFirst()) {
-            double latitude = cursor.getDouble(1);
-            double longitude = cursor.getDouble(2);
-            String title = cursor.getString(3);
-            String description = cursor.getString(4);
-            String color = cursor.getString(5);
-            boolean reminder = cursor.getInt(6) != 0;
-            result = new Anchor(id, latitude, longitude, title, description, color, reminder);
+            result = getAnchorFromCursor(cursor);
         }
         cursor.close();
         return result;
@@ -160,6 +172,21 @@ public class AnchorDAO {
 
     public static String dropTableQuery() {
         return "drop table if exists " + TABLE_NAME;
+    }
+
+    //endregion
+
+    //region [Private methods]
+
+    private Anchor getAnchorFromCursor(Cursor cursor){
+        long id = cursor.getLong(0);
+        double latitude = cursor.getDouble(1);
+        double longitude = cursor.getDouble(2);
+        String title = cursor.getString(3);
+        String description = cursor.getString(4);
+        String color = cursor.getString(5);
+        boolean reminder = cursor.getInt(6) != 0;
+        return new Anchor(id, latitude, longitude, title, description, color, reminder);
     }
 
     //endregion
