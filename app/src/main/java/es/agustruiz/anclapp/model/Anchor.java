@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Comparator;
+
 public class Anchor {
 
     Long id;
@@ -199,9 +201,15 @@ public class Anchor {
 
     //enregion
 
-    //region [Private Methods]
+    //region [Comparator]
 
+    static public class Comparator implements java.util.Comparator<Anchor> {
+        @Override
+        public int compare(Anchor a, Anchor b) {
+            return a.getDistanceInKms() < b.getDistanceInKms() ? -1 : a.getDistanceInKms() > b.getDistanceInKms() ? 1 : 0;
+        }
+    }
 
-    //enregion
+    //endregion
 
 }

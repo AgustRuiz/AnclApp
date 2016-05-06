@@ -4,12 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.model.Anchor;
 
 public class AnchorDAO {
@@ -65,13 +64,12 @@ public class AnchorDAO {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        orderList(result);
         return result;
     }
 
     public List<Anchor> getByTitle(String titleQuery){
-
         titleQuery = titleQuery.trim();
-
         if(titleQuery.length()>0){
             List<Anchor> result = new ArrayList<>();
             String[] titleQueries = titleQuery.split(" ");
@@ -87,6 +85,7 @@ public class AnchorDAO {
                 } while (cursor.moveToNext());
             }
             cursor.close();
+            orderList(result);
             return result;
         }else{
             return getAll();
@@ -187,6 +186,10 @@ public class AnchorDAO {
         String color = cursor.getString(5);
         boolean reminder = cursor.getInt(6) != 0;
         return new Anchor(id, latitude, longitude, title, description, color, reminder);
+    }
+
+    private void orderList(List<Anchor> list){
+        Collections.sort(list, new Anchor.Comparator());
     }
 
     //endregion
