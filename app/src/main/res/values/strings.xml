@@ -215,5 +215,6 @@
     <string name="title_activity_edit_anchor">Edit anchor</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Search...</string>
+    <string name="cant_load_geocoder">Cant\' load geocoder</string>
 
 </resources>

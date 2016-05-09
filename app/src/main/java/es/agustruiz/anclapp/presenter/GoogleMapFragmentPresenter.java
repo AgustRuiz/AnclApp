@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
@@ -209,24 +211,34 @@ public class GoogleMapFragmentPresenter {
 
     private void fillNewMarkerDescription(LatLng latLng) {
         boolean isError = false;
-        Geocoder geocoder = new Geocoder(mContext);
+        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            if (addresses.size() == 0) {
-                isError = true;
-            } else {
-                Address address = addresses.get(0);
-                Location markerLocation = new Location(LocationManager.GPS_PROVIDER);
-                markerLocation.setLatitude(latLng.latitude);
-                markerLocation.setLongitude(latLng.longitude);
-                mNewMarkerAddress = address.getAddressLine(0);
-                mNewMarkerLocality = address.getLocality();
+            Location markerLocation = new Location(LocationManager.GPS_PROVIDER);
+            markerLocation.setLatitude(latLng.latitude);
+            markerLocation.setLongitude(latLng.longitude);
+            if(Geocoder.isPresent()) {
+                List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                if (addresses.size() == 0) {
+                    isError = true;
+                } else {
+                    Address address = addresses.get(0);
+                    mNewMarkerAddress = address.getAddressLine(0);
+                    mNewMarkerLocality = address.getLocality();
+                    nNewMarkerDistance = (mCurrentLocation != null)
+                            ? (Math.round(mCurrentLocation.distanceTo(markerLocation) / 10) / 100f)
+                            + mContext.getString(R.string.km_unit)
+                            : "";
+                }
+            }else{
+                mNewMarkerAddress = mContext.getString(R.string.cant_load_geocoder);
+                mNewMarkerLocality = "";
                 nNewMarkerDistance = (mCurrentLocation != null)
                         ? (Math.round(mCurrentLocation.distanceTo(markerLocation) / 10) / 100f)
                         + mContext.getString(R.string.km_unit)
                         : "";
             }
         } catch (IOException e) {
+            Log.e(LOG_TAG, "Geocoder error: " + e.toString(), e);
             isError = true;
         }
         if (isError) {
