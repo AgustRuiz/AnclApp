@@ -52,6 +52,10 @@ public class AnchorListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_anchor_list, container, false);
         ButterKnife.bind(this, v);
+
+        //mAnchorListView = (ListView) v.findViewById(R.id.anchor_list_view);
+        //mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.anchor_list_swipe_refresh);
+
         mContext = getContext();
         initialize(inflater);
         registryEventListeners();
@@ -113,6 +117,7 @@ public class AnchorListFragment extends Fragment {
             }
         });
 
+        /**/
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent, mContext.getTheme()));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -120,7 +125,7 @@ public class AnchorListFragment extends Fragment {
                 refreshAnchorList();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
-        });
+        });/**/
     }
 
     private void refreshAnchorList(){

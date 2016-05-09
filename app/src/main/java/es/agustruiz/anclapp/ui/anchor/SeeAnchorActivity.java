@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,6 +61,9 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     @Bind(R.id.see_anchor_color_text)
     TextView mTextViewColor;
+
+    @Bind(R.id.btn_navigate)
+    Button mBtnNavigate;
 
     protected long mIntentAnchorId;
     public static final String ANCHOR_ID_INTENT_TAG = "mIntentAnchorId";
@@ -150,6 +154,12 @@ public class SeeAnchorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mPresenter.editAnchor();
+            }
+        });
+        mBtnNavigate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.navigateToPlace(mIntentAnchorId);
             }
         });
     }

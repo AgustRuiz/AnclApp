@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_see_anchor_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/fab_margin"
@@ -9,154 +11,184 @@
     tools:context=".ui.anchor.SeeAnchorActivity"
     tools:showIn="@layout/activity_see_anchor">
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/form_anchor_line_height">
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/form_anchor_icon_margin"
-                android:contentDescription="@string/description_icon"
-                android:src="@drawable/ic_short_text_black_24dp"
-                android:tint="@color/grey700" />
-
-            <TextView
-                android:id="@+id/see_anchor_description"
+            <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/form_anchor_text_size" />
+                android:minHeight="@dimen/form_anchor_line_height">
 
-        </android.support.v7.widget.LinearLayoutCompat>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/form_anchor_icon_margin"
+                    android:contentDescription="@string/description_icon"
+                    android:src="@drawable/ic_short_text_black_24dp"
+                    android:tint="@color/grey700" />
 
-        <include layout="@layout/vertical_separator" />
+                <TextView
+                    android:id="@+id/see_anchor_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/form_anchor_text_size" />
 
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/form_anchor_line_height">
+            </android.support.v7.widget.LinearLayoutCompat>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/form_anchor_icon_margin"
-                android:contentDescription="@string/tag_icon"
-                android:src="@drawable/ic_gps_fixed_24dp"
-                android:tint="@color/grey700" />
+            <include layout="@layout/vertical_separator" />
 
-            <TextView
-                android:id="@+id/see_anchor_lat_lng"
+            <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/form_anchor_text_size" />
+                android:minHeight="@dimen/form_anchor_line_height">
 
-        </android.support.v7.widget.LinearLayoutCompat>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/form_anchor_icon_margin"
+                    android:contentDescription="@string/tag_icon"
+                    android:src="@drawable/ic_gps_fixed_24dp"
+                    android:tint="@color/grey700" />
 
-        <include layout="@layout/vertical_separator" />
+                <TextView
+                    android:id="@+id/see_anchor_lat_lng"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/form_anchor_text_size" />
 
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/form_anchor_line_height">
+            </android.support.v7.widget.LinearLayoutCompat>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/form_anchor_icon_margin"
-                android:contentDescription="@string/tag_icon"
-                android:src="@drawable/ic_tag_black_24dp"
-                android:tint="@color/grey700" />
+            <include layout="@layout/vertical_separator" />
 
-            <TextView
-                android:id="@+id/see_anchor_tag"
+            <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/form_anchor_text_size" />
+                android:minHeight="@dimen/form_anchor_line_height">
 
-        </android.support.v7.widget.LinearLayoutCompat>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/form_anchor_icon_margin"
+                    android:contentDescription="@string/tag_icon"
+                    android:src="@drawable/ic_tag_black_24dp"
+                    android:tint="@color/grey700" />
 
-        <include layout="@layout/vertical_separator" />
+                <TextView
+                    android:id="@+id/see_anchor_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/form_anchor_text_size" />
 
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/form_anchor_line_height">
+            </android.support.v7.widget.LinearLayoutCompat>
 
-            <ImageView
-                android:id="@+id/see_anchor_reminder_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/form_anchor_icon_margin"
-                android:contentDescription="@string/notification_icon"
-                android:src="@drawable/ic_notifications_black_24dp"
-                android:tint="@color/grey700" />
+            <include layout="@layout/vertical_separator" />
 
-            <TextView
-                android:id="@+id/see_anchor_reminder_label"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:text="@string/reminder"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/form_anchor_text_size" />
-
-        </android.support.v7.widget.LinearLayoutCompat>
-
-        <include layout="@layout/vertical_separator" />
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:id="@+id/see_anchor_color_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/form_anchor_line_height"
-            android:padding="0dp">
-
-            <ImageView
-                android:id="@+id/see_anchor_color_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/form_anchor_icon_margin"
-                android:contentDescription="@string/color_preview"
-                android:src="@drawable/ic_color_item_solid_24dp" />
-
-            <TextView
-                android:id="@+id/see_anchor_color_text"
+            <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/transparent"
-                android:text="@string/color"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/form_anchor_text_size" />
+                android:minHeight="@dimen/form_anchor_line_height">
+
+                <ImageView
+                    android:id="@+id/see_anchor_reminder_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/form_anchor_icon_margin"
+                    android:contentDescription="@string/notification_icon"
+                    android:src="@drawable/ic_notifications_black_24dp"
+                    android:tint="@color/grey700" />
+
+                <TextView
+                    android:id="@+id/see_anchor_reminder_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="@string/reminder"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/form_anchor_text_size" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <include layout="@layout/vertical_separator" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/see_anchor_color_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/form_anchor_line_height"
+                android:padding="0dp">
+
+                <ImageView
+                    android:id="@+id/see_anchor_color_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/form_anchor_icon_margin"
+                    android:contentDescription="@string/color_preview"
+                    android:src="@drawable/ic_color_item_solid_24dp" />
+
+                <TextView
+                    android:id="@+id/see_anchor_color_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:text="@string/color"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/form_anchor_text_size" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <include layout="@layout/vertical_separator" />
+
+            <android.support.v7.widget.ButtonBarLayout
+                android:id="@+id/buttons_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/form_anchor_line_height"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="0dp"
+                android:padding="0dp">
+
+                <Button
+
+                <Button
+                    android:id="@+id/btn_navigate"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:gravity="center"
+                    android:text="Go to this place"
+                    android:textColor="@color/colorAccent" />
+
+            </android.support.v7.widget.ButtonBarLayout>
+
+            <include layout="@layout/vertical_separator" />
 
         </android.support.v7.widget.LinearLayoutCompat>
 
-        <include layout="@layout/vertical_separator" />
+    </android.support.v4.widget.NestedScrollView>
 
-    </android.support.v7.widget.LinearLayoutCompat>
-
-</android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

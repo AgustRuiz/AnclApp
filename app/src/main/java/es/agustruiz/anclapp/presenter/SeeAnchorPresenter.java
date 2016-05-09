@@ -11,6 +11,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
@@ -91,6 +92,40 @@ public class SeeAnchorPresenter implements Presenter {
         }
     }
 
+    public void navigateToPlace(long anchorId) {
+        Anchor anchor = getAnchor(anchorId);
+        double latitude = anchor.getLatitude();
+        double longitude = anchor.getLongitude();
+        String label = anchor.getTitle();
+        String uriBegin = "geo:" + latitude + "," + longitude;
+        String query = latitude + "," + longitude + "(" + label + ")";
+        String encodedQuery = Uri.encode(query);
+        String uriStrign = uriBegin + "?q=" + encodedQuery; //+"&z=16";
+        Uri uri = Uri.parse(uriStrign);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+    }
+
+    //endregion
+
+    //region [Presenter overriden methods]
+
+    @Override
+    public void showMessage(String message) {
+        mActivity.showMessageView(message);
+    }
+
+    //endregion
+
+    //region [Private methods]
+
+    protected void prepareDAO() {
+        if (mAnchorDAO == null) {
+            mAnchorDAO = new AnchorDAO(mContext);
+        }
+    }
+
     private void downloadMapHeaderImage(Double latitude, Double longitude, final int width, final int height) {
 
         // Note: Added a margin on top and bottom to trim Google logo and keep map in center
@@ -134,25 +169,6 @@ public class SeeAnchorPresenter implements Presenter {
             }
         });
         getHeaderTask.execute(urlString);
-    }
-
-    //endregion
-
-    //region [Presenter overriden methods]
-
-    @Override
-    public void showMessage(String message) {
-        mActivity.showMessageView(message);
-    }
-
-    //endregion
-
-    //region [Private methods]
-
-    protected void prepareDAO() {
-        if (mAnchorDAO == null) {
-            mAnchorDAO = new AnchorDAO(mContext);
-        }
     }
 
     //endregion
