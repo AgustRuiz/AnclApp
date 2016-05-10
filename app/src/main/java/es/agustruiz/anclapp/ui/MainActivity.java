@@ -41,6 +41,7 @@ import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.presenter.MainActivityPresenter;
+import es.agustruiz.anclapp.ui.anchor.BinAnchorActivity;
 import es.agustruiz.anclapp.ui.customView.CustomViewPager;
 import es.agustruiz.anclapp.ui.fragment.AnchorListFragment;
 import es.agustruiz.anclapp.ui.fragment.GoogleMapFragment;
@@ -351,6 +352,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
                         switch (item.getItemId()) {
+                            case R.id.menu_bin:
+                                startActivity(new Intent(mContext, BinAnchorActivity.class));
+                                break;
                             case R.id.menu_settings:
                                 startActivity(new Intent(mContext, SettingsActivity.class));
                                 break;

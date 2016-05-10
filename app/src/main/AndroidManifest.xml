@@ -18,12 +18,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".ui.MainActivity" />
-
 
         <activity
             android:name=".ui.MainActivity"
@@ -32,11 +29,13 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:value="@xml/searchable" />
@@ -67,6 +66,7 @@
             android:name=".ui.anchor.EditAnchorActivity"
             android:label="@string/title_activity_edit_anchor"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.anchor.BinAnchorActivity"></activity>
     </application>
 
 </manifest>
