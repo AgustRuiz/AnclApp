@@ -121,8 +121,13 @@ public class GoogleMapFragment extends Fragment {
         autoCenterMapMode = mode;
         switch (autoCenterMapMode){
             case CENTER_MAP_CURRENT_LOCATION:
-                Log.d(LOG_TAG, "center map in current position activated");
-                centerMapOnLocation(mPresenter.getCurrentLocation());
+                //Log.d(LOG_TAG, "center map in current position activated");
+                if(mPresenter.isLocationProviderEnabled()) {
+                    centerMapOnLocation(mPresenter.getCurrentLocation());
+                }else{
+                    mEventsUtil.dismissFabCenterMap();
+                    showAlertNoGps();
+                }
                 break;
             case CENTER_MAP_MARKER:
             case CENTER_MAP_OFF:

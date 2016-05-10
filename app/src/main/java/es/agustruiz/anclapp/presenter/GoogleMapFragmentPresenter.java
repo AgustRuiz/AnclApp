@@ -37,7 +37,7 @@ import es.agustruiz.anclapp.ui.anchor.NewAnchorActivity;
 import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 import es.agustruiz.anclapp.ui.fragment.GoogleMapFragment;
 
-public class GoogleMapFragmentPresenter{
+public class GoogleMapFragmentPresenter {
 
     public static final String LOG_TAG = GoogleMapFragmentPresenter.class.getName() + "[A]";
 
@@ -51,6 +51,7 @@ public class GoogleMapFragmentPresenter{
     protected GoogleApiClient mGoogleApiClient = null;
     protected Location mCurrentLocation = null;
     protected LocationRequest mLocationRequest = null;
+    protected LocationManager mLocationService = null;
     protected EventsUtil mEventsUtil = EventsUtil.getInstance();
     protected AnchorDAO mAnchorDAO = null;
 
@@ -100,6 +101,10 @@ public class GoogleMapFragmentPresenter{
         fillNewMarkerDescription(latLng);
         String[] data = new String[]{mNewMarkerAddress, mNewMarkerLocality, nNewMarkerDistance};
         mEventsUtil.getNewMarkerData(data);
+    }
+
+    public boolean isLocationProviderEnabled() {
+        return mLocationService.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     //endregion
@@ -216,26 +221,20 @@ public class GoogleMapFragmentPresenter{
                     }
                 });
 
-        LocationManager mLocationService = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        mLocationService = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         mLocationService.addGpsStatusListener(new GpsStatus.Listener() {
             @Override
             public void onGpsStatusChanged(int event) {
-                switch (event) {
-                    case GpsStatus.GPS_EVENT_STARTED:
-                        // Do Something with mStatus info
-                        Log.d(LOG_TAG, "GPS_EVENT_STARTED");
-                        break;
-
-                    case GpsStatus.GPS_EVENT_STOPPED:
-                        // Do Something with mStatus info
-                        Log.d(LOG_TAG, "GPS_EVENT_STOPPED");
-                        mFragment.showAlertNoGps();
-                        break;
+                if (event == GpsStatus.GPS_EVENT_STOPPED) {
+                    //Log.d(LOG_TAG, "GPS_EVENT_STOPPED");
+                    mFragment.showAlertNoGps();
+                    mEventsUtil.dismissFabCenterMap();
                 }
             }
         });
-        if(!mLocationService.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        if (!isLocationProviderEnabled()) {
             mFragment.showAlertNoGps();
+            mEventsUtil.dismissFabCenterMap();
         }
     }
 
@@ -250,7 +249,7 @@ public class GoogleMapFragmentPresenter{
             Location markerLocation = new Location(LocationManager.GPS_PROVIDER);
             markerLocation.setLatitude(latLng.latitude);
             markerLocation.setLongitude(latLng.longitude);
-            if(Geocoder.isPresent()) {
+            if (Geocoder.isPresent()) {
                 List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
                 if (addresses.size() == 0) {
                     isError = true;
@@ -263,7 +262,7 @@ public class GoogleMapFragmentPresenter{
                             + mContext.getString(R.string.km_unit)
                             : "";
                 }
-            }else{
+            } else {
                 mNewMarkerAddress = mContext.getString(R.string.cant_load_geocoder);
                 mNewMarkerLocality = "";
                 nNewMarkerDistance = (mCurrentLocation != null)

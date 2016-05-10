@@ -47,10 +47,10 @@ public class SeeAnchorPresenter implements Presenter {
 
     public Anchor getAnchor(long mIntentAnchorId) {
         if (mAnchor == null) {
+            //Log.d(LOG_TAG, "get anchor from DB, id=" + mIntentAnchorId);
             prepareDAO();
             mAnchorDAO.openReadOnly();
             mAnchor = mAnchorDAO.get(mIntentAnchorId);
-            Log.d(LOG_TAG, "get anchor from DB, id=" + mIntentAnchorId);
             mAnchorDAO.close();
         }
         return mAnchor;
