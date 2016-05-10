@@ -68,6 +68,8 @@ public class GoogleMapFragment extends Fragment {
 
     protected static final float MAP_MIN_ZOOM = 15;
 
+    protected boolean beforeOnSaveInstance = true;
+
     //endregion
 
     //region [Fragment methods]
@@ -85,6 +87,7 @@ public class GoogleMapFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        beforeOnSaveInstance = false;
         super.onSaveInstanceState(outState);
         outState.putChar(AUTO_CENTER_MAP_MODE_TAG, autoCenterMapMode);
         if (mNewMarkerOptions != null)
@@ -94,6 +97,7 @@ public class GoogleMapFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        beforeOnSaveInstance = true;
         reloadAnchorsInMap();
     }
 
@@ -183,11 +187,13 @@ public class GoogleMapFragment extends Fragment {
     }
 
     public void showAlertNoGps(){
-        DialogFragment alertDialogFragment = AlertDialogFragment.newInstance(
-                getString(R.string.no_location_provider_found),
-                getString(R.string.no_location_provider_message));
-        alertDialogFragment.setCancelable(false);
-        alertDialogFragment.show(getFragmentManager(), "alert");
+        if(isBeforeOnSaveInstance()) {
+            DialogFragment alertDialogFragment = AlertDialogFragment.newInstance(
+                    getString(R.string.no_location_provider_found),
+                    getString(R.string.no_location_provider_message));
+            alertDialogFragment.setCancelable(false);
+            alertDialogFragment.show(getFragmentManager(), "alert");
+        }
     }
 
     //endregion
@@ -292,6 +298,10 @@ public class GoogleMapFragment extends Fragment {
         paint.setColorFilter(new PorterDuffColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_ATOP));
         canvas.drawBitmap(ob, 0f, 0f, paint);
         return BitmapDescriptorFactory.fromBitmap(obm);
+    }
+
+    private boolean isBeforeOnSaveInstance(){
+        return beforeOnSaveInstance;
     }
 
     //endregion
