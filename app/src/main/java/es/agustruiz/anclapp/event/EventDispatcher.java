@@ -22,9 +22,9 @@ public class EventDispatcher implements IEventDispatcher {
 
     @Override
     public void removeEventListener(String type) {
-        //Log.d(LOG_TAG, "remove listener " + type);
         for (Listener listener : listenerList) {
             if (listener.getType().equals(type)) {
+                //Log.d(LOG_TAG, "remove listener " + type);
                 listenerList.remove(listener);
             }
         }
