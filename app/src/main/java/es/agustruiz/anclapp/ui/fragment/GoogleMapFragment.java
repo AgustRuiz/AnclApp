@@ -181,6 +181,7 @@ public class GoogleMapFragment extends Fragment {
         DialogFragment alertDialogFragment = AlertDialogFragment.newInstance(
                 getString(R.string.no_location_provider_found),
                 getString(R.string.no_location_provider_message));
+        alertDialogFragment.setCancelable(false);
         alertDialogFragment.show(getFragmentManager(), "alert");
     }
 
