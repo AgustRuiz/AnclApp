@@ -1,20 +1,22 @@
 package es.agustruiz.anclapp.presenter;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -35,7 +37,7 @@ import es.agustruiz.anclapp.ui.anchor.NewAnchorActivity;
 import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 import es.agustruiz.anclapp.ui.fragment.GoogleMapFragment;
 
-public class GoogleMapFragmentPresenter {
+public class GoogleMapFragmentPresenter{
 
     public static final String LOG_TAG = GoogleMapFragmentPresenter.class.getName() + "[A]";
 
@@ -191,6 +193,16 @@ public class GoogleMapFragmentPresenter {
     }
 
     private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }// TODO Permission check
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, new LocationListener() {
                     @Override
@@ -202,7 +214,27 @@ public class GoogleMapFragmentPresenter {
                         Anchor.setReferenceLocation(mCurrentLocation);
                         mEventsUtil.notifyCurrentLocationChanged(mCurrentLocation);
                     }
-                }); // TODO Permission check
+                });
+
+        LocationManager mLocationService = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        mLocationService.addGpsStatusListener(new GpsStatus.Listener() {
+            @Override
+            public void onGpsStatusChanged(int event) {
+                switch (event) {
+                    case GpsStatus.GPS_EVENT_STARTED:
+                        // Do Something with mStatus info
+                        Log.d(LOG_TAG, "GPS_EVENT_STARTED");
+                        break;
+
+                    case GpsStatus.GPS_EVENT_STOPPED:
+                        // Do Something with mStatus info
+                        Log.d(LOG_TAG, "GPS_EVENT_STOPPED");
+                        mFragment.showAlertNoGps();
+                        break;
+                }
+            }
+        });
+
     }
 
     private void fillNewMarkerDescription(Location location) {

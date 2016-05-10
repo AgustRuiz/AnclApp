@@ -10,10 +10,13 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +39,7 @@ import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.presenter.GoogleMapFragmentPresenter;
+import es.agustruiz.anclapp.ui.AlertDialogFragment;
 
 public class GoogleMapFragment extends Fragment {
 
@@ -171,6 +175,13 @@ public class GoogleMapFragment extends Fragment {
             mNewMarker = null;
             mNewMarkerOptions = null;
         }
+    }
+
+    public void showAlertNoGps(){
+        DialogFragment alertDialogFragment = AlertDialogFragment.newInstance(
+                getString(R.string.no_location_provider_found),
+                getString(R.string.no_location_provider_message));
+        alertDialogFragment.show(getFragmentManager(), "alert");
     }
 
     //endregion

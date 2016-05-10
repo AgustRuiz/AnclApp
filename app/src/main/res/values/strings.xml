@@ -217,5 +217,8 @@
     <string name="search_hint">Search...</string>
     <string name="cant_load_geocoder">Cant\' load geocoder</string>
     <string name="go_to_this_place">Go to this place</string>
+    <string name="ok">Ok</string>
+    <string name="no_location_provider_found">No location provider found</string>
+    <string name="no_location_provider_message">It seems GPS is disconnected. Several options may not be available. Please consider activate the GPS.</string>
 
 </resources>
