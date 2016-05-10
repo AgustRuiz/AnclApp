@@ -202,7 +202,7 @@ public class GoogleMapFragmentPresenter{
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             return;
-        }// TODO Permission check
+        }
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, new LocationListener() {
                     @Override
@@ -234,7 +234,9 @@ public class GoogleMapFragmentPresenter{
                 }
             }
         });
-
+        if(!mLocationService.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            mFragment.showAlertNoGps();
+        }
     }
 
     private void fillNewMarkerDescription(Location location) {

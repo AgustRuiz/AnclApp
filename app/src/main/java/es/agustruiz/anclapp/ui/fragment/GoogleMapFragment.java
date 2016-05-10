@@ -147,7 +147,7 @@ public class GoogleMapFragment extends Fragment {
     }
 
     public void reloadAnchorsInMap() {
-        Log.d(LOG_TAG, "reloadAnchorsInMap");
+        //Log.d(LOG_TAG, "reloadAnchorsInMap");
         if (mGoogleMap != null) {
             removeAnchorsInMap();
             for (Anchor anchor : mPresenter.getAnchorList()) {
