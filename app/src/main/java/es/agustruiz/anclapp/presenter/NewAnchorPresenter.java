@@ -44,8 +44,8 @@ public class NewAnchorPresenter implements Presenter {
                         mActivity.getTitleValue(),
                         mActivity.getDescriptionValue(),
                         mActivity.getColorValue(),
-                        mActivity.getReminderValue()
-                );
+                        mActivity.getReminderValue(),
+                        false, null );
                 mAnchorDAO.openWritable();
                 mAnchorDAO.add(newAnchor);
                 resultOk = true;

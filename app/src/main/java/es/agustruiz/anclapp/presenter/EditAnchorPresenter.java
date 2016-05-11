@@ -52,7 +52,9 @@ public class EditAnchorPresenter implements Presenter {
                 mActivity.getAnchorTitle(),
                 mActivity.getAnchorDescription(),
                 mActivity.getAnchorColor(),
-                mActivity.isReminder());
+                mActivity.isReminder(),
+                false,
+                null);
         if (updatedAnchor.isOk()) {
             prepareDAO();
             mAnchorDAO.openWritable();

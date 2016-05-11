@@ -90,7 +90,7 @@ public class AnchorListFragment extends Fragment {
                     @Override
                     public void onDismiss(ListViewAdapter recyclerView, int position) {
                         mAnchorDAO.openWritable();
-                        mAnchorDAO.remove(mAnchorListAdapter.getItemId(position));
+                        mAnchorDAO.moveToBin(mAnchorListAdapter.getItemId(position));
                         mAnchorDAO.close();
                         mAnchorListAdapter.remove(position);
                         EventsUtil.getInstance().refreshAnchorMarkers();
@@ -128,9 +128,9 @@ public class AnchorListFragment extends Fragment {
         String titleQuery = MainActivity.getSearchString();
         mAnchorDAO.openReadOnly();
         if(titleQuery.length()>0){
-            mAnchorList = mAnchorDAO.getByTitle(titleQuery);
+            mAnchorList = mAnchorDAO.getByTitle(titleQuery, AnchorDAO.QUERY_GET_NOT_DELETED);
         }else{
-            mAnchorList = mAnchorDAO.getAll();
+            mAnchorList = mAnchorDAO.getAll(AnchorDAO.QUERY_GET_NOT_DELETED);
         }
         mAnchorDAO.close();
         mAnchorListAdapter.getData().clear();

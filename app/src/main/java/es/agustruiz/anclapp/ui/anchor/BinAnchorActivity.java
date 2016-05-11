@@ -83,7 +83,7 @@ public class BinAnchorActivity extends AppCompatActivity {
     private void refreshAnchorList() {
         prepareDAO();
         mAnchorDAO.openReadOnly();
-        mAnchorList = mAnchorDAO.getAll(); // TODO Replace by "getDeleted" method
+        mAnchorList = mAnchorDAO.getAll(AnchorDAO.QUERY_GET_DELETED);
         mAnchorDAO.close();
         mAnchorListAdapter.getData().clear();
         mAnchorListAdapter.getData().addAll(mAnchorList);
@@ -114,7 +114,7 @@ public class BinAnchorActivity extends AppCompatActivity {
                     @Override
                     public void onDismiss(ListViewAdapter recyclerView, int position) {
                         mAnchorDAO.openWritable();
-                        mAnchorDAO.remove(mAnchorListAdapter.getItemId(position));
+                        mAnchorDAO.delete(mAnchorListAdapter.getItemId(position));
                         mAnchorDAO.close();
                         mAnchorListAdapter.remove(position);
                         refreshAnchorList();

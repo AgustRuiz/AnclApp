@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -187,12 +188,14 @@ public class GoogleMapFragment extends Fragment {
     }
 
     public void showAlertNoGps(){
-        if(isBeforeOnSaveInstance()) {
+        final String ALERT_NO_GPS_TAG = "alertNoGPS";
+        FragmentManager fragmentManager = getFragmentManager();
+        if(fragmentManager!=null && isBeforeOnSaveInstance()) {
             DialogFragment alertDialogFragment = AlertDialogFragment.newInstance(
                     getString(R.string.no_location_provider_found),
                     getString(R.string.no_location_provider_message));
             alertDialogFragment.setCancelable(false);
-            alertDialogFragment.show(getFragmentManager(), "alert");
+            alertDialogFragment.show(fragmentManager, ALERT_NO_GPS_TAG);
         }
     }
 

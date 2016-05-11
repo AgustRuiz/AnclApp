@@ -13,7 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
@@ -66,14 +65,14 @@ public class SeeAnchorPresenter implements Presenter {
     public void removeAnchor() {
         //Log.d(LOG_TAG, "removeAnchor");
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
-        alertDialogBuilder.setMessage("Do you want to remove this anchor?");
+        alertDialogBuilder.setMessage(mContext.getString(R.string.remove_anchor_msg));
         alertDialogBuilder.setPositiveButton(mContext.getResources().getString(R.string.accept),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         prepareDAO();
                         mAnchorDAO.openWritable();
-                        mAnchorDAO.remove(mAnchor);
+                        mAnchorDAO.moveToBin(mAnchor);
                         mAnchorDAO.close();
                         mActivity.onBackPressed();
                     }

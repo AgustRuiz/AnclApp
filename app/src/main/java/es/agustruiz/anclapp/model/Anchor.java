@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Comparator;
+import java.util.Date;
 
 public class Anchor {
 
@@ -17,6 +18,8 @@ public class Anchor {
     String description;
     String color;
     Boolean reminder;
+    Boolean isDeleted;
+    Long deletedTimestam;
 
     static Location referenceLocation = null;
 
@@ -32,7 +35,7 @@ public class Anchor {
     /**
      * Full constructor
      */
-    public Anchor(Long id, Double latitude, Double longitude, String title, String description, String color, Boolean reminder) {
+    public Anchor(Long id, Double latitude, Double longitude, String title, String description, String color, Boolean reminder, Boolean isDeleted, Long deletedTimestam) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -40,6 +43,8 @@ public class Anchor {
         this.description = description;
         this.color = color;
         this.reminder = reminder;
+        this.isDeleted = isDeleted;
+        this.deletedTimestam = deletedTimestam;
     }
 
     /**
@@ -166,6 +171,22 @@ public class Anchor {
      */
     public void setReminder(Boolean reminder) {
         this.reminder = reminder;
+    }
+
+    public Boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deletedStatus) {
+        isDeleted = deletedStatus;
+    }
+
+    public Long getDeletedTimestam(){
+        return deletedTimestam;
+    }
+
+    public void setDeletedTimestam(Long deletedTimestam){
+        this.deletedTimestam = deletedTimestam;
     }
 
     /**

@@ -82,7 +82,7 @@ public class GoogleMapFragmentPresenter {
     public List<Anchor> getAnchorList() {
         prepareAnchorDAO();
         mAnchorDAO.openReadOnly();
-        List<Anchor> result = mAnchorDAO.getAll();
+        List<Anchor> result = mAnchorDAO.getAll(AnchorDAO.QUERY_GET_NOT_DELETED);
         mAnchorDAO.close();
         return result;
     }
@@ -227,12 +227,14 @@ public class GoogleMapFragmentPresenter {
             public void onGpsStatusChanged(int event) {
                 if (event == GpsStatus.GPS_EVENT_STOPPED) {
                     //Log.d(LOG_TAG, "GPS_EVENT_STOPPED");
+                    Anchor.setReferenceLocation(null);
                     mFragment.showAlertNoGps();
                     mEventsUtil.dismissFabCenterMap();
                 }
             }
         });
         if (!isLocationProviderEnabled()) {
+            Anchor.setReferenceLocation(null);
             mFragment.showAlertNoGps();
             mEventsUtil.dismissFabCenterMap();
         }
