@@ -214,7 +214,7 @@
     <string name="menu_button">Menu button</string>
     <string name="title_activity_edit_anchor">Edit anchor</string>
     <string name="search_title">Search</string>
-    <string name="search_hint">Search...</string>
+    <string name="search_hint">Search…</string>
     <string name="cant_load_geocoder">Cant\' load geocoder</string>
     <string name="go_to_this_place">Go to this place</string>
     <string name="ok">Ok</string>
@@ -222,5 +222,9 @@
     <string name="no_location_provider_message">It seems GPS is disconnected. Several options may not be available. Please consider activate the GPS.</string>
     <string name="anchors_bin">Anchors bin</string>
     <string name="remove_anchor_msg">Do you want to remove this anchor?</string>
+    <string name="action_restore">Restore</string>
+    <string name="anchor_deleted">Anchor deleted</string>
+    <string name="anchor_restored">Anchor restored</string>
+    <string name="delete_permanently">Delete permanently</string>
 
 </resources>

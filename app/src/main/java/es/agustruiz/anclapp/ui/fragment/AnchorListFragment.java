@@ -105,7 +105,6 @@ public class AnchorListFragment extends Fragment {
                 if (touchListener.existPendingDismisses()) {
                     touchListener.undoPendingDismiss();
                 } else {
-                    // TODO launch details anchor activity
                     Intent intent = new Intent(mContext, SeeAnchorActivity.class);
                     intent.putExtra(SeeAnchorActivity.ANCHOR_ID_INTENT_TAG, mAnchorList.get(position).getId());
                     startActivity(intent);

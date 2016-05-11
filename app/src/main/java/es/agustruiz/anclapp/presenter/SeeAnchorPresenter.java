@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
@@ -62,6 +63,40 @@ public class SeeAnchorPresenter implements Presenter {
         mContext.startActivity(intent);
     }
 
+    public void restoreAnchor(){
+        prepareDAO();
+        mAnchorDAO.openWritable();
+        mAnchorDAO.restore(mAnchor);
+        mAnchorDAO.close();
+
+        Toast.makeText(mContext, mContext.getString(R.string.anchor_restored), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(mContext, SeeAnchorActivity.class);
+        intent.putExtra(SeeAnchorActivity.ANCHOR_ID_INTENT_TAG, mAnchor.getId());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mContext.startActivity(intent);
+    }
+
+    public void purgeAnchor(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
+        alertDialogBuilder.setMessage(mContext.getString(R.string.remove_anchor_msg));
+        alertDialogBuilder.setPositiveButton(mContext.getResources().getString(R.string.accept),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        prepareDAO();
+                        mAnchorDAO.openWritable();
+                        mAnchorDAO.delete(mAnchor);
+                        mAnchorDAO.close();
+                        mActivity.onBackPressed();
+                    }
+                });
+        alertDialogBuilder.setNegativeButton(mContext.getResources().getString(R.string.cancel), null);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     public void removeAnchor() {
         //Log.d(LOG_TAG, "removeAnchor");
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
@@ -104,6 +139,10 @@ public class SeeAnchorPresenter implements Presenter {
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
+    }
+
+    public boolean isDeleted(long anchorId) {
+        return getAnchor(anchorId).isDeleted();
     }
 
     //endregion

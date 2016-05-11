@@ -166,12 +166,25 @@ public class AnchorDAO {
     }
 
     public boolean moveToBin(long id) {
-
         ContentValues values = new ContentValues();
-
         //values.put(COL_ID, id);
         values.put(COL_IS_DELETED, true);
         values.put(COL_DETELED_TIMESTAMP, System.currentTimeMillis());
+        String whereClause = COL_ID + "=?";
+        String[] whereArgs = new String[]{String.valueOf(id)};
+        int result = mDatabase.update(TABLE_NAME, values, whereClause, whereArgs);
+        return result > 0;
+    }
+
+    public boolean restore(Anchor anchor){
+        return restore(anchor.getId());
+    }
+
+    public boolean restore(long id){
+        ContentValues values = new ContentValues();
+        //values.put(COL_ID, id);
+        values.put(COL_IS_DELETED, false);
+        values.put(COL_DETELED_TIMESTAMP, "null");
         String whereClause = COL_ID + "=?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         int result = mDatabase.update(TABLE_NAME, values, whereClause, whereArgs);

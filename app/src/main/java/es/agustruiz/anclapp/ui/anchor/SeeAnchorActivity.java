@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,8 +39,14 @@ public class SeeAnchorActivity extends AppCompatActivity {
     @Bind(R.id.toolbar_marker_icon)
     ImageView mToolbarMarkerIcon;
 
-    @Bind(R.id.fab_edit_anchor)
-    FloatingActionButton mFabEditAnchor;
+    @Bind(R.id.fab_action_anchor)
+    FloatingActionButton mFabActionAnchor;
+
+    @Bind(R.id.see_anchor_line_deleted_date)
+    LinearLayoutCompat mLinearLayoutDeletedDate;
+
+    @Bind(R.id.see_anchor_deleted_date)
+    TextView mTextViewDeletedDate;
 
     @Bind(R.id.see_anchor_description)
     TextView mTextViewDescription;
@@ -64,6 +71,9 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     @Bind(R.id.btn_navigate)
     Button mBtnNavigate;
+
+    @Bind(R.id.see_anchor_line_buttons)
+    LinearLayoutCompat mLinearLayoutButtons;
 
     protected long mIntentAnchorId;
     public static final String ANCHOR_ID_INTENT_TAG = "mIntentAnchorId";
@@ -92,7 +102,11 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.see_anchor, menu);
+        if(mPresenter.isDeleted(mIntentAnchorId)) {
+            getMenuInflater().inflate(R.menu.see_deleted_anchor, menu);
+        }else{
+            getMenuInflater().inflate(R.menu.see_anchor, menu);
+        }
         return true;
     }
 
@@ -105,11 +119,17 @@ public class SeeAnchorActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_restore:
+                mPresenter.restoreAnchor();
+                return true;
             case R.id.action_edit:
                 mPresenter.editAnchor();
                 return true;
             case R.id.action_remove:
                 mPresenter.removeAnchor();
+                return true;
+            case R.id.action_purge:
+                mPresenter.purgeAnchor();
                 return true;
             default:
                 return false;
@@ -150,12 +170,13 @@ public class SeeAnchorActivity extends AppCompatActivity {
         if (mActionBar != null) {
             mActionBar.setDisplayHomeAsUpEnabled(true);
         }
-        mFabEditAnchor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.editAnchor();
-            }
-        });
+
+        if(!mPresenter.isDeleted(mIntentAnchorId)) {
+            fabActionEditMode();
+        }else{
+            fabActionRestoreMode();
+        }
+
         mBtnNavigate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,9 +185,34 @@ public class SeeAnchorActivity extends AppCompatActivity {
         });
     }
 
+    private void fabActionEditMode(){
+        mFabActionAnchor.setImageDrawable(getDrawable(R.drawable.ic_create_black_24dp));
+        mFabActionAnchor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.editAnchor();
+            }
+        });
+        mLinearLayoutDeletedDate.setVisibility(View.GONE);
+        mLinearLayoutButtons.setVisibility(View.VISIBLE);
+    }
+
+    private void fabActionRestoreMode(){
+        mFabActionAnchor.setImageDrawable(getDrawable(R.drawable.ic_refresh_black_24dp));
+        mFabActionAnchor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.restoreAnchor();
+            }
+        });
+        mLinearLayoutDeletedDate.setVisibility(View.VISIBLE);
+        mLinearLayoutButtons.setVisibility(View.GONE);
+    }
+
     private void fillData(Anchor anchor) {
         if (anchor != null) {
             mCollapsingToolbar.setTitle(anchor.getTitle());
+            mTextViewDeletedDate.setText(anchor.getDeletedTimestam().toString()); // TODO readable format
             mTextViewDescription.setText(anchor.getDescription());
             mTextViewLatLng.setText(anchor.getLatitude() + ", " + anchor.getLongitude());
             if (anchor.isReminder()) {
@@ -184,7 +230,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     private void tintElementsWithAnchorColor(int color) {
         mCollapsingToolbar.setBackgroundColor(color);
-        mFabEditAnchor.setBackgroundTintList(ColorStateList.valueOf(color));
+        mFabActionAnchor.setBackgroundTintList(ColorStateList.valueOf(color));
         mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(color));
     }
 

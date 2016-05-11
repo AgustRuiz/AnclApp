@@ -1,6 +1,7 @@
 package es.agustruiz.anclapp.ui.anchor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -129,12 +130,9 @@ public class BinAnchorActivity extends AppCompatActivity {
                 if (touchListener.existPendingDismisses()) {
                     touchListener.undoPendingDismiss();
                 } else {
-                    /*Intent intent = new Intent(mContext, SeeAnchorActivity.class);
+                    Intent intent = new Intent(mContext, SeeAnchorActivity.class);
                     intent.putExtra(SeeAnchorActivity.ANCHOR_ID_INTENT_TAG, mAnchorList.get(position).getId());
-                    startActivity(intent);/**/
-                    Toast.makeText(mContext, "See deleted anchor \""
-                                    + mAnchorList.get(position).getTitle() + "\"",
-                            Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
                 }
             }
         });
