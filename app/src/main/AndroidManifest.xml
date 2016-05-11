@@ -21,17 +21,19 @@
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".ui.MainActivity" />
-
+        <activity
+            android:name=".ui.SplashScreen"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -66,7 +68,7 @@
             android:name=".ui.anchor.EditAnchorActivity"
             android:label="@string/title_activity_edit_anchor"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.anchor.BinAnchorActivity"></activity>
+        <activity android:name=".ui.anchor.BinAnchorActivity" />
     </application>
 
 </manifest>
