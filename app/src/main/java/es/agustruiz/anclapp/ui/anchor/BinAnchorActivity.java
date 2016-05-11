@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -59,6 +60,16 @@ public class BinAnchorActivity extends AppCompatActivity {
         refreshAnchorList();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                this.finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     //endregion
 
     //region [Private methods]
@@ -80,14 +91,17 @@ public class BinAnchorActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+        setTitle(R.string.anchors_bin);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
         mAnchorList = new ArrayList<>();
         mAnchorListAdapter = new AnchorListAdapter(mContext, getLayoutInflater(),
                 R.layout.anchor_list_row, mAnchorList);
 
         mAnchorListView.setAdapter(mAnchorListAdapter);
-        /*mAnchorListView.addFooterView(((LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(R.layout.footer, null, false));/**/
+        mAnchorListView.addFooterView(getLayoutInflater().inflate(R.layout.footer, mAnchorListView, false),
+                null,false);
         mAnchorListView.setClickable(true);
         final SwipeToDismissTouchListener<ListViewAdapter> touchListener = new SwipeToDismissTouchListener<>(
                 new ListViewAdapter(mAnchorListView),

@@ -220,5 +220,6 @@
     <string name="ok">Ok</string>
     <string name="no_location_provider_found">No location provider found</string>
     <string name="no_location_provider_message">It seems GPS is disconnected. Several options may not be available. Please consider activate the GPS.</string>
+    <string name="anchors_bin">Anchors bin</string>
 
 </resources>
