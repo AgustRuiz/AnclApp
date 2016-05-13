@@ -85,6 +85,22 @@ public class AnchorDAO {
         return result;
     }
 
+    public List<Anchor> getAllReminderEnabled() {
+
+        List<Anchor> result = new ArrayList<>();
+        String query = "select * from " + TABLE_NAME + " where " + COL_IS_DELETED + " = 0 and " + COL_REMINDER + " = 1";
+        String[] params = new String[]{};
+        Cursor cursor = mDatabase.rawQuery(query, params);
+        if (cursor.moveToFirst()) {
+            do {
+                result.add(getAnchorFromCursor(cursor));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        orderList(result);
+        return result;
+    }
+
     public List<Anchor> getByTitle(String titleQuery, int mode) {
         titleQuery = titleQuery.trim();
         if (titleQuery.length() > 0) {
@@ -176,11 +192,11 @@ public class AnchorDAO {
         return result > 0;
     }
 
-    public boolean restore(Anchor anchor){
+    public boolean restore(Anchor anchor) {
         return restore(anchor.getId());
     }
 
-    public boolean restore(long id){
+    public boolean restore(long id) {
         ContentValues values = new ContentValues();
         //values.put(COL_ID, id);
         values.put(COL_IS_DELETED, false);

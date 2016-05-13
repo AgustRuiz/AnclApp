@@ -21,6 +21,11 @@
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".ui.MainActivity" />
+
+        <service
+            android:name=".service.AnclappService"
+            android:process=":anclapp_process" />
+
         <activity
             android:name=".ui.SplashScreen"
             android:theme="@style/SplashTheme">

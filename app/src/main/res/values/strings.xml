@@ -226,5 +226,7 @@
     <string name="anchor_deleted">Anchor deleted</string>
     <string name="anchor_restored">Anchor restored</string>
     <string name="delete_permanently">Delete permanently</string>
+    <string name="msg_near_anchor">You are near \"%s\"</string>
+    <string name="msg_click_more_options">Click here for more options</string>
 
 </resources>
