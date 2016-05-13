@@ -1,7 +1,9 @@
 package es.agustruiz.anclapp.service;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -17,6 +19,7 @@ import java.util.List;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
+import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 
 public class CheckAnchorThread extends Thread implements Runnable {
 
@@ -64,11 +67,18 @@ public class CheckAnchorThread extends Thread implements Runnable {
                         if (!mAnchorNotified.contains(anchor.getId())) {
                             mAnchorNotified.add(anchor.getId());
                             //Log.d(LOG_TAG, "Boom! Notification!");
+
+                            Intent intent = new Intent(mContext, SeeAnchorActivity.class);
+                            intent.putExtra(SeeAnchorActivity.ANCHOR_ID_INTENT_TAG, anchor.getId());
+
+                            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
                             Notificator.showNotification(mContext,
                                     String.format(mContext.getString(R.string.msg_near_anchor),
                                             anchor.getTitle()),
                                     anchor.getId(),
-                                    Color.parseColor(anchor.getColor())
+                                    Color.parseColor(anchor.getColor()),
+                                    pendingIntent
                             );
                         }
                     } else {

@@ -2,6 +2,7 @@ package es.agustruiz.anclapp.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.support.v7.app.NotificationCompat;
 
@@ -13,7 +14,7 @@ public class Notificator {
 
     //region [Public static methods]
 
-    public static void showNotification(Context context, String title, Long anchorId, int anchorColor) {
+    public static void showNotification(Context context, String title, Long anchorId, int anchorColor, PendingIntent pendingIntent) {
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
@@ -26,6 +27,7 @@ public class Notificator {
         mBuilder.setDefaults(Notification.DEFAULT_SOUND
                 | Notification.DEFAULT_LIGHTS
                 | Notification.DEFAULT_VIBRATE);
+        mBuilder.setContentIntent(pendingIntent);
 
         mNotificationManager.notify(Integer.parseInt(anchorId.toString()), mBuilder.build());
         //Log.d(LOG_TAG, "notification!");
