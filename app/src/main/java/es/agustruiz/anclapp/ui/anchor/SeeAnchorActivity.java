@@ -212,7 +212,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
     private void fillData(Anchor anchor) {
         if (anchor != null) {
             mCollapsingToolbar.setTitle(anchor.getTitle());
-            mTextViewDeletedDate.setText(anchor.getDeletedTimestam().toString()); // TODO readable format
+            mTextViewDeletedDate.setText(anchor.getDeletedTimestamp().toString()); // TODO readable format
             mTextViewDescription.setText(anchor.getDescription());
             mTextViewLatLng.setText(anchor.getLatitude() + ", " + anchor.getLongitude());
             if (anchor.isReminder()) {

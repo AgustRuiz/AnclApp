@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import es.agustruiz.anclapp.model.Anchor;
@@ -26,6 +25,7 @@ public class AnchorDAO {
     private static final String COL_REMINDER = "reminder";
     private static final String COL_IS_DELETED = "deleted";
     private static final String COL_DETELED_TIMESTAMP = "deletedTimestamp";
+    private static final String COL_IS_NOTIFY = "notify";
 
     private Context mContext;
     private SQLiteDatabase mDatabase;
@@ -156,7 +156,8 @@ public class AnchorDAO {
         values.put(COL_COLOR, anchor.getColor());
         values.put(COL_REMINDER, (anchor.isReminder() ? 1 : 0));
         values.put(COL_IS_DELETED, (anchor.isDeleted() ? 1 : 0));
-        values.put(COL_DETELED_TIMESTAMP, anchor.getDeletedTimestam());
+        values.put(COL_DETELED_TIMESTAMP, anchor.getDeletedTimestamp());
+        values.put(COL_IS_NOTIFY, (anchor.isNotify() ? 1 : 0));
         return mDatabase.insert(TABLE_NAME, null, values);
     }
 
@@ -170,7 +171,8 @@ public class AnchorDAO {
         values.put(COL_COLOR, anchor.getColor());
         values.put(COL_REMINDER, (anchor.isReminder() ? 1 : 0));
         values.put(COL_IS_DELETED, (anchor.isDeleted() ? 1 : 0));
-        values.put(COL_DETELED_TIMESTAMP, anchor.getDeletedTimestam());
+        values.put(COL_DETELED_TIMESTAMP, anchor.getDeletedTimestamp());
+        values.put(COL_IS_NOTIFY, (anchor.isNotify() ? 1 : 0));
         String whereClause = COL_ID + "=?";
         String[] whereArgs = new String[]{String.valueOf(anchor.getId())};
         int result = mDatabase.update(TABLE_NAME, values, whereClause, whereArgs);
@@ -186,6 +188,7 @@ public class AnchorDAO {
         //values.put(COL_ID, id);
         values.put(COL_IS_DELETED, true);
         values.put(COL_DETELED_TIMESTAMP, System.currentTimeMillis());
+        values.put(COL_IS_NOTIFY, false);
         String whereClause = COL_ID + "=?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         int result = mDatabase.update(TABLE_NAME, values, whereClause, whereArgs);
@@ -244,7 +247,8 @@ public class AnchorDAO {
                 + COL_COLOR + " varchar(7) not null, "
                 + COL_REMINDER + " short not null, "
                 + COL_IS_DELETED + " boolean not null, "
-                + COL_DETELED_TIMESTAMP + " integer null )";
+                + COL_DETELED_TIMESTAMP + " integer null, "
+                + COL_IS_NOTIFY + " boolean not null )";
     }
 
     public static String dropTableQuery() {
@@ -265,7 +269,8 @@ public class AnchorDAO {
         boolean reminder = cursor.getInt(6) != 0;
         boolean isDeleted = cursor.getInt(7) != 0;
         long deletedTimestam = cursor.getLong(8);
-        return new Anchor(id, latitude, longitude, title, description, color, reminder, isDeleted, deletedTimestam);
+        boolean isNotify = cursor.getInt(9) != 0;
+        return new Anchor(id, latitude, longitude, title, description, color, reminder, isDeleted, deletedTimestam, isNotify);
     }
 
     private void orderList(List<Anchor> list) {

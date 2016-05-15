@@ -9,7 +9,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.util.Log;
 
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
@@ -54,7 +53,8 @@ public class EditAnchorPresenter implements Presenter {
                 mActivity.getAnchorColor(),
                 mActivity.isReminder(),
                 false,
-                null);
+                null,
+                mAnchor.isNotify());
         if (updatedAnchor.isOk()) {
             prepareDAO();
             mAnchorDAO.openWritable();

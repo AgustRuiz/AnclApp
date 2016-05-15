@@ -15,9 +15,11 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(LOG_TAG, "Launching service");
         Intent serviceIntent = new Intent(this, AnclappService.class);
         startService(serviceIntent);
 
+        Log.d(LOG_TAG, "Launching main activity");
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

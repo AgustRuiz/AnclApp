@@ -14,17 +14,16 @@ public class AnclappService extends Service {
     //region [Variables]
 
     Context mContext = null;
-
-    //endregion
+    Thread thread = null;
 
     //region [Service methods]
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //Log.d(LOG_TAG, "onStartCommand");
+        Log.d(LOG_TAG, "Service start command");
         mContext = getApplicationContext();
-        Thread thread = new CheckAnchorThread(mContext);
-        thread.run();
+        thread = new Thread (new CheckAnchorRunnable(mContext));
+        thread.start();
         return Service.START_STICKY;
     }
 

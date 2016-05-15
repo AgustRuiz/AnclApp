@@ -1,13 +1,8 @@
 package es.agustruiz.anclapp.model;
 
-import android.graphics.Color;
 import android.location.Location;
-import android.preference.PreferenceManager;
 
 import com.google.android.gms.maps.model.LatLng;
-
-import java.util.Comparator;
-import java.util.Date;
 
 public class Anchor {
 
@@ -19,7 +14,8 @@ public class Anchor {
     String color;
     Boolean reminder;
     Boolean isDeleted;
-    Long deletedTimestam;
+    Long deletedTimestamp;
+    Boolean isNofity;
 
     static Location referenceLocation = null;
 
@@ -35,7 +31,7 @@ public class Anchor {
     /**
      * Full constructor
      */
-    public Anchor(Long id, Double latitude, Double longitude, String title, String description, String color, Boolean reminder, Boolean isDeleted, Long deletedTimestam) {
+    public Anchor(Long id, Double latitude, Double longitude, String title, String description, String color, Boolean reminder, Boolean isDeleted, Long deletedTimestam, Boolean isNofity) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -44,7 +40,8 @@ public class Anchor {
         this.color = color;
         this.reminder = reminder;
         this.isDeleted = isDeleted;
-        this.deletedTimestam = deletedTimestam;
+        this.deletedTimestamp = deletedTimestam;
+        this.isNofity = isNofity;
     }
 
     /**
@@ -173,26 +170,64 @@ public class Anchor {
         this.reminder = reminder;
     }
 
+    /**
+     * Deleted status getter
+     *
+     * @return Deleted status
+     */
     public Boolean isDeleted() {
         return isDeleted;
     }
 
+    /**
+     * Deleted status setter
+     *
+     * @param deletedStatus Deleted status
+     */
     public void setDeleted(Boolean deletedStatus) {
         isDeleted = deletedStatus;
     }
 
-    public Long getDeletedTimestam(){
-        return deletedTimestam;
+    /**
+     * Deleted timestamp getter
+     *
+     * @return Deleted timestamp
+     */
+    public Long getDeletedTimestamp() {
+        return deletedTimestamp;
     }
 
-    public void setDeletedTimestam(Long deletedTimestam){
-        this.deletedTimestam = deletedTimestam;
+    /**
+     * Deleted timestamp setter
+     *
+     * @param deletedTimestamp Deleted timestamp value
+     */
+    public void setDeletedTimestamp(Long deletedTimestamp) {
+        this.deletedTimestamp = deletedTimestamp;
+    }
+
+    /**
+     * Notify getter
+     *
+     * @return Notify state
+     */
+    public Boolean isNotify() {
+        return isNofity;
+    }
+
+    /**
+     * Notify state setter
+     *
+     * @param notify Nofity state
+     */
+    public void setNotify(Boolean notify) {
+        isNofity = notify;
     }
 
     /**
      * Check if anchor is ok to save
      *
-     * @return
+     * @return true if
      */
     public boolean isOk() {
         boolean status = true;
