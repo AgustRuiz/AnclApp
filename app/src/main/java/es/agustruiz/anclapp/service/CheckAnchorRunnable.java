@@ -9,7 +9,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -25,6 +27,8 @@ public class CheckAnchorRunnable implements Runnable {
 
     public static final String LOG_TAG = CheckAnchorRunnable.class.getName() + "[A]";
     private static final int SLEEP_THREAD_DELAY_MILLIS = 10000;
+    private static final Long LOCATION_REQUEST_MIN_TIME = 5000L;
+    private static final Float LOCATION_REQUEST_MIN_DISTANCE = 100F;
 
     //region [Variables]
 
@@ -32,6 +36,7 @@ public class CheckAnchorRunnable implements Runnable {
     AnchorDAO mAnchorDAO;
     SharedPreferences mPreferences;
     LocationManager mLocationManager;
+    Location mLastLocation = null;
     String mLocationProvider;
 
     //endregion
@@ -42,8 +47,9 @@ public class CheckAnchorRunnable implements Runnable {
         mContext = context;
         mAnchorDAO = new AnchorDAO(mContext);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        mLocationProvider = getBestLocationProvider();
+        //mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        //mLocationProvider = getBestLocationProvider();
+        prepareLocationService();
         Log.d(LOG_TAG, "CheckAnchorRunnable started");
     }
 
@@ -51,10 +57,9 @@ public class CheckAnchorRunnable implements Runnable {
     public void run() {
         Log.d(LOG_TAG, "Starting looper");
         do {
-            Location currentLocation = getLastKnownLocation();
-            if (currentLocation != null) {
+            if (mLastLocation != null) {
                 Log.d(LOG_TAG, "Current location OK");
-                Anchor.setReferenceLocation(currentLocation);
+                Anchor.setReferenceLocation(mLastLocation);
                 int reminderDistanceMetres = Integer.parseInt(
                         mPreferences.getString(
                                 mContext.getString(R.string.key_pref_location_reminder_distance),
@@ -87,7 +92,7 @@ public class CheckAnchorRunnable implements Runnable {
                         saveAnchorNofity(anchor, false);
                     }
                 }
-            }else{
+            } else {
                 Log.d(LOG_TAG, "No location found\n");
             }
             Log.d(LOG_TAG, "End of loop\n\n");
@@ -116,12 +121,48 @@ public class CheckAnchorRunnable implements Runnable {
         return mLocationManager.getBestProvider(criteria, true);
     }
 
-    private Location getLastKnownLocation() {
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return null;
-        } else {
-            return mLocationManager.getLastKnownLocation(mLocationProvider);
+    private void prepareLocationService() {
+        mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        String mLocationProvider = mLocationManager.getBestProvider(getCriteria(), true);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && mLocationProvider != null) {
+            mLocationManager.requestLocationUpdates(
+                    mLocationProvider,
+                    LOCATION_REQUEST_MIN_TIME,
+                    LOCATION_REQUEST_MIN_DISTANCE,
+                    new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            Log.d(LOG_TAG, "Location changed");
+                            mLastLocation = location;
+                        }
+
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String provider) {
+                            Log.d(LOG_TAG, "Location provicer enabled");
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String provider) {
+                            Log.d(LOG_TAG, "Location provicer disabled");
+                            mLastLocation = null;
+                        }
+                    }
+            );
+            //} else {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
         }
     }
 
@@ -130,6 +171,16 @@ public class CheckAnchorRunnable implements Runnable {
         mAnchorDAO.openWritable();
         mAnchorDAO.update(anchor);
         mAnchorDAO.close();
+    }
+
+    private static Criteria getCriteria() {
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_MEDIUM);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setSpeedRequired(false);
+        return criteria;
     }
 
     //endregion
