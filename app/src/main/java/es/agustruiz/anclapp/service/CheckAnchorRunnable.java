@@ -37,7 +37,6 @@ public class CheckAnchorRunnable implements Runnable {
     SharedPreferences mPreferences;
     LocationManager mLocationManager;
     Location mLastLocation = null;
-    String mLocationProvider;
 
     //endregion
 
@@ -47,8 +46,6 @@ public class CheckAnchorRunnable implements Runnable {
         mContext = context;
         mAnchorDAO = new AnchorDAO(mContext);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        //mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        //mLocationProvider = getBestLocationProvider();
         prepareLocationService();
         Log.d(LOG_TAG, "CheckAnchorRunnable started");
     }
@@ -110,15 +107,6 @@ public class CheckAnchorRunnable implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    private String getBestLocationProvider() {
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        return mLocationManager.getBestProvider(criteria, true);
     }
 
     private void prepareLocationService() {
