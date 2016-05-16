@@ -12,15 +12,19 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.ShareActionProvider;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
-import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
+import es.agustruiz.anclapp.service.ShareAnchor;
 import es.agustruiz.anclapp.ui.anchor.EditAnchorActivity;
 import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
+import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
 
 public class SeeAnchorPresenter implements Presenter {
 
@@ -63,7 +67,7 @@ public class SeeAnchorPresenter implements Presenter {
         mContext.startActivity(intent);
     }
 
-    public void restoreAnchor(){
+    public void restoreAnchor() {
         prepareDAO();
         mAnchorDAO.openWritable();
         mAnchorDAO.restore(mAnchor);
@@ -78,7 +82,7 @@ public class SeeAnchorPresenter implements Presenter {
         mContext.startActivity(intent);
     }
 
-    public void purgeAnchor(){
+    public void purgeAnchor() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
         alertDialogBuilder.setMessage(mContext.getString(R.string.remove_anchor_msg));
         alertDialogBuilder.setPositiveButton(mContext.getResources().getString(R.string.accept),
@@ -95,6 +99,10 @@ public class SeeAnchorPresenter implements Presenter {
         alertDialogBuilder.setNegativeButton(mContext.getResources().getString(R.string.cancel), null);
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    public void shareAnchor() {
+        ShareAnchor.shareAnchor(mContext, mAnchor);
     }
 
     public void removeAnchor() {

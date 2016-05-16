@@ -4,15 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -102,10 +106,15 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(mPresenter.isDeleted(mIntentAnchorId)) {
+        super.onCreateOptionsMenu(menu);
+        if (mPresenter.isDeleted(mIntentAnchorId)) {
             getMenuInflater().inflate(R.menu.see_deleted_anchor, menu);
-        }else{
+        } else {
             getMenuInflater().inflate(R.menu.see_anchor, menu);
+            MenuItem shareMenuItem = menu.findItem(R.id.action_share);
+            Drawable iconShareMenuItem = shareMenuItem.getIcon();
+            iconShareMenuItem.mutate();
+            iconShareMenuItem.setColorFilter(getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
         }
         return true;
     }
@@ -115,6 +124,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
         mPresenter.setHeaderImage();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -127,6 +137,10 @@ public class SeeAnchorActivity extends AppCompatActivity {
                 return true;
             case R.id.action_remove:
                 mPresenter.removeAnchor();
+                return true;
+            case R.id.action_share:
+                Log.d(LOG_TAG, "Button share");
+                mPresenter.shareAnchor();
                 return true;
             case R.id.action_purge:
                 mPresenter.purgeAnchor();
@@ -171,9 +185,9 @@ public class SeeAnchorActivity extends AppCompatActivity {
             mActionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        if(!mPresenter.isDeleted(mIntentAnchorId)) {
+        if (!mPresenter.isDeleted(mIntentAnchorId)) {
             fabActionEditMode();
-        }else{
+        } else {
             fabActionRestoreMode();
         }
 
@@ -185,7 +199,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
         });
     }
 
-    private void fabActionEditMode(){
+    private void fabActionEditMode() {
         mFabActionAnchor.setImageDrawable(getDrawable(R.drawable.ic_create_black_24dp));
         mFabActionAnchor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,7 +211,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
         mLinearLayoutButtons.setVisibility(View.VISIBLE);
     }
 
-    private void fabActionRestoreMode(){
+    private void fabActionRestoreMode() {
         mFabActionAnchor.setImageDrawable(getDrawable(R.drawable.ic_refresh_black_24dp));
         mFabActionAnchor.setOnClickListener(new View.OnClickListener() {
             @Override
