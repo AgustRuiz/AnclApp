@@ -229,5 +229,6 @@
     <string name="msg_near_anchor">You are near \"%s\"</string>
     <string name="msg_click_more_options">Click here for more options</string>
     <string name="action_share">Share</string>
+    <string name="share_via">Share anchor via</string>
 
 </resources>
