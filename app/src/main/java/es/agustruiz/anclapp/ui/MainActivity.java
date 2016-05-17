@@ -69,8 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.tabs)
     TabLayout mTabLayout;
-    CharSequence tabTitles[] = {"Map", "Anchors"};
-    int tabNumbOfTabs = tabTitles.length;
+    int tabNumbOfTabs = 2;
     public final int TAB_MAP = 0;
     public final int TAB_LIST = 1;
     int tabSelected = TAB_MAP;
@@ -474,9 +473,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            try {
-                return tabTitles[position];
-            } catch (Exception ignored) {
+            switch (position) {
+                case 0:
+                    return mContext.getString(R.string.title_map);
+                case 1:
+                    return mContext.getString(R.string.title_my_anchors);
             }
             return null;
         }

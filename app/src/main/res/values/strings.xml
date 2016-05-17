@@ -10,17 +10,19 @@
     <string name="title_activity_new_anchor">New Anchor</string>
     <string name="title_activity_edit_anchor">Edit anchor</string>
     <string name="title_activity_see_anchor">See anchor</string>
-    <string name="title_search">Search</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_map">Map</string>
+    <string name="title_my_anchors">My anchors</string>
+    <string name="title_search">Search</string>
 
 
     <!--Preferences-->
 
     <string name="key_pref_location_reminder" translatable="false">pref_location_reminder</string>
-    <string name="pref_location_reminder" translatable="false">Set default reminder by location</string>
+    <string name="pref_location_reminder">Set default reminder by location</string>
 
     <string name="key_pref_location_reminder_distance" translatable="false">pref_location_reminder_distance</string>
-    <string name="pref_location_reminder_distance" translatable="false">Reminder distance</string>
+    <string name="pref_location_reminder_distance">Reminder distance</string>
     <string name="pref_location_reminder_distance_default_value" translatable="false">100</string>
     <string-array name="pref_location_reminder_distance_titles" translatable="false">
         <item>50 meters</item>
@@ -44,10 +46,10 @@
     </string-array>
 
     <string name="key_pref_google_drive_sync" translatable="false">pref_google_drive_sync</string>
-    <string name="pref_google_drive_sync" translatable="false">Google Drive sync</string>
+    <string name="pref_google_drive_sync">Google Drive sync</string>
 
     <string name="key_pref_purge_anchors" translatable="false">pref_purge_anchors</string>
-    <string name="pref_purge_anchors" translatable="false">Remove anchors from bin</string>
+    <string name="pref_purge_anchors">Remove anchors from bin</string>
     <string name="pref_purge_anchors_default_value" translatable="false">14</string>
     <string-array name="pref_purge_anchors_titles" translatable="false">
         <item>3 days</item>
@@ -67,7 +69,7 @@
     </string-array>
 
     <string name="key_pref_anchors_color" translatable="false">pref_anchors_color</string>
-    <string name="pref_anchors_color" translatable="false">Default anchor color</string>
+    <string name="pref_anchors_color">Default anchor color</string>
     <string name="pref_anchors_color_default_value" translatable="false">#d50000</string>
     <string-array name="pref_anchors_color_titles" translatable="false">
         <item>Tomato</item>
@@ -146,7 +148,7 @@
 
 
     <!-- General strings -->
-    <string name="_0km">0km</string>
+    <string name="_0km" translatable="false">0km</string>
     <string name="about">About</string>
     <string name="account">Account</string>
     <string name="activate_filter">Activate filter</string>
@@ -161,7 +163,7 @@
     <string name="description_icon">Description icon</string>
     <string name="distance">Distance</string>
     <string name="filter">Filter</string>
-    <string name="km_unit">km</string>
+    <string name="km_unit" translatable="false">km</string>
     <string name="locality">Locality</string>
     <string name="menu_button">Menu button</string>
     <string name="new_anchor">New anchor</string>
