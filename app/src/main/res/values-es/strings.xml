@@ -67,4 +67,35 @@
     <string name="pref_location_reminder">Aviso por localización por defecto</string>
     <string name="pref_google_drive_sync">Sincronizar con Google Drive</string>
     <string name="pref_anchors_color">Color por defecto de ancla</string>
+    <string-array name="pref_location_reminder_distance_titles" translatable="false">
+        <item>50 metros</item>
+        <item>100 metros</item>
+        <item>250 metros</item>
+        <item>500 metros</item>
+        <item>750 metros</item>
+        <item>1000 metros</item>
+        <item>2500 metros</item>
+        <item>5000 metros</item>
+    </string-array>
+    <string-array name="pref_anchors_color_titles">
+        <item>Tomate</item>
+        <item>Mandarina</item>
+        <item>Plátano</item>
+        <item>Albahaca</item>
+        <item>Salvia</item>
+        <item>Pavo real</item>
+        <item>Arándano</item>
+        <item>Lavanda</item>
+        <item>Uva negra</item>
+        <item>Flamenco</item>
+        <item>Grafito</item>
+    </string-array>
+    <string-array name="pref_purge_anchors_titles">
+        <item>3 días</item>
+        <item>7 días</item>
+        <item>14 días</item>
+        <item>30 días</item>
+        <item>90 días</item>
+        <item>Nunca</item>
+    </string-array>
 </resources>

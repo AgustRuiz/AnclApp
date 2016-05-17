@@ -24,7 +24,7 @@
     <string name="key_pref_location_reminder_distance" translatable="false">pref_location_reminder_distance</string>
     <string name="pref_location_reminder_distance">Reminder distance</string>
     <string name="pref_location_reminder_distance_default_value" translatable="false">100</string>
-    <string-array name="pref_location_reminder_distance_titles" translatable="false">
+    <string-array name="pref_location_reminder_distance_titles">
         <item>50 meters</item>
         <item>100 meters</item>
         <item>250 meters</item>
@@ -51,7 +51,7 @@
     <string name="key_pref_purge_anchors" translatable="false">pref_purge_anchors</string>
     <string name="pref_purge_anchors">Remove anchors from bin</string>
     <string name="pref_purge_anchors_default_value" translatable="false">14</string>
-    <string-array name="pref_purge_anchors_titles" translatable="false">
+    <string-array name="pref_purge_anchors_titles">
         <item>3 days</item>
         <item>7 days</item>
         <item>14 days</item>
@@ -71,7 +71,7 @@
     <string name="key_pref_anchors_color" translatable="false">pref_anchors_color</string>
     <string name="pref_anchors_color">Default anchor color</string>
     <string name="pref_anchors_color_default_value" translatable="false">#d50000</string>
-    <string-array name="pref_anchors_color_titles" translatable="false">
+    <string-array name="pref_anchors_color_titles">
         <item>Tomato</item>
         <item>Tangerine</item>
         <item>Banana</item>
