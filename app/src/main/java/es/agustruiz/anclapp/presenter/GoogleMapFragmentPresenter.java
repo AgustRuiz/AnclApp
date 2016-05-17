@@ -167,7 +167,7 @@ public class GoogleMapFragmentPresenter {
                     intent.putExtra(NewAnchorActivity.DESCRIPTION_INTENT_TAG, mNewMarkerAddress);
                     mContext.startActivity(intent);
                 } else {
-                    Toast.makeText(mContext, mContext.getString(R.string.no_location_found),
+                    Toast.makeText(mContext, mContext.getString(R.string.msg_no_location_found),
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -265,7 +265,7 @@ public class GoogleMapFragmentPresenter {
                             : "";
                 }
             } else {
-                mNewMarkerAddress = mContext.getString(R.string.cant_load_geocoder);
+                mNewMarkerAddress = mContext.getString(R.string.msg_cant_load_geocoder);
                 mNewMarkerLocality = "";
                 nNewMarkerDistance = (mCurrentLocation != null)
                         ? (Math.round(mCurrentLocation.distanceTo(markerLocation) / 10) / 100f)
@@ -277,7 +277,7 @@ public class GoogleMapFragmentPresenter {
             isError = true;
         }
         if (isError) {
-            mNewMarkerAddress = mContext.getString(R.string.no_location_found);
+            mNewMarkerAddress = mContext.getString(R.string.msg_no_location_found);
             mNewMarkerLocality = nNewMarkerDistance = "";
         }
     }

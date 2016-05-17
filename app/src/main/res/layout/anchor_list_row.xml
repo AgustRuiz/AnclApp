@@ -101,7 +101,7 @@
             android:layout_weight="1"
             android:clickable="false"
             android:gravity="center_vertical|end"
-            android:text="@string/undo"
+            android:text="@string/action_undo"
             android:textAllCaps="true"
             android:textColor="@color/banana" />
 

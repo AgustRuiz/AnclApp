@@ -223,7 +223,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="0dp"
                         android:gravity="center"
-                        android:text="@string/go_to_this_place"
+                        android:text="@string/action_go_this_place"
                         android:textColor="@color/colorAccent" />
 
                 </android.support.v7.widget.ButtonBarLayout>

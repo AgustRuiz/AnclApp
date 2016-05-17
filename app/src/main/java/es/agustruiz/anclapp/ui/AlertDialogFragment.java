@@ -30,7 +30,7 @@ public class AlertDialogFragment extends DialogFragment {
         String message = getArguments().getString(MESSAGE_TAG);
         return new AlertDialog.Builder(getActivity())
                 .setTitle(title)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

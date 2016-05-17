@@ -12,10 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.ShareActionProvider;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import es.agustruiz.anclapp.R;
@@ -73,7 +70,7 @@ public class SeeAnchorPresenter implements Presenter {
         mAnchorDAO.restore(mAnchor);
         mAnchorDAO.close();
 
-        Toast.makeText(mContext, mContext.getString(R.string.anchor_restored), Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, mContext.getString(R.string.msg_anchor_restored), Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(mContext, SeeAnchorActivity.class);
         intent.putExtra(SeeAnchorActivity.ANCHOR_ID_INTENT_TAG, mAnchor.getId());
@@ -84,7 +81,7 @@ public class SeeAnchorPresenter implements Presenter {
 
     public void purgeAnchor() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
-        alertDialogBuilder.setMessage(mContext.getString(R.string.remove_anchor_msg));
+        alertDialogBuilder.setMessage(mContext.getString(R.string.msg_remove_anchor));
         alertDialogBuilder.setPositiveButton(mContext.getResources().getString(R.string.accept),
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -96,7 +93,7 @@ public class SeeAnchorPresenter implements Presenter {
                         mActivity.onBackPressed();
                     }
                 });
-        alertDialogBuilder.setNegativeButton(mContext.getResources().getString(R.string.cancel), null);
+        alertDialogBuilder.setNegativeButton(mContext.getResources().getString(R.string.action_cancel), null);
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
@@ -108,7 +105,7 @@ public class SeeAnchorPresenter implements Presenter {
     public void removeAnchor() {
         //Log.d(LOG_TAG, "removeAnchor");
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
-        alertDialogBuilder.setMessage(mContext.getString(R.string.remove_anchor_msg));
+        alertDialogBuilder.setMessage(mContext.getString(R.string.msg_remove_anchor));
         alertDialogBuilder.setPositiveButton(mContext.getResources().getString(R.string.accept),
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -120,7 +117,7 @@ public class SeeAnchorPresenter implements Presenter {
                         mActivity.onBackPressed();
                     }
                 });
-        alertDialogBuilder.setNegativeButton(mContext.getResources().getString(R.string.cancel), null);
+        alertDialogBuilder.setNegativeButton(mContext.getResources().getString(R.string.action_cancel), null);
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }

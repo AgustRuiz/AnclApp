@@ -10,15 +10,12 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -192,8 +189,8 @@ public class GoogleMapFragment extends Fragment {
         FragmentManager fragmentManager = getFragmentManager();
         if(fragmentManager!=null && isBeforeOnSaveInstance()) {
             DialogFragment alertDialogFragment = AlertDialogFragment.newInstance(
-                    getString(R.string.no_location_provider_found),
-                    getString(R.string.no_location_provider_message));
+                    getString(R.string.msg_no_location_provider_found),
+                    getString(R.string.msg_no_location_provider_message));
             alertDialogFragment.setCancelable(false);
             alertDialogFragment.show(fragmentManager, ALERT_NO_GPS_TAG);
         }

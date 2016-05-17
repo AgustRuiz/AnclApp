@@ -23,7 +23,7 @@ public class ShareAnchor {
         Intent baseIntent = new Intent(android.content.Intent.ACTION_SEND);
         baseIntent.setType("text/plain");
         baseIntent.putExtra(android.content.Intent.EXTRA_TEXT, getMessage(context, anchor));
-        Intent shareIntent = Intent.createChooser(baseIntent, context.getString(R.string.share_via));
+        Intent shareIntent = Intent.createChooser(baseIntent, context.getString(R.string.msg_share_via));
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(shareIntent);
     }

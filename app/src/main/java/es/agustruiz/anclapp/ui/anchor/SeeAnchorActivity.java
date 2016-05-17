@@ -10,11 +10,9 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -230,11 +228,11 @@ public class SeeAnchorActivity extends AppCompatActivity {
             mTextViewDescription.setText(anchor.getDescription());
             mTextViewLatLng.setText(anchor.getLatitude() + ", " + anchor.getLongitude());
             if (anchor.isReminder()) {
-                mTextViewReminder.setText(R.string.reminder_location_enabled);
+                mTextViewReminder.setText(R.string.msg_reminder_location_enabled);
                 mImageViewReminderIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_notifications_black_24dp, getTheme()));
                 mImageViewReminderIcon.setImageTintList(ColorStateList.valueOf(getColor(R.color.colorAccent)));
             } else {
-                mTextViewReminder.setText(R.string.reminder_location_disabled);
+                mTextViewReminder.setText(R.string.msg_reminder_location_disabled);
                 mImageViewReminderIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_notifications_off_black_24dp, getTheme()));
                 mImageViewReminderIcon.setImageTintList(ColorStateList.valueOf(getColor(R.color.grey700)));
             }
