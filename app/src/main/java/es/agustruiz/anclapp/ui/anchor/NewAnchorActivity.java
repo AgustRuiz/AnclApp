@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -27,6 +28,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.presenter.NewAnchorPresenter;
+import es.agustruiz.anclapp.service.ShareAnchor;
 import es.agustruiz.anclapp.ui.anchor.utils.ColorDialogAppCompatActivity;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
@@ -86,6 +88,7 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
 
     Double mIntentLatitude = null;
     Double mIntentLongitude = null;
+    String mIntentTitle = null;
     String mIntentDescription = null;
 
     @Override
@@ -166,9 +169,19 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
     //region [Private methods]
 
     private void getIntentExtras(Intent intent) {
-        mIntentLatitude = intent.getDoubleExtra(LATITUDE_INTENT_TAG, 0);
-        mIntentLongitude = intent.getDoubleExtra(LONGITUDE_INTENT_TAG, 0);
-        mIntentDescription = intent.getStringExtra(DESCRIPTION_INTENT_TAG);
+        Uri uri = intent.getData();
+        if(uri==null){
+            mIntentLatitude = intent.getDoubleExtra(LATITUDE_INTENT_TAG, 0);
+            mIntentLongitude = intent.getDoubleExtra(LONGITUDE_INTENT_TAG, 0);
+            mIntentTitle = mContext.getString(R.string.new_anchor);
+            mIntentDescription = intent.getStringExtra(DESCRIPTION_INTENT_TAG);
+        }else{
+            //TODO check not valid uri
+            mIntentLatitude = Double.parseDouble(uri.getQueryParameter(ShareAnchor.URI_PARAM_LATITUDE));
+            mIntentLongitude = Double.parseDouble(uri.getQueryParameter(ShareAnchor.URI_PARAM_LONGITUDE));
+            mIntentTitle = uri.getQueryParameter(ShareAnchor.URI_PARAM_TITLE);
+            mIntentDescription = uri.getQueryParameter(ShareAnchor.URI_PARAM_DESCRIPTION);
+        }
     }
 
     private void initializeViews(Bundle savedInstanceState) {
@@ -176,6 +189,7 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mEditTextTitle.setText(mIntentTitle);
         mEditTextDescription.setText(mIntentDescription);
         mLatLngText.setText(mIntentLatitude.toString() + ", " + mIntentLongitude.toString());
         mSwitchReminder.setChecked(preferences.getBoolean(
