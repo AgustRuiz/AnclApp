@@ -21,15 +21,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:text="Test title"
             android:textSize="@dimen/colors_list_preference_title_size" />
 
         <TextView
             android:id="@+id/custom_list_preference_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:text="Test summary" />
+            android:layout_gravity="start" />
 
     </LinearLayout>
 

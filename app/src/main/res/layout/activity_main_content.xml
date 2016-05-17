@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -69,7 +68,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/card_view_text_vertical_margin"
-                        android:text="Address"
+                        android:text="@string/address"
                         android:textSize="@dimen/card_view_description_text_size" />
 
                     <LinearLayout
@@ -84,7 +83,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".75"
                             android:gravity="start|bottom"
-                            android:text="Locality"
+                            android:text="@string/locality"
                             android:textSize="@dimen/card_view_address_text_size" />
 
                         <TextView
@@ -93,7 +92,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight=".25"
                             android:gravity="end|bottom"
-                            android:text="0km"
+                            android:text="@string/_0km"
                             android:textSize="@dimen/card_view_distance_text_size" />
 
                     </LinearLayout>

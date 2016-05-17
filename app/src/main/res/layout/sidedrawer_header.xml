@@ -16,7 +16,8 @@
         android:layout_width="@dimen/nav_header_icon_width"
         android:layout_height="@dimen/nav_header_icon_height"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"
+        android:contentDescription="@string/description_icon" />
 
     <TextView
         android:layout_width="match_parent"

@@ -49,5 +49,14 @@
     <dimen name="list_item_padding_sides">12dp</dimen>
     <dimen name="nav_header_icon_width">48dp</dimen>
     <dimen name="nav_header_icon_height">64dp</dimen>
+    <dimen name="toolbar_title_edit_margin_bottom">14dp</dimen>
+    <dimen name="toolbar_title_edit_margin_end">80dp</dimen>
+    <dimen name="toolbar_title_edit_margin_start">48dp</dimen>
+    <dimen name="toolbar_title_edit_margin_top">14dp</dimen>
+    <dimen name="color_list_preference_row_padding_vertical">5dp</dimen>
+    <dimen name="color_list_preference_radio_margin_horizontal">18dp</dimen>
+    <dimen name="color_list_preference_text_size">18sp</dimen>
+    <dimen name="footer_padding">18dp</dimen>
+    <dimen name="foooter_icon_size">68dp</dimen>
 
 </resources>

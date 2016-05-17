@@ -6,18 +6,18 @@
     android:layout_alignParentBottom="true"
     android:clickable="true"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="@dimen/footer_padding">
 
     <ImageView
         android:id="@+id/anchor_icon"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="@dimen/foooter_icon_size"
+        android:layout_height="@dimen/foooter_icon_size"
         android:layout_gravity="center"
         android:alpha="0.1"
         android:clickable="true"
         android:contentDescription="@string/anchor_icon"
         android:src="@drawable/anclapp_logo"
-        android:tint="#000000" />
+        android:tint="@android:color/black" />
 
     <TextView
         android:layout_width="match_parent"
@@ -26,6 +26,6 @@
         android:clickable="true"
         android:gravity="center"
         android:text="@string/app_name"
-        android:textColor="#000000" />
+        android:textColor="@android:color/black" />
 
 </LinearLayout>

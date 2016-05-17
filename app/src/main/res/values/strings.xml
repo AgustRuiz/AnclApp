@@ -232,6 +232,9 @@
     <string name="share_via">Share anchor via</string>
     <string name="msg_share_anchor" formatted="false">I want to share an anchor with you.\n\n Title: %1$s\nDescription: %2$s\n\n%3$s</string>
     <string name="agustruiz_web">www.agustruiz.es</string>
+    <string name="address">Address</string>
+    <string name="locality">Locality</string>
+    <string name="_0km">0km</string>
 
 
 </resources>

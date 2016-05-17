@@ -112,7 +112,6 @@ public class AnchorListFragment extends Fragment {
             }
         });
 
-        /**/
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent, mContext.getTheme()));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -120,7 +119,7 @@ public class AnchorListFragment extends Fragment {
                 refreshAnchorList();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
-        });/**/
+        });
     }
 
     private void refreshAnchorList(){
