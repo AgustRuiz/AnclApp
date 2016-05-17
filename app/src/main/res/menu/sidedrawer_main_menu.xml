@@ -2,21 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
+    <!--item
         android:id="@+id/menu_filter"
         android:icon="@drawable/ic_filter_list_black_24dp"
-        android:title="@string/filter" />
+        android:title="@string/filter" /-->
 
-    <item
+    <!--item
         android:id="@+id/menu_filter_switch"
         app:actionLayout="@layout/switch_layout"
         android:title="@string/activate_filter"
-        app:showAsAction="always" />
+        app:showAsAction="always" /-->
 
-    <item
+    <!--item
         android:id="@+id/menu_account"
         android:icon="@drawable/ic_person_black_24dp"
-        android:title="@string/account" />
+        android:title="@string/account" /-->
 
     <item
         android:id="@+id/menu_bin"

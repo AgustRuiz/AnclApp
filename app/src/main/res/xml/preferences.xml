@@ -16,10 +16,10 @@
         android:title="@string/pref_location_reminder_distance"
         android:summary="%s" />
 
-    <SwitchPreference
+    <!--SwitchPreference
         android:defaultValue="true"
         android:key="@string/key_pref_google_drive_sync"
-        android:title="@string/pref_google_drive_sync" />
+        android:title="@string/pref_google_drive_sync" /-->
 
     <ListPreference
         android:defaultValue="@string/pref_purge_anchors_default_value"

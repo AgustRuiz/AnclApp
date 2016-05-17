@@ -47,5 +47,7 @@
     <dimen name="sheet_text_scrim_height_bottom">72dp</dimen>
     <dimen name="list_item_height">56dp</dimen>
     <dimen name="list_item_padding_sides">12dp</dimen>
+    <dimen name="nav_header_icon_width">48dp</dimen>
+    <dimen name="nav_header_icon_height">64dp</dimen>
 
 </resources>
