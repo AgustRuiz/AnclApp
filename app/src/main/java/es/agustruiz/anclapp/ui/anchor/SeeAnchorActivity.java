@@ -25,6 +25,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.presenter.SeeAnchorPresenter;
 
@@ -224,7 +225,9 @@ public class SeeAnchorActivity extends AppCompatActivity {
     private void fillData(Anchor anchor) {
         if (anchor != null) {
             mCollapsingToolbar.setTitle(anchor.getTitle());
-            mTextViewDeletedDate.setText(anchor.getDeletedTimestamp().toString()); // TODO readable format
+            mTextViewDeletedDate.setText(mContext.getString(R.string.msg_deleted_on,
+                    SystemUtils.getTime(mContext, anchor.getDeletedTimestamp()),
+                    SystemUtils.getDate(mContext, anchor.getDeletedTimestamp())));
             mTextViewDescription.setText(anchor.getDescription());
             mTextViewLatLng.setText(anchor.getLatitude() + ", " + anchor.getLongitude());
             if (anchor.isReminder()) {

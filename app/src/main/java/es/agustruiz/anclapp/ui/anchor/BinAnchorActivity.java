@@ -3,6 +3,7 @@ package es.agustruiz.anclapp.ui.anchor;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -52,6 +53,7 @@ public class BinAnchorActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_anchor_list);
         ButterKnife.bind(this);
         mContext = getApplicationContext();
+        removeExpiredAnchorFromBin();
         initialize();
     }
 
@@ -138,6 +140,25 @@ public class BinAnchorActivity extends AppCompatActivity {
         });
 
         mSwipeRefreshLayout.setEnabled(false);
+    }
+
+    private void removeExpiredAnchorFromBin(){
+        int maxDaysInBin = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(mContext).getString(
+                mContext.getString(R.string.key_pref_purge_anchors),
+                mContext.getString(R.string.pref_purge_anchors_default_value)));
+        long maxMillisInBin = maxDaysInBin * 24 * 60 * 60 * 1000;
+        long maxTimeLimit = System.currentTimeMillis() - maxMillisInBin;
+        prepareDAO();
+        mAnchorDAO.openReadOnly();
+        List<Anchor> deletedAnchors = mAnchorDAO.getAll(AnchorDAO.QUERY_GET_DELETED);
+        mAnchorDAO.close();
+        for(Anchor anchor:deletedAnchors){
+            if(anchor.getDeletedTimestamp() < maxTimeLimit){
+                mAnchorDAO.openWritable();
+                mAnchorDAO.delete(anchor);
+                mAnchorDAO.close();
+            }
+        }
     }
 
     //endregion

@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
+import android.text.format.DateFormat;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public class SystemUtils {
 
@@ -35,5 +39,17 @@ public class SystemUtils {
 
     public static int convertDpToPixel(Context context, int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+    }
+
+    public static String getDate(Context context, long time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(time);
+        return DateFormat.format(context.getString(R.string.format_date), cal).toString();
+    }
+
+    public static String getTime(Context context, long time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(time);
+        return DateFormat.format(context.getString(R.string.format_time), cal).toString();
     }
 }

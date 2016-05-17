@@ -19,6 +19,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.ui.MainActivity;
 
@@ -80,13 +81,23 @@ public class AnchorListAdapter extends BaseAdapter {
         holder.mIcon.setImageTintList(
                 ColorStateList.valueOf(Color.parseColor(anchor.getColor())));
         Float distance = anchor.getDistanceInKms();
-        holder.mDistance.setText((distance > 0 ? distance.toString() + mContext.getString(R.string.km_unit) : ""));
         if (anchor.isReminder()) {
             holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_black_24dp));
             holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.blue500));
         } else {
             holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_off_black_24dp));
             holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.grey500));
+        }
+        if(anchor.getDeletedTimestamp()>0) {
+            // Deleted anchor
+            holder.mDeletedDate.setText(mContext.getString(R.string.msg_deleted_on,
+                    SystemUtils.getTime(mContext, anchor.getDeletedTimestamp()),
+                    SystemUtils.getDate(mContext, anchor.getDeletedTimestamp())));
+            holder.mDistance.setText("");
+        }else{
+            // Active anchor
+            holder.mDeletedDate.setText("");
+            holder.mDistance.setText((distance > 0 ? distance.toString() + mContext.getString(R.string.km_unit) : ""));
         }
         return row;
     }
@@ -124,6 +135,8 @@ public class AnchorListAdapter extends BaseAdapter {
         ImageView mNotificationIcon;
         @Bind(R.id.anchor_list_distance)
         TextView mDistance;
+        @Bind(R.id.anchor_list_deleted_date)
+        TextView mDeletedDate;
 
         public AnchorHolder(View view) {
             ButterKnife.bind(this, view);

@@ -136,6 +136,7 @@
     <string name="msg_cant_load_geocoder">Cant\' load geocoder</string>
     <string name="msg_click_more_options">Click here for more options</string>
     <string name="msg_delete_permanently">Delete permanently</string>
+    <string name="msg_deleted_on">Deleted on %2$s at %1$s</string>
     <string name="msg_near_anchor">You are near \"%s\"</string>
     <string name="msg_no_location_found">No location found</string>
     <string name="msg_no_location_provider_found">No location provider found</string>
@@ -172,6 +173,12 @@
     <string name="settings">Settings</string>
     <string name="title">Title</string>
     <string name="tag_icon">Tag icon</string>
+
+
+    <!-- Date&time format -->
+
+    <string name="format_date">MM-dd-yyyy</string>
+    <string name="format_time">HH:mm</string>
 
 
 </resources>
