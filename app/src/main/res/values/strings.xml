@@ -180,5 +180,18 @@
     <string name="format_date">MM-dd-yyyy</string>
     <string name="format_time">HH:mm</string>
 
+    <!-- About activity strings -->
+
+    <string name="about_icon_description">About icon description</string>
+    <string name="about_version">Version 1.0</string>
+    <string name="about_team">Team</string>
+    <string name="about_developer_label">Main developer/Graphic designer</string>
+    <string name="about_developer_value" translatable="false">Agustín Ruiz Linares</string>
+    <string name="about_developer_email" translatable="false">correo@agustruiz.es</string>
+    <string name="about_website_label">Web site</string>
+    <string name="about_website_value" translatable="false">www.agustruiz.es</string>
+    <string name="about_thanks">Thanks</string>
+    <string name="about_google_maps_label" translatable="false">Google Maps</string>
+    <string name="about_google_maps_value" translatable="false">maps.google.com</string>
 
 </resources>

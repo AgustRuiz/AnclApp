@@ -58,5 +58,8 @@
     <dimen name="color_list_preference_text_size">18sp</dimen>
     <dimen name="footer_padding">18dp</dimen>
     <dimen name="foooter_icon_size">68dp</dimen>
+    <dimen name="about_name">24sp</dimen>
+    <dimen name="about_section_titles">18sp</dimen>
+    <dimen name="about_margin">6dp</dimen>
 
 </resources>
