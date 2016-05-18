@@ -67,7 +67,7 @@
     <string name="pref_location_reminder">Aviso por localización por defecto</string>
     <string name="pref_google_drive_sync">Sincronizar con Google Drive</string>
     <string name="pref_anchors_color">Color por defecto de ancla</string>
-    <string-array name="pref_location_reminder_distance_titles" translatable="false">
+    <string-array name="pref_location_reminder_distance_titles">
         <item>50 metros</item>
         <item>100 metros</item>
         <item>250 metros</item>
