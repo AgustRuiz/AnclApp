@@ -35,7 +35,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
-    protected static class MyPreferenceFragment extends PreferenceFragment{
+    public static class MyPreferenceFragment extends PreferenceFragment{
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
