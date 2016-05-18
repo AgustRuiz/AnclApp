@@ -404,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
 
     //region [PlaceholderFragment]
 
-    private static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.

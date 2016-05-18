@@ -2,6 +2,7 @@ package es.agustruiz.anclapp.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,9 @@ public class AboutActivity extends AppCompatActivity {
     @Bind(R.id.tvDeveloperEmail)
     TextView developerEmail;
 
+    @Bind(R.id.tvVersionLabel)
+    TextView versionLabel;
+
     Context mContext;
 
     @Override
@@ -27,7 +31,7 @@ public class AboutActivity extends AppCompatActivity {
         initialize();
     }
 
-    private void initialize(){
+    private void initialize() {
         developerEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,5 +42,11 @@ public class AboutActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(intent, ""));
             }
         });
+        try {
+            versionLabel.setText(
+                    getString(
+                            R.string.about_version,
+                            getPackageManager().getPackageInfo(getPackageName(), 0).versionName));
+        } catch (PackageManager.NameNotFoundException ignored) {}
     }
 }

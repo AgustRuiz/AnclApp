@@ -184,7 +184,7 @@
     <!-- About activity strings -->
 
     <string name="about_icon_description">About icon description</string>
-    <string name="about_version">Version 1.0</string>
+    <string name="about_version">Version: %1$s</string>
     <string name="about_team">Team</string>
     <string name="about_developer_label">Main developer/Graphic designer</string>
     <string name="about_developer_value" translatable="false">Agustín Ruiz Linares</string>
