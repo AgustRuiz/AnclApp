@@ -107,4 +107,5 @@
     <string name="about_team">Equipo</string>
     <string name="about_icon_description">Icono de "acerca de"</string>
     <string name="about_developer_label">Desarrollador principal/Diseñador gráfico</string>
+    <string name="action_accept">Aceptar</string>
 </resources>

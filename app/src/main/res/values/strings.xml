@@ -101,6 +101,7 @@
 
     <!-- Actions -->
 
+    <string name="action_accept">Accept</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_edit">Edit</string>
     <string name="action_go_this_place">Go to this place</string>

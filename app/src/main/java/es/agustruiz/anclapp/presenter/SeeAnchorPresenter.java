@@ -86,7 +86,7 @@ public class SeeAnchorPresenter implements Presenter {
     public void purgeAnchor() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
         alertDialogBuilder.setMessage(mContext.getString(R.string.msg_remove_anchor));
-        alertDialogBuilder.setPositiveButton(mContext.getResources().getString(R.string.accept),
+        alertDialogBuilder.setPositiveButton(mContext.getResources().getString(R.string.action_accept),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -110,7 +110,7 @@ public class SeeAnchorPresenter implements Presenter {
         //Log.d(LOG_TAG, "removeAnchor");
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
         alertDialogBuilder.setMessage(mContext.getString(R.string.msg_remove_anchor));
-        alertDialogBuilder.setPositiveButton(mContext.getResources().getString(R.string.accept),
+        alertDialogBuilder.setPositiveButton(mContext.getResources().getString(R.string.action_accept),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
