@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.service.AnclappService;
+import es.agustruiz.anclapp.test.TestMapsActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -17,12 +18,11 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(SplashScreen.this, "Google API key: " + getString(R.string.google_maps_key), Toast.LENGTH_SHORT).show();
-
         Intent serviceIntent = new Intent(this, AnclappService.class);
         startService(serviceIntent);
 
         Intent intent = new Intent(this, MainActivity.class);
+        //Intent intent = new Intent(this, TestMapsActivity.class);
         startActivity(intent);
         finish();
     }

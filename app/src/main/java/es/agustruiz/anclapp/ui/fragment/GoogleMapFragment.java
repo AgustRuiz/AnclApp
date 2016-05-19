@@ -240,8 +240,6 @@ public class GoogleMapFragment extends Fragment {
                         if (mMarkerMap.get(marker) != null) {
                             setAutoCenterMapMode(CENTER_MAP_OFF);
                             mEventsUtil.dismissFabCenterMap();
-
-
                         }
                         return false;
                     }

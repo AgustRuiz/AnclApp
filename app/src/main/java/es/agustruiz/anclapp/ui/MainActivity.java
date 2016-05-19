@@ -18,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,7 +32,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import android.support.v7.widget.SearchView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -159,32 +159,35 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchItem.getIcon().mutate().setColorFilter(getColor(android.R.color.white), PorterDuff.Mode.SRC_IN);
 
         SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        mSearchEditText = (EditText) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        if (mSearchEditText != null) {
-            mSearchEditText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+        if (mSearchView != null) {
+            mSearchEditText = (EditText) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            if (mSearchEditText != null) {
+                mSearchEditText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    EventsUtil.getInstance().refreshAnchorList();
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        EventsUtil.getInstance().refreshAnchorList();
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
-            mSearchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    Log.d(LOG_TAG, String.format("Focus %s", hasFocus));
-                }
-            });
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+                });
+                mSearchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        Log.d(LOG_TAG, String.format("Focus %s", hasFocus));
+                    }
+                });
+            }
         }
 
         return true;
@@ -194,8 +197,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            //case R.id.action_settings:
-            //    return true;
+            case R.id.action_search:
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -368,7 +371,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-
     }
 
     private void initializeTabNavigation() {
