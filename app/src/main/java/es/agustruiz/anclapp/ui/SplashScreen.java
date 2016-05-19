@@ -3,12 +3,8 @@ package es.agustruiz.anclapp.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Toast;
 
-import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.service.AnclappService;
-import es.agustruiz.anclapp.test.TestMapsActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -22,8 +18,8 @@ public class SplashScreen extends AppCompatActivity {
         startService(serviceIntent);
 
         Intent intent = new Intent(this, MainActivity.class);
-        //Intent intent = new Intent(this, TestMapsActivity.class);
         startActivity(intent);
+
         finish();
     }
 }
