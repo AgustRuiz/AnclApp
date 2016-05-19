@@ -10,12 +10,20 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0.0"
+
+
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    buildTypes.each {
+        /* Api key in "graddle.properties" file
+         * Windows default: C:\Users\<user>\.gradle\gradle.properties
+         */
+        it.buildConfigField 'String', 'google_maps_key', AnclAppGoogleMapsApiKey
     }
 }
 
