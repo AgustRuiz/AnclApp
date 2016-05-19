@@ -35,7 +35,7 @@ import android.support.v7.widget.SearchView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.SystemUtils;
@@ -53,51 +53,51 @@ public class MainActivity extends AppCompatActivity {
 
     //region [Binded views and variables]
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     private static EditText mSearchEditText;
 
-    @Bind(R.id.fab_add_anchor)
+    @BindView(R.id.fab_add_anchor)
     FloatingActionButton mFabAddAnchor;
 
-    @Bind(R.id.fab_center_view)
+    @BindView(R.id.fab_center_view)
     FloatingActionButton mFabCenterView;
 
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
 
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     TabLayout mTabLayout;
     int tabNumbOfTabs = 2;
     public final int TAB_MAP = 0;
     public final int TAB_LIST = 1;
     int tabSelected = TAB_MAP;
 
-    @Bind(R.id.pager)
+    @BindView(R.id.pager)
     CustomViewPager mCustomViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    @Bind(R.id.nav_view)
+    @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
-    @Bind(R.id.card_view)
+    @BindView(R.id.card_view)
     CardView mCardView;
     boolean isCardViewShown = false;
     final String IS_CARD_VIEW_SHOWN = "isCardViewShown";
 
-    @Bind(R.id.fab_card_view_dismiss)
+    @BindView(R.id.fab_card_view_dismiss)
     FloatingActionButton mFabDismissCardView;
 
-    @Bind(R.id.card_view_address)
+    @BindView(R.id.card_view_address)
     TextView cardViewAddress;
     final String CARD_VIEW_ADDRESS = "cardViewAddress";
 
-    @Bind(R.id.card_view_locality)
+    @BindView(R.id.card_view_locality)
     TextView cardViewLocality;
     final String CARD_VIEW_LOCALITY = "cardViewLocality";
 
-    @Bind(R.id.card_view_distance)
+    @BindView(R.id.card_view_distance)
     TextView cardViewDistance;
     final String CARD_VIEW_DISTANCE = "cardViewDistance";
 

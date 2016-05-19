@@ -24,7 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.presenter.NewAnchorPresenter;
@@ -45,40 +45,40 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
     Context mContext;
     NewAnchorPresenter mPresenter;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.toolbar_layout)
+    @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout mToolbarLayout;
 
-    @Bind(R.id.toolbar_save_button)
+    @BindView(R.id.toolbar_save_button)
     Button mBtnSaveAnchor;
 
-    @Bind(R.id.toolbar_marker_icon)
+    @BindView(R.id.toolbar_marker_icon)
     ImageView mToolbarMarkerIcon;
 
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     EditText mEditTextTitle;
 
-    @Bind(R.id.new_anchor_description)
+    @BindView(R.id.new_anchor_description)
     EditText mEditTextDescription;
 
-    @Bind(R.id.new_anchor_lat_lng)
+    @BindView(R.id.new_anchor_lat_lng)
     TextView mLatLngText;
 
-    @Bind(R.id.new_anchor_tag)
+    @BindView(R.id.new_anchor_tag)
     EditText mEditTextTag;
 
-    @Bind(R.id.new_anchor_reminder_value)
+    @BindView(R.id.new_anchor_reminder_value)
     SwitchCompat mSwitchReminder;
 
-    @Bind(R.id.new_anchor_color_button)
+    @BindView(R.id.new_anchor_color_button)
     LinearLayoutCompat mBtnColorSelection;
 
-    @Bind(R.id.new_anchor_color_icon)
+    @BindView(R.id.new_anchor_color_icon)
     ImageView mAnchorColorIcon;
 
-    @Bind(R.id.new_anchor_color_text)
+    @BindView(R.id.new_anchor_color_text)
     TextView mAnchorColorText;
 
     String mSelectedColorValue = null;

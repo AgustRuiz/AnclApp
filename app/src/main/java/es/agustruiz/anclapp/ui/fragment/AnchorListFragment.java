@@ -19,7 +19,7 @@ import com.hudomju.swipe.adapter.ListViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
@@ -35,10 +35,10 @@ public class AnchorListFragment extends Fragment {
 
     public static final String LOG_TAG = AnchorListFragment.class.getName() + "[A]";
 
-    @Bind(R.id.anchor_list_swipe_refresh)
+    @BindView(R.id.anchor_list_swipe_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @Bind(R.id.anchor_list_view)
+    @BindView(R.id.anchor_list_view)
     ListView mAnchorListView;
 
     Context mContext;

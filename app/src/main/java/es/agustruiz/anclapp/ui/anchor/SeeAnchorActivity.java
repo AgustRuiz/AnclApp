@@ -22,7 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.SystemUtils;
@@ -33,49 +33,49 @@ public class SeeAnchorActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = SeeAnchorActivity.class.getName() + "[A]";
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.toolbar_collapsing)
+    @BindView(R.id.toolbar_collapsing)
     CollapsingToolbarLayout mCollapsingToolbar;
 
-    @Bind(R.id.toolbar_marker_icon)
+    @BindView(R.id.toolbar_marker_icon)
     ImageView mToolbarMarkerIcon;
 
-    @Bind(R.id.fab_action_anchor)
+    @BindView(R.id.fab_action_anchor)
     FloatingActionButton mFabActionAnchor;
 
-    @Bind(R.id.see_anchor_line_deleted_date)
+    @BindView(R.id.see_anchor_line_deleted_date)
     LinearLayoutCompat mLinearLayoutDeletedDate;
 
-    @Bind(R.id.see_anchor_deleted_date)
+    @BindView(R.id.see_anchor_deleted_date)
     TextView mTextViewDeletedDate;
 
-    @Bind(R.id.see_anchor_description)
+    @BindView(R.id.see_anchor_description)
     TextView mTextViewDescription;
 
-    @Bind(R.id.see_anchor_lat_lng)
+    @BindView(R.id.see_anchor_lat_lng)
     TextView mTextViewLatLng;
 
-    @Bind(R.id.see_anchor_tag)
+    @BindView(R.id.see_anchor_tag)
     TextView mTextViewTag;
 
-    @Bind(R.id.see_anchor_reminder_icon)
+    @BindView(R.id.see_anchor_reminder_icon)
     ImageView mImageViewReminderIcon;
 
-    @Bind(R.id.see_anchor_reminder_label)
+    @BindView(R.id.see_anchor_reminder_label)
     TextView mTextViewReminder;
 
-    @Bind(R.id.see_anchor_color_icon)
+    @BindView(R.id.see_anchor_color_icon)
     ImageView mImageViewColorIcon;
 
-    @Bind(R.id.see_anchor_color_text)
+    @BindView(R.id.see_anchor_color_text)
     TextView mTextViewColor;
 
-    @Bind(R.id.btn_navigate)
+    @BindView(R.id.btn_navigate)
     Button mBtnNavigate;
 
-    @Bind(R.id.see_anchor_line_buttons)
+    @BindView(R.id.see_anchor_line_buttons)
     LinearLayoutCompat mLinearLayoutButtons;
 
     protected long mIntentAnchorId;

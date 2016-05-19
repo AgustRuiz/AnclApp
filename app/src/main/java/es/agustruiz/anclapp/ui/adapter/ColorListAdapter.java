@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.model.AnchorColor;
@@ -61,9 +61,9 @@ public class ColorListAdapter extends ArrayAdapter<AnchorColor> {
 
 
     static class AnchorColorHolder {
-        @Bind(R.id.color_list_view_row_radio_button)
+        @BindView(R.id.color_list_view_row_radio_button)
         RadioButton mRadioButton;
-        @Bind(R.id.color_list_view_row_text_view)
+        @BindView(R.id.color_list_view_row_text_view)
         TextView mTextView;
         String entryValue;
         boolean mChecked = false;

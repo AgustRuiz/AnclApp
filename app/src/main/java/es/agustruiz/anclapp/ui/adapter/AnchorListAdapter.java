@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.SystemUtils;
@@ -127,15 +127,15 @@ public class AnchorListAdapter extends BaseAdapter {
     }
 
     protected static class AnchorHolder {
-        @Bind(R.id.anchor_list_icon)
+        @BindView(R.id.anchor_list_icon)
         ImageView mIcon;
-        @Bind(R.id.anchor_list_title)
+        @BindView(R.id.anchor_list_title)
         TextView mTitle;
-        @Bind(R.id.anchor_list_notification_icon)
+        @BindView(R.id.anchor_list_notification_icon)
         ImageView mNotificationIcon;
-        @Bind(R.id.anchor_list_distance)
+        @BindView(R.id.anchor_list_distance)
         TextView mDistance;
-        @Bind(R.id.anchor_list_deleted_date)
+        @BindView(R.id.anchor_list_deleted_date)
         TextView mDeletedDate;
 
         public AnchorHolder(View view) {

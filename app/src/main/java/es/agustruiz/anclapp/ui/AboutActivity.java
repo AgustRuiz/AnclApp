@@ -8,16 +8,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 
 public class AboutActivity extends AppCompatActivity {
 
-    @Bind(R.id.tvDeveloperEmail)
+    @BindView(R.id.tvDeveloperEmail)
     TextView developerEmail;
 
-    @Bind(R.id.tvVersionLabel)
+    @BindView(R.id.tvVersionLabel)
     TextView versionLabel;
 
     Context mContext;
