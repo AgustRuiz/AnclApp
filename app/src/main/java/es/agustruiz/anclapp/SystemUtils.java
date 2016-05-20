@@ -1,9 +1,14 @@
 package es.agustruiz.anclapp;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.format.DateFormat;
 import android.util.TypedValue;
 import android.view.Display;
@@ -52,4 +57,42 @@ public class SystemUtils {
         cal.setTimeInMillis(time);
         return DateFormat.format(context.getString(R.string.format_time), cal).toString();
     }
+
+    //region [Compat methods]
+
+    public static int getColor(Context context, int resColorId){
+        return ContextCompat.getColor(context, resColorId);
+    }
+
+    public static void tintDrawable(Drawable drawable, Context context, String colorString){{
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawable.setTint(Color.parseColor(colorString));
+        }else{
+            DrawableCompat.setTintList(drawable, ColorStateList.valueOf(Color.parseColor(colorString)));
+        }
+    }}
+
+    public static void tintDrawable(Drawable drawable, Context context, int resColorId){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawable.setTint(SystemUtils.getColor(context, resColorId));
+        }else{
+            DrawableCompat.setTintList(drawable, ColorStateList.valueOf(getColor(context, resColorId)));
+        }
+    }
+
+    public static Drawable getDrawable(Context context, int resDrawableId){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return context.getDrawable(resDrawableId);
+        }else{
+            return context.getResources().getDrawable(resDrawableId);
+        }
+    }
+
+    public static Drawable getDrawable(Context context, int resDrawableId, int resColorId){
+        Drawable drawable = getDrawable(context, resDrawableId);
+        tintDrawable(drawable, context, resColorId);
+        return drawable;
+    }
+
+    //endregion
 }

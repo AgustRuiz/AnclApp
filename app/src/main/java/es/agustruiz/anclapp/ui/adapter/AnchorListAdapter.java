@@ -80,21 +80,25 @@ public class AnchorListAdapter extends BaseAdapter {
 
         holder.mIcon.setImageTintList(
                 ColorStateList.valueOf(Color.parseColor(anchor.getColor())));
+
+
         Float distance = anchor.getDistanceInKms();
         if (anchor.isReminder()) {
-            holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_black_24dp));
-            holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.blue500));
+            holder.mNotificationIcon.setImageDrawable(SystemUtils.getDrawable(
+                    mContext, R.drawable.ic_notifications_black_24dp));
+            SystemUtils.tintDrawable(holder.mNotificationIcon.getDrawable(), mContext, R.color.blue500);
         } else {
-            holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_off_black_24dp));
-            holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.grey500));
+            holder.mNotificationIcon.setImageDrawable(SystemUtils.getDrawable(
+                    mContext, R.drawable.ic_notifications_off_black_24dp));
+            SystemUtils.tintDrawable(holder.mNotificationIcon.getDrawable(), mContext, R.color.grey700);
         }
-        if(anchor.getDeletedTimestamp()>0) {
+        if (anchor.getDeletedTimestamp() > 0) {
             // Deleted anchor
             holder.mDeletedDate.setText(mContext.getString(R.string.msg_deleted_on,
                     SystemUtils.getTime(mContext, anchor.getDeletedTimestamp()),
                     SystemUtils.getDate(mContext, anchor.getDeletedTimestamp())));
             holder.mDistance.setText("");
-        }else{
+        } else {
             // Active anchor
             holder.mDeletedDate.setText("");
             holder.mDistance.setText((distance > 0 ? distance.toString() + mContext.getString(R.string.km_unit) : ""));
@@ -111,12 +115,12 @@ public class AnchorListAdapter extends BaseAdapter {
         String origLowerString = origString.toLowerCase();
         Spannable spannable = new SpannableString(origString);
 
-        for(String subString : highlightLowerString) {
+        for (String subString : highlightLowerString) {
             if (subString.length() > 0) {
                 int from = origLowerString.indexOf(subString);
                 int to = Math.min(from + subString.length(), origString.length());
                 spannable.setSpan(
-                        new ForegroundColorSpan(mContext.getColor(R.color.colorAccent)),
+                        new ForegroundColorSpan( SystemUtils.getColor(mContext, R.color.colorAccent)),
                         from,
                         to,
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

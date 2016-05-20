@@ -113,7 +113,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
             MenuItem shareMenuItem = menu.findItem(R.id.action_share);
             Drawable iconShareMenuItem = shareMenuItem.getIcon();
             iconShareMenuItem.mutate();
-            iconShareMenuItem.setColorFilter(getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
+            SystemUtils.tintDrawable(iconShareMenuItem, mContext, android.R.color.white);
         }
         return true;
     }
@@ -232,14 +232,16 @@ public class SeeAnchorActivity extends AppCompatActivity {
             mTextViewLatLng.setText(anchor.getLatitude() + ", " + anchor.getLongitude());
             if (anchor.isReminder()) {
                 mTextViewReminder.setText(R.string.msg_reminder_location_enabled);
-                mImageViewReminderIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_notifications_black_24dp, getTheme()));
-                mImageViewReminderIcon.setImageTintList(ColorStateList.valueOf(getColor(R.color.colorAccent)));
+
+                mImageViewReminderIcon.setImageDrawable(SystemUtils.getDrawable(
+                        mContext, R.drawable.ic_notifications_black_24dp, R.color.blue500));
+
             } else {
                 mTextViewReminder.setText(R.string.msg_reminder_location_disabled);
-                mImageViewReminderIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_notifications_off_black_24dp, getTheme()));
-                mImageViewReminderIcon.setImageTintList(ColorStateList.valueOf(getColor(R.color.grey700)));
+                mImageViewReminderIcon.setImageDrawable(SystemUtils.getDrawable(
+                        mContext, R.drawable.ic_notifications_off_black_24dp, R.color.grey700));
             }
-            mImageViewColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(anchor.getColor())));
+            SystemUtils.tintDrawable(mImageViewColorIcon.getDrawable(), mContext, anchor.getColor());
         }
     }
 

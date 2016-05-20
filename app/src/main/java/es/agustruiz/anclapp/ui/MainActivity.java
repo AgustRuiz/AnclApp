@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchItem.getIcon().mutate().setColorFilter(getColor(android.R.color.white), PorterDuff.Mode.SRC_IN);
+        searchItem.getIcon().mutate().setColorFilter(SystemUtils.getColor(mContext, android.R.color.white), PorterDuff.Mode.SRC_IN);
 
         SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         if (mSearchView != null) {
@@ -239,11 +239,9 @@ public class MainActivity extends AppCompatActivity {
     public void setFabCenterViewState(boolean value) {
         isAutoCenterMap = value;
         if (isAutoCenterMap) {
-            mFabCenterView.getDrawable()
-                    .setTint(getResources().getColor(R.color.blue500, getTheme()));
+            SystemUtils.tintDrawable(mFabCenterView.getDrawable(), mContext, R.color.blue500);
         } else {
-            mFabCenterView.getDrawable()
-                    .setTint(getResources().getColor(R.color.grey700, getTheme()));
+            SystemUtils.tintDrawable(mFabCenterView.getDrawable(), mContext, R.color.grey700);
         }
     }
 
@@ -398,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mCustomViewPager.setAdapter(mSectionsPagerAdapter);
         mTabLayout.setupWithViewPager(mCustomViewPager);
-        mTabLayout.setSelectedTabIndicatorColor(getColor(R.color.tabsScrollColor));
+        mTabLayout.setSelectedTabIndicatorColor(SystemUtils.getColor(mContext, R.color.tabsScrollColor));
         mTabLayout.setSelectedTabIndicatorHeight((int) (3 * getResources().getDisplayMetrics().density));
     }
 
