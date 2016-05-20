@@ -108,4 +108,5 @@
     <string name="about_icon_description">Icono de "acerca de"</string>
     <string name="about_developer_label">Desarrollador principal/Diseñador gráfico</string>
     <string name="action_accept">Aceptar</string>
+    <string name="msg_anchor_created">Nuevo ancla creada</string>
 </resources>

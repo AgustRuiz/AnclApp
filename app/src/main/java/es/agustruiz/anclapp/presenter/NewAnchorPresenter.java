@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.widget.Toast;
 
+import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.model.Anchor;
@@ -59,7 +60,7 @@ public class NewAnchorPresenter implements Presenter {
 
         if(resultOk){
             // TODO send message with snackbar?
-            Toast.makeText(mContext, "Anchor created!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.msg_anchor_created), Toast.LENGTH_SHORT).show();
             mActivity.finish();
         }
     }
