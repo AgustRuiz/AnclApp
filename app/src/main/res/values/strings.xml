@@ -160,6 +160,7 @@
     <string name="anchors_bin">Anchors bin</string>
     <string name="bin">Bin</string>
     <string name="color">Color</string>
+    <string name="color_icon">Color icon</string>
     <string name="color_preview">Color preview</string>
     <string name="default_color">Default color</string>
     <string name="deleted">Deleted</string>

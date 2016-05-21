@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -100,7 +99,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
         super.onResume();
         initialize();
         fillData(mPresenter.refreshAnchor(mIntentAnchorId));
-        tintElementsWithAnchorColor(Color.parseColor(mPresenter.getAnchor(mIntentAnchorId).getColor()));
+        tintElementsWithAnchorColor(mPresenter.getAnchor(mIntentAnchorId).getColor());
     }
 
     @Override
@@ -199,7 +198,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
     }
 
     private void fabActionEditMode() {
-        mFabActionAnchor.setImageDrawable(getDrawable(R.drawable.ic_create_black_24dp));
+        mFabActionAnchor.setImageDrawable(SystemUtils.getDrawableFromResources(mContext, R.drawable.ic_create_black_24dp));
         mFabActionAnchor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -211,7 +210,7 @@ public class SeeAnchorActivity extends AppCompatActivity {
     }
 
     private void fabActionRestoreMode() {
-        mFabActionAnchor.setImageDrawable(getDrawable(R.drawable.ic_refresh_black_24dp));
+        mFabActionAnchor.setImageDrawable(SystemUtils.getDrawableFromResources(mContext, R.drawable.ic_refresh_black_24dp));
         mFabActionAnchor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,23 +231,26 @@ public class SeeAnchorActivity extends AppCompatActivity {
             mTextViewLatLng.setText(anchor.getLatitude() + ", " + anchor.getLongitude());
             if (anchor.isReminder()) {
                 mTextViewReminder.setText(R.string.msg_reminder_location_enabled);
-
-                mImageViewReminderIcon.setImageDrawable(SystemUtils.getDrawable(
-                        mContext, R.drawable.ic_notifications_black_24dp, R.color.blue500));
+                mImageViewReminderIcon.setImageDrawable(SystemUtils.getDrawableFromResources(
+                        mContext, R.drawable.ic_notifications_black_24dp));
+                SystemUtils.tintDrawable(mImageViewReminderIcon.getDrawable(), mContext, R.color.blue500);
 
             } else {
                 mTextViewReminder.setText(R.string.msg_reminder_location_disabled);
-                mImageViewReminderIcon.setImageDrawable(SystemUtils.getDrawable(
-                        mContext, R.drawable.ic_notifications_off_black_24dp, R.color.grey700));
+                mImageViewReminderIcon.setImageDrawable(SystemUtils.getDrawableFromResources(
+                        mContext, R.drawable.ic_notifications_off_black_24dp));
+                SystemUtils.tintDrawable(mImageViewReminderIcon.getDrawable(), mContext, R.color.grey700);
             }
-            SystemUtils.tintDrawable(mImageViewColorIcon.getDrawable(), mContext, anchor.getColor());
+            mImageViewColorIcon.setColorFilter(Color.parseColor(anchor.getColor()));
         }
     }
 
-    private void tintElementsWithAnchorColor(int color) {
-        mCollapsingToolbar.setBackgroundColor(color);
-        mFabActionAnchor.setBackgroundTintList(ColorStateList.valueOf(color));
-        mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(color));
+    private void tintElementsWithAnchorColor(String colorString) {
+        int colorValue = Color.parseColor(colorString);
+        mCollapsingToolbar.setBackgroundColor(colorValue);
+        mFabActionAnchor.setBackgroundTintList(ColorStateList.valueOf(colorValue));
+        mToolbarMarkerIcon.setColorFilter(Color.parseColor(colorString));
+        mImageViewColorIcon.setColorFilter(Color.parseColor(colorString));
     }
 
     //endregion

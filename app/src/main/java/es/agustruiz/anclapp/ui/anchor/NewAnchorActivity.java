@@ -27,6 +27,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.presenter.NewAnchorPresenter;
 import es.agustruiz.anclapp.service.ShareAnchor;
 import es.agustruiz.anclapp.ui.anchor.utils.ColorDialogAppCompatActivity;
@@ -225,9 +226,9 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
     }
 
     private void tintElementsWithAnchorColor() {
-        int color = Color.parseColor(mSelectedColorValue);
-        mToolbarLayout.setBackgroundColor(color);
-        mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(color));
+        mAnchorColorIcon.setColorFilter(Color.parseColor(mSelectedColorValue));
+        mToolbarLayout.setBackgroundColor(Color.parseColor(mSelectedColorValue));
+        mToolbarMarkerIcon.setColorFilter(Color.parseColor(mSelectedColorValue));
     }
 
     //endregion
@@ -251,7 +252,6 @@ public class NewAnchorActivity extends AppCompatActivity implements ColorDialogA
     public void setAnchorColorValues(String title, String entryValue) {
         mSelectedColorTitle = title;
         mSelectedColorValue = entryValue;
-        mAnchorColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
         mAnchorColorText.setText(mSelectedColorTitle);
         tintElementsWithAnchorColor();
     }

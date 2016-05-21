@@ -1,8 +1,6 @@
 package es.agustruiz.anclapp.ui.adapter;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -76,19 +74,14 @@ public class AnchorListAdapter extends BaseAdapter {
 
         //holder.mTitle.setText(anchor.getTitle());
         holder.mTitle.setText(getHightligthedTitle(anchor.getTitle()), TextView.BufferType.SPANNABLE);
-
-
-        holder.mIcon.setImageTintList(
-                ColorStateList.valueOf(Color.parseColor(anchor.getColor())));
-
-
+        SystemUtils.tintDrawable(holder.mIcon.getDrawable(), anchor.getColor());
         Float distance = anchor.getDistanceInKms();
         if (anchor.isReminder()) {
-            holder.mNotificationIcon.setImageDrawable(SystemUtils.getDrawable(
+            holder.mNotificationIcon.setImageDrawable(SystemUtils.getDrawableFromResources(
                     mContext, R.drawable.ic_notifications_black_24dp));
             SystemUtils.tintDrawable(holder.mNotificationIcon.getDrawable(), mContext, R.color.blue500);
         } else {
-            holder.mNotificationIcon.setImageDrawable(SystemUtils.getDrawable(
+            holder.mNotificationIcon.setImageDrawable(SystemUtils.getDrawableFromResources(
                     mContext, R.drawable.ic_notifications_off_black_24dp));
             SystemUtils.tintDrawable(holder.mNotificationIcon.getDrawable(), mContext, R.color.grey700);
         }

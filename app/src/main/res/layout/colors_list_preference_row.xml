@@ -8,14 +8,16 @@
     android:paddingBottom="@dimen/color_list_preference_row_padding_vertical"
     android:paddingTop="@dimen/color_list_preference_row_padding_vertical">
 
-    <RadioButton
-        android:id="@+id/color_list_view_row_radio_button"
+    <ImageView
+        android:id="@+id/color_list_view_row_color_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/color_list_preference_radio_margin_horizontal"
         android:layout_marginStart="@dimen/color_list_preference_radio_margin_horizontal"
         android:clickable="false"
-        android:focusable="false" />
+        android:focusable="false"
+        android:src="@drawable/ic_color_item_empty_24dp"
+        android:contentDescription="@string/color_icon" />
 
     <TextView
         android:id="@+id/color_list_view_row_text_view"

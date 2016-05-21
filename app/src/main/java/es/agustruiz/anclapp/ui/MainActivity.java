@@ -239,9 +239,11 @@ public class MainActivity extends AppCompatActivity {
     public void setFabCenterViewState(boolean value) {
         isAutoCenterMap = value;
         if (isAutoCenterMap) {
-            SystemUtils.tintDrawable(mFabCenterView.getDrawable(), mContext, R.color.blue500);
+            mFabCenterView.setColorFilter(SystemUtils.getColor(mContext, R.color.blue500));
+            //SystemUtils.tintDrawable(mFabCenterView.getDrawable(), mContext, R.color.blue500);
         } else {
-            SystemUtils.tintDrawable(mFabCenterView.getDrawable(), mContext, R.color.grey700);
+            mFabCenterView.setColorFilter(SystemUtils.getColor(mContext, R.color.grey700));
+            //SystemUtils.tintDrawable(mFabCenterView.getDrawable(), mContext, R.color.grey700);
         }
     }
 

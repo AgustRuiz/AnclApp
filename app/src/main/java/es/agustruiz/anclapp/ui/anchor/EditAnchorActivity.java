@@ -26,6 +26,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.presenter.EditAnchorPresenter;
 import es.agustruiz.anclapp.ui.anchor.utils.ColorDialogAppCompatActivity;
@@ -177,8 +178,7 @@ public class EditAnchorActivity extends AppCompatActivity implements ColorDialog
         });
         mSelectedColorTitle = ColorDialogFragment.getColorTitle(mContext, mSelectedColorValue);
         setAnchorColorValues(mSelectedColorTitle, mSelectedColorValue);
-        tintElementsWithAnchorColor(
-                Color.parseColor(mPresenter.getAnchor(mIntentAnchorId).getColor()));
+        tintElementsWithAnchorColor(mPresenter.getAnchor(mIntentAnchorId).getColor());
         mBtnSaveAnchor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,11 +187,11 @@ public class EditAnchorActivity extends AppCompatActivity implements ColorDialog
         });
     }
 
-    private void tintElementsWithAnchorColor(int color) {
-        ColorStateList colorStateList = ColorStateList.valueOf(color);
-        mToolbarLayout.setBackgroundColor(color);
-        mToolbarMarkerIcon.setImageTintList(colorStateList);
-        mAnchorColorIcon.setImageTintList(colorStateList);
+    private void tintElementsWithAnchorColor(String colorString) {
+        int colorValue = Color.parseColor(colorString);
+        mToolbarLayout.setBackgroundColor(colorValue);
+        mToolbarMarkerIcon.setColorFilter(Color.parseColor(colorString));
+        mAnchorColorIcon.setColorFilter(Color.parseColor(colorString));
     }
 
     //endregion
@@ -211,14 +211,14 @@ public class EditAnchorActivity extends AppCompatActivity implements ColorDialog
         newFragment.show(fragmentTransaction, COLOR_DIALOG_TAG);
     }
 
+    //endregion
+
     @Override
     public void setAnchorColorValues(String title, String entryValue) {
         mSelectedColorTitle = title;
         mSelectedColorValue = entryValue;
-        mAnchorColorIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
         mAnchorColorText.setText(mSelectedColorTitle);
-        mToolbarMarkerIcon.setImageTintList(ColorStateList.valueOf(Color.parseColor(entryValue)));
+        mAnchorColorIcon.setColorFilter(Color.parseColor(entryValue));
+        mToolbarMarkerIcon.setColorFilter(Color.parseColor(entryValue));
     }
-
-    //endregion
 }

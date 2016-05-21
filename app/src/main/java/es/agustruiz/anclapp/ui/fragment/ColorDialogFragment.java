@@ -39,6 +39,7 @@ public class ColorDialogFragment extends DialogFragment {
         args.putString(VALUE_CURRENT_COLOR_TAG, valueCurrentColor);
         args.putString(TITLE_CURRENT_COLOR_TAG, titleCurrentColor);
         colorDialogFragment.setArguments(args);
+        colorDialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         return colorDialogFragment;
     }
 
