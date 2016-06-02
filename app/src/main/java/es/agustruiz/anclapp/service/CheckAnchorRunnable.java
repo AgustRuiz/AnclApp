@@ -26,7 +26,7 @@ import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 public class CheckAnchorRunnable implements Runnable {
 
     public static final String LOG_TAG = CheckAnchorRunnable.class.getName() + "[A]";
-    private static final int SLEEP_THREAD_DELAY_MILLIS = 10000;
+    private static final int SLEEP_THREAD_DELAY_MILLIS = 60 * 1000; // 60 seconds (to millis)
     private static final Long LOCATION_REQUEST_MIN_TIME = 5000L;
     private static final Float LOCATION_REQUEST_MIN_DISTANCE = 100F;
 
