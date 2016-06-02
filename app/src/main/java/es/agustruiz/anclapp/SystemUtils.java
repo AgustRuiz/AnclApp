@@ -1,18 +1,18 @@
 package es.agustruiz.anclapp;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.format.DateFormat;
 import android.util.TypedValue;
 import android.view.Display;
-import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 
 import java.util.Calendar;
-import java.util.Locale;
 
 public class SystemUtils {
 
@@ -52,4 +52,40 @@ public class SystemUtils {
         cal.setTimeInMillis(time);
         return DateFormat.format(context.getString(R.string.format_time), cal).toString();
     }
+
+    //region [Compat methods]
+
+    public static int getColor(Context context, int resColorId){
+        return ContextCompat.getColor(context, resColorId);
+    }
+
+    public static void tintDrawable(Drawable drawable, String colorString){{
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawable.setTint(Color.parseColor(colorString));
+        }else{
+            Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
+            wrappedDrawable = wrappedDrawable.mutate();
+            DrawableCompat.setTint(wrappedDrawable, Color.parseColor(colorString));
+        }
+    }}
+
+    public static void tintDrawable(Drawable drawable, Context context, int resColorId){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawable.setTint(SystemUtils.getColor(context, resColorId));
+        }else{
+            Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
+            wrappedDrawable = wrappedDrawable.mutate();
+            DrawableCompat.setTint(wrappedDrawable, SystemUtils.getColor(context, resColorId));
+        }
+    }
+
+    public static Drawable getDrawableFromResources(Context context, int resDrawableId){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return context.getDrawable(resDrawableId);
+        }else{
+            return context.getResources().getDrawable(resDrawableId);
+        }
+    }
+
+    //endregion
 }

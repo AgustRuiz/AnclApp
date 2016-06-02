@@ -14,12 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.SystemUtils;
 
 import static android.content.SharedPreferences.Editor;
 
@@ -39,7 +39,7 @@ public class ColorsListPreference extends ListPreference {
     SharedPreferences prefs;
     Editor editor;
     String keyPref;
-    ArrayList<RadioButton> rButtonList;
+    ArrayList<ImageView> rColorIconList;
 
     View mLayout;
     LayoutInflater mLayoutInflater;
@@ -50,7 +50,7 @@ public class ColorsListPreference extends ListPreference {
     public ColorsListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        rButtonList = new ArrayList<>();
+        rColorIconList = new ArrayList<>();
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
     }
@@ -84,7 +84,7 @@ public class ColorsListPreference extends ListPreference {
         mSummary.setText(this.getSummary());
 
         mImageColor = (ImageView) mLayout.findViewById(R.id.custom_list_preference_imageColor);
-        mImageColor.setImageTintList(ColorStateList.valueOf(Color.parseColor(getValue())));
+        mImageColor.setColorFilter(Color.parseColor(getValue()));
 
         return mLayout;
     }
@@ -129,32 +129,35 @@ public class ColorsListPreference extends ListPreference {
                 holder.updateRow(position);
                 checkRadioButton(value, holder);
             }
+            holder.rColorIcon.setColorFilter(Color.parseColor(value));
             return row;
         }
 
         private void checkRadioButton(String value, CustomHolder holder) {
             if (value.equals(prefs.getString(keyPref, getValue())))
-                holder.rButton.setChecked(true);
+                holder.rColorIcon.setImageDrawable(SystemUtils.getDrawableFromResources(
+                        mContext, R.drawable.ic_color_item_solid_24dp));
             else
-                holder.rButton.setChecked(false);
+                holder.rColorIcon.setImageDrawable(SystemUtils.getDrawableFromResources(
+                        mContext, R.drawable.ic_color_item_empty_24dp));
         }
 
         class CustomHolder {
             private TextView text = null;
-            private RadioButton rButton = null;
+            private ImageView rColorIcon = null;
             private String color = null;
 
             CustomHolder(View row, int position) {
                 text = (TextView) row.findViewById(R.id.color_list_view_row_text_view);
-                rButton = (RadioButton) row.findViewById(R.id.color_list_view_row_radio_button);
-                rButtonList.add(rButton);
+                rColorIcon = (ImageView) row.findViewById(R.id.color_list_view_row_color_icon);
+                rColorIconList.add(rColorIcon);
                 updateRow(position);
             }
 
             public void updateRow(int position) {
                 color = entryValues[position].toString();
                 text.setText(entries[position]);
-                rButton.setButtonTintList(ColorStateList.valueOf(Color.parseColor(color)));
+                //SystemUtils.tintDrawable(rColorIcon.getDrawable(), color);
             }
         }
     }

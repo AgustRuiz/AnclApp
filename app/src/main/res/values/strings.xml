@@ -132,6 +132,7 @@
 
     <!-- Messages -->
 
+    <string name="msg_anchor_created">New anchor created</string>
     <string name="msg_anchor_deleted">Anchor deleted</string>
     <string name="msg_anchor_restored">Anchor restored</string>
     <string name="msg_cant_load_geocoder">Cant\' load geocoder</string>
@@ -159,6 +160,7 @@
     <string name="anchors_bin">Anchors bin</string>
     <string name="bin">Bin</string>
     <string name="color">Color</string>
+    <string name="color_icon">Color icon</string>
     <string name="color_preview">Color preview</string>
     <string name="default_color">Default color</string>
     <string name="deleted">Deleted</string>
@@ -195,8 +197,5 @@
     <string name="about_google_maps_label" translatable="false">Google Maps</string>
     <string name="about_google_maps_value" translatable="false">maps.google.com</string>
     <string name="title_activity_test_maps" translatable="false">Test Map</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
 </resources>

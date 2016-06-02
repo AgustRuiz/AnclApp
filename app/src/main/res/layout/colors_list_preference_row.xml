@@ -4,18 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="false"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/color_list_preference_row_height"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/color_list_preference_row_padding_vertical"
     android:paddingTop="@dimen/color_list_preference_row_padding_vertical">
 
-    <RadioButton
-        android:id="@+id/color_list_view_row_radio_button"
+    <ImageView
+        android:id="@+id/color_list_view_row_color_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/color_list_preference_radio_margin_horizontal"
         android:layout_marginStart="@dimen/color_list_preference_radio_margin_horizontal"
         android:clickable="false"
-        android:focusable="false" />
+        android:contentDescription="@string/color_icon"
+        android:focusable="false"
+        android:src="@drawable/ic_color_item_empty_24dp" />
 
     <TextView
         android:id="@+id/color_list_view_row_text_view"

@@ -26,7 +26,7 @@ import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 public class CheckAnchorRunnable implements Runnable {
 
     public static final String LOG_TAG = CheckAnchorRunnable.class.getName() + "[A]";
-    private static final int SLEEP_THREAD_DELAY_MILLIS = 10000;
+    private static final int SLEEP_THREAD_DELAY_MILLIS = 60 * 1000; // 60 seconds (to millis)
     private static final Long LOCATION_REQUEST_MIN_TIME = 5000L;
     private static final Float LOCATION_REQUEST_MIN_DISTANCE = 100F;
 
@@ -47,15 +47,15 @@ public class CheckAnchorRunnable implements Runnable {
         mAnchorDAO = new AnchorDAO(mContext);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         prepareLocationService();
-        Log.d(LOG_TAG, "CheckAnchorRunnable started");
+        //Log.d(LOG_TAG, "CheckAnchorRunnable started");
     }
 
     @Override
     public void run() {
-        Log.d(LOG_TAG, "Starting looper");
+        //Log.d(LOG_TAG, "Starting looper");
         do {
             if (mLastLocation != null) {
-                Log.d(LOG_TAG, "Current location OK");
+                //Log.d(LOG_TAG, "Current location OK");
                 Anchor.setReferenceLocation(mLastLocation);
                 int reminderDistanceMetres = Integer.parseInt(
                         mPreferences.getString(
@@ -66,10 +66,10 @@ public class CheckAnchorRunnable implements Runnable {
                 List<Anchor> anchorList = mAnchorDAO.getAllReminderEnabled();
                 mAnchorDAO.close();
                 for (Anchor anchor : anchorList) {
-                    Log.d(LOG_TAG, String.format("Anchor \"%s\"", anchor.getTitle()));
+                    //Log.d(LOG_TAG, String.format("Anchor \"%s\"", anchor.getTitle()));
                     if (anchor.getDistanceInKms() * 1000 < reminderDistanceMetres) {
                         if (!anchor.isNotify()) {
-                            Log.d(LOG_TAG, String.format("New notify \"%s\"", anchor.getTitle()));
+                            //Log.d(LOG_TAG, String.format("New notify \"%s\"", anchor.getTitle()));
                             saveAnchorNofity(anchor, true);
                             Intent intent = new Intent(mContext, SeeAnchorActivity.class);
                             intent.putExtra(SeeAnchorActivity.ANCHOR_ID_INTENT_TAG, anchor.getId());
@@ -81,18 +81,18 @@ public class CheckAnchorRunnable implements Runnable {
                                     Color.parseColor(anchor.getColor()),
                                     pendingIntent
                             );
-                        } else {
-                            Log.d(LOG_TAG, String.format("Notify of \"%s\" is already shown", anchor.getTitle()));
+                            //} else {
+                            //Log.d(LOG_TAG, String.format("Notify of \"%s\" is already shown", anchor.getTitle()));
                         }
                     } else {
-                        Log.d(LOG_TAG, String.format("Anchor \"%s\" is out of range", anchor.getTitle()));
+                        //Log.d(LOG_TAG, String.format("Anchor \"%s\" is out of range", anchor.getTitle()));
                         saveAnchorNofity(anchor, false);
                     }
                 }
-            } else {
-                Log.d(LOG_TAG, "No location found\n");
+                //} else {
+                //Log.d(LOG_TAG, "No location found\n");
             }
-            Log.d(LOG_TAG, "End of loop\n\n");
+            //Log.d(LOG_TAG, "End of loop\n\n");
             sleepThread(SLEEP_THREAD_DELAY_MILLIS);
         } while (true);
     }

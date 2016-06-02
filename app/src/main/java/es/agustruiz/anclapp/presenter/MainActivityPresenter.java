@@ -1,21 +1,13 @@
 package es.agustruiz.anclapp.presenter;
 
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import java.io.IOException;
-import java.util.List;
 
 import es.agustruiz.anclapp.event.Event;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
-import es.agustruiz.anclapp.ui.MainActivity;
+import es.agustruiz.anclapp.ui.activity.MainActivity;
 
-public class MainActivityPresenter implements Presenter {
+public class MainActivityPresenter implements IPresenter {
 
     public static final String LOG_TAG = MainActivityPresenter.class.getName() + "[A]";
 
@@ -56,7 +48,7 @@ public class MainActivityPresenter implements Presenter {
 
     //endregion
 
-    //region [Overriden Presenter methods]
+    //region [Overriden IPresenter methods]
 
     @Override
     public void showMessage(String message) {

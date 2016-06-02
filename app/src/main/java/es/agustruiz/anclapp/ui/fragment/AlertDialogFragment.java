@@ -1,4 +1,4 @@
-package es.agustruiz.anclapp.ui;
+package es.agustruiz.anclapp.ui.fragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;

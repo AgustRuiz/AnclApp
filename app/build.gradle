@@ -6,10 +6,11 @@ android {
 
     defaultConfig {
         applicationId "es.agustruiz.anclapp"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 23
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 4
+        versionName "1.0.3"
+        multiDexEnabled true
 
         resValue "string", "google_maps_key", AnclAppGoogleMapsApiKey
     }
@@ -41,6 +42,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:cardview-v7:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.android.gms:play-services:9.0.0'
     compile 'com.hudomju:swipe-to-dismiss-undo:1.0'
     compile 'com.jakewharton:butterknife:8.0.1'

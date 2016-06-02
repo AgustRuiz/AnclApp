@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -44,7 +45,7 @@
             android:process=":anclapp_service" />
 
         <activity
-            android:name=".ui.SplashScreen"
+            android:name=".ui.activity.SplashScreenActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,7 +54,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -68,19 +69,19 @@
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.activity.MainActivity" />
         <activity
-            android:name=".ui.AboutActivity"
+            android:name=".ui.activity.AboutActivity"
             android:label="@string/about"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.activity.MainActivity" />
         <activity
             android:name=".ui.anchor.NewAnchorActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".ui.MainActivity"
+            android:parentActivityName=".ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="es.agustruiz.anclapp.ui.MainActivity" />
+                android:value=".ui.activity.MainActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -96,7 +97,7 @@
         <activity
             android:name=".ui.anchor.SeeAnchorActivity"
             android:label="@string/title_activity_see_anchor"
-            android:parentActivityName=".ui.MainActivity"
+            android:parentActivityName=".ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.anchor.EditAnchorActivity"

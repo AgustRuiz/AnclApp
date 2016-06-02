@@ -1,8 +1,6 @@
 package es.agustruiz.anclapp.ui.adapter;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -21,7 +19,7 @@ import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.model.Anchor;
-import es.agustruiz.anclapp.ui.MainActivity;
+import es.agustruiz.anclapp.ui.activity.MainActivity;
 
 public class AnchorListAdapter extends BaseAdapter {
 
@@ -76,25 +74,24 @@ public class AnchorListAdapter extends BaseAdapter {
 
         //holder.mTitle.setText(anchor.getTitle());
         holder.mTitle.setText(getHightligthedTitle(anchor.getTitle()), TextView.BufferType.SPANNABLE);
-
-
-        holder.mIcon.setImageTintList(
-                ColorStateList.valueOf(Color.parseColor(anchor.getColor())));
+        SystemUtils.tintDrawable(holder.mIcon.getDrawable(), anchor.getColor());
         Float distance = anchor.getDistanceInKms();
         if (anchor.isReminder()) {
-            holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_black_24dp));
-            holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.blue500));
+            holder.mNotificationIcon.setImageDrawable(SystemUtils.getDrawableFromResources(
+                    mContext, R.drawable.ic_notifications_black_24dp));
+            SystemUtils.tintDrawable(holder.mNotificationIcon.getDrawable(), mContext, R.color.blue500);
         } else {
-            holder.mNotificationIcon.setImageDrawable(mContext.getDrawable(R.drawable.ic_notifications_off_black_24dp));
-            holder.mNotificationIcon.setImageTintList(mContext.getColorStateList(R.color.grey500));
+            holder.mNotificationIcon.setImageDrawable(SystemUtils.getDrawableFromResources(
+                    mContext, R.drawable.ic_notifications_off_black_24dp));
+            SystemUtils.tintDrawable(holder.mNotificationIcon.getDrawable(), mContext, R.color.grey700);
         }
-        if(anchor.getDeletedTimestamp()>0) {
+        if (anchor.getDeletedTimestamp() > 0) {
             // Deleted anchor
             holder.mDeletedDate.setText(mContext.getString(R.string.msg_deleted_on,
                     SystemUtils.getTime(mContext, anchor.getDeletedTimestamp()),
                     SystemUtils.getDate(mContext, anchor.getDeletedTimestamp())));
             holder.mDistance.setText("");
-        }else{
+        } else {
             // Active anchor
             holder.mDeletedDate.setText("");
             holder.mDistance.setText((distance > 0 ? distance.toString() + mContext.getString(R.string.km_unit) : ""));
@@ -111,12 +108,12 @@ public class AnchorListAdapter extends BaseAdapter {
         String origLowerString = origString.toLowerCase();
         Spannable spannable = new SpannableString(origString);
 
-        for(String subString : highlightLowerString) {
+        for (String subString : highlightLowerString) {
             if (subString.length() > 0) {
                 int from = origLowerString.indexOf(subString);
                 int to = Math.min(from + subString.length(), origString.length());
                 spannable.setSpan(
-                        new ForegroundColorSpan(mContext.getColor(R.color.colorAccent)),
+                        new ForegroundColorSpan( SystemUtils.getColor(mContext, R.color.colorAccent)),
                         from,
                         to,
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

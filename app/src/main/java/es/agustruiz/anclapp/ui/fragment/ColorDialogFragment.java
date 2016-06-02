@@ -16,7 +16,7 @@ import java.util.List;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.model.AnchorColor;
 import es.agustruiz.anclapp.ui.adapter.ColorListAdapter;
-import es.agustruiz.anclapp.ui.anchor.utils.ColorDialogAppCompatActivity;
+import es.agustruiz.anclapp.ui.utils.ColorDialogAppCompatActivity;
 
 public class ColorDialogFragment extends DialogFragment {
 
@@ -39,6 +39,7 @@ public class ColorDialogFragment extends DialogFragment {
         args.putString(VALUE_CURRENT_COLOR_TAG, valueCurrentColor);
         args.putString(TITLE_CURRENT_COLOR_TAG, titleCurrentColor);
         colorDialogFragment.setArguments(args);
+        colorDialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         return colorDialogFragment;
     }
 

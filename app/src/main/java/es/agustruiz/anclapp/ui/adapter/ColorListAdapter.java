@@ -10,12 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.model.AnchorColor;
 
 public class ColorListAdapter extends ArrayAdapter<AnchorColor> {
@@ -51,18 +53,24 @@ public class ColorListAdapter extends ArrayAdapter<AnchorColor> {
 
         holder.entryValue = anchorColor.getEntryValue();
         holder.mTextView.setText(anchorColor.getEntry());
-        holder.mRadioButton.setButtonTintList(
-                ColorStateList.valueOf(Color.parseColor(anchorColor.getEntryValue())));
+
         holder.mChecked = anchorColor.isChecked();
-        holder.mRadioButton.setChecked(holder.mChecked);
+        if(holder.mChecked){
+            holder.mColorIcon.setImageDrawable(SystemUtils.getDrawableFromResources(
+                    mContext, R.drawable.ic_color_item_solid_24dp));
+        }else{
+            holder.mColorIcon.setImageDrawable(SystemUtils.getDrawableFromResources(
+                    mContext, R.drawable.ic_color_item_empty_24dp));
+        }
+        SystemUtils.tintDrawable(holder.mColorIcon.getDrawable(), anchorColor.getEntryValue());
 
         return row;
     }
 
 
     static class AnchorColorHolder {
-        @BindView(R.id.color_list_view_row_radio_button)
-        RadioButton mRadioButton;
+        @BindView(R.id.color_list_view_row_color_icon)
+        ImageView mColorIcon;
         @BindView(R.id.color_list_view_row_text_view)
         TextView mTextView;
         String entryValue;

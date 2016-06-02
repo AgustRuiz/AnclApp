@@ -22,12 +22,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
+import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.event.Event;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.model.Anchor;
-import es.agustruiz.anclapp.ui.MainActivity;
+import es.agustruiz.anclapp.ui.activity.MainActivity;
 import es.agustruiz.anclapp.ui.adapter.AnchorListAdapter;
 import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 
@@ -112,7 +113,7 @@ public class AnchorListFragment extends Fragment {
             }
         });
 
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent, mContext.getTheme()));
+        mSwipeRefreshLayout.setColorSchemeColors(SystemUtils.getColor(mContext, R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

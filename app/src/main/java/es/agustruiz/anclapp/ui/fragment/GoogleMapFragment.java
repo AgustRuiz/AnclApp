@@ -37,7 +37,6 @@ import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.presenter.GoogleMapFragmentPresenter;
-import es.agustruiz.anclapp.ui.AlertDialogFragment;
 
 public class GoogleMapFragment extends Fragment {
 

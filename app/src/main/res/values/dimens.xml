@@ -61,5 +61,6 @@
     <dimen name="about_name">24sp</dimen>
     <dimen name="about_section_titles">18sp</dimen>
     <dimen name="about_margin">6dp</dimen>
+    <dimen name="color_list_preference_row_height">42dp</dimen>
 
 </resources>

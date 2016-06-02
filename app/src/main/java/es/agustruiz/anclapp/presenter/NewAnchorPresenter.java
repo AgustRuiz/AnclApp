@@ -11,13 +11,13 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.widget.Toast;
 
+import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
-import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.ui.anchor.NewAnchorActivity;
-import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
+import es.agustruiz.anclapp.internet.GetBitmapFromUrlTask;
 
-public class NewAnchorPresenter implements Presenter {
+public class NewAnchorPresenter implements IPresenter {
 
     public static final String LOG_TAG = NewAnchorPresenter.class.getName() + "[A]";
 
@@ -59,14 +59,14 @@ public class NewAnchorPresenter implements Presenter {
 
         if(resultOk){
             // TODO send message with snackbar?
-            Toast.makeText(mContext, "Anchor created!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.msg_anchor_created), Toast.LENGTH_SHORT).show();
             mActivity.finish();
         }
     }
 
     //endregion
 
-    //region [Presenter overriden methods]
+    //region [IPresenter overriden methods]
 
     @Override
     public void showMessage(String message) {
