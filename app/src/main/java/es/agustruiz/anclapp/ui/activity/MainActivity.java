@@ -1,4 +1,4 @@
-package es.agustruiz.anclapp.ui;
+package es.agustruiz.anclapp.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;

@@ -3,7 +3,6 @@ package es.agustruiz.anclapp.ui.anchor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -27,10 +26,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
-import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.presenter.NewAnchorPresenter;
 import es.agustruiz.anclapp.service.ShareAnchor;
-import es.agustruiz.anclapp.ui.anchor.utils.ColorDialogAppCompatActivity;
+import es.agustruiz.anclapp.ui.utils.ColorDialogAppCompatActivity;
 import es.agustruiz.anclapp.ui.fragment.ColorDialogFragment;
 
 public class NewAnchorActivity extends AppCompatActivity implements ColorDialogAppCompatActivity {

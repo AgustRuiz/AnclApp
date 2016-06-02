@@ -3,7 +3,6 @@ package es.agustruiz.anclapp.presenter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -13,11 +12,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
-
-import java.util.List;
 
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
@@ -25,9 +21,9 @@ import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.service.ShareAnchor;
 import es.agustruiz.anclapp.ui.anchor.EditAnchorActivity;
 import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
-import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
+import es.agustruiz.anclapp.internet.GetBitmapFromUrlTask;
 
-public class SeeAnchorPresenter implements Presenter {
+public class SeeAnchorPresenter implements IPresenter {
 
     public static final String LOG_TAG = SeeAnchorPresenter.class.getName() + "[A]";
 
@@ -156,7 +152,7 @@ public class SeeAnchorPresenter implements Presenter {
 
     //endregion
 
-    //region [Presenter overriden methods]
+    //region [IPresenter overriden methods]
 
     @Override
     public void showMessage(String message) {

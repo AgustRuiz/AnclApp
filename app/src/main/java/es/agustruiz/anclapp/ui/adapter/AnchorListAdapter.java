@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.SystemUtils;
 import es.agustruiz.anclapp.model.Anchor;
-import es.agustruiz.anclapp.ui.MainActivity;
+import es.agustruiz.anclapp.ui.activity.MainActivity;
 
 public class AnchorListAdapter extends BaseAdapter {
 

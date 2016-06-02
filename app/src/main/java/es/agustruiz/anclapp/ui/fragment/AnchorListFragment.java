@@ -28,7 +28,7 @@ import es.agustruiz.anclapp.event.Event;
 import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.event.IEventHandler;
 import es.agustruiz.anclapp.model.Anchor;
-import es.agustruiz.anclapp.ui.MainActivity;
+import es.agustruiz.anclapp.ui.activity.MainActivity;
 import es.agustruiz.anclapp.ui.adapter.AnchorListAdapter;
 import es.agustruiz.anclapp.ui.anchor.SeeAnchorActivity;
 

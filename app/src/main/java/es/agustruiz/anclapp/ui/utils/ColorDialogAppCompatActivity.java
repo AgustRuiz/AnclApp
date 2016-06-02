@@ -1,4 +1,4 @@
-package es.agustruiz.anclapp.ui.anchor.utils;
+package es.agustruiz.anclapp.ui.utils;
 
 public interface ColorDialogAppCompatActivity {
     void showColorDialog();

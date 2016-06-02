@@ -13,12 +13,11 @@ import android.widget.Toast;
 
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.dao.AnchorDAO;
-import es.agustruiz.anclapp.event.EventsUtil;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.ui.anchor.NewAnchorActivity;
-import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
+import es.agustruiz.anclapp.internet.GetBitmapFromUrlTask;
 
-public class NewAnchorPresenter implements Presenter {
+public class NewAnchorPresenter implements IPresenter {
 
     public static final String LOG_TAG = NewAnchorPresenter.class.getName() + "[A]";
 
@@ -67,7 +66,7 @@ public class NewAnchorPresenter implements Presenter {
 
     //endregion
 
-    //region [Presenter overriden methods]
+    //region [IPresenter overriden methods]
 
     @Override
     public void showMessage(String message) {

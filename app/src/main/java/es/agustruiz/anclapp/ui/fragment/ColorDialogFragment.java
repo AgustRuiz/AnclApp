@@ -16,7 +16,7 @@ import java.util.List;
 import es.agustruiz.anclapp.R;
 import es.agustruiz.anclapp.model.AnchorColor;
 import es.agustruiz.anclapp.ui.adapter.ColorListAdapter;
-import es.agustruiz.anclapp.ui.anchor.utils.ColorDialogAppCompatActivity;
+import es.agustruiz.anclapp.ui.utils.ColorDialogAppCompatActivity;
 
 public class ColorDialogFragment extends DialogFragment {
 

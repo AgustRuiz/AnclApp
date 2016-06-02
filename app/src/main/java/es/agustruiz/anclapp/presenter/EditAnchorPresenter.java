@@ -13,9 +13,9 @@ import android.graphics.drawable.TransitionDrawable;
 import es.agustruiz.anclapp.dao.AnchorDAO;
 import es.agustruiz.anclapp.model.Anchor;
 import es.agustruiz.anclapp.ui.anchor.EditAnchorActivity;
-import es.agustruiz.anclapp.ui.anchor.utils.GetBitmapFromUrlTask;
+import es.agustruiz.anclapp.internet.GetBitmapFromUrlTask;
 
-public class EditAnchorPresenter implements Presenter {
+public class EditAnchorPresenter implements IPresenter {
 
     public static final String LOG_TAG = EditAnchorPresenter.class.getName() + "[A]";
 
